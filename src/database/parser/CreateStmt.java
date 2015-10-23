@@ -2,11 +2,10 @@ package database.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateStmt extends Stmt {
-	String tableName;
-
 	class AttrDataTypePair {
 		public AttrDataTypePair(String group1, String group2) {
 			attrType = group1;
@@ -17,16 +16,17 @@ public class CreateStmt extends Stmt {
 		String dataType;
 	};
 
-	List<AttrDataTypePair> attrPairList;
+	String tableName;
+	List<AttrDataTypePair> attrDataTypePairList;
 
 	public CreateStmt() {
-		this.attrPairList = new ArrayList<AttrDataTypePair>();
+		this.attrDataTypePairList = new ArrayList<AttrDataTypePair>();
 	}
 
 	private void parseAttibuteList(String attrList) {
-		pattern = Pattern
+		Pattern pattern = Pattern
 				.compile("([a-z][a-z0-9]*)\\s*(INT|STR20)\\s*(,*\\s*.*)");
-		matcher = pattern.matcher(attrList);
+		Matcher matcher = pattern.matcher(attrList);
 
 		while (matcher.find()) {
 			String attrName = matcher.group(1);
@@ -38,7 +38,7 @@ public class CreateStmt extends Stmt {
 				System.exit(1);
 			}
 			AttrDataTypePair pair = new AttrDataTypePair(attrName, dataType);
-			attrPairList.add(pair);
+			attrDataTypePairList.add(pair);
 			System.out.println("CREATE Statement: AttrName:" + attrName
 					+ " AttrType:" + dataType);
 			attrList = matcher.group(3);
@@ -47,14 +47,14 @@ public class CreateStmt extends Stmt {
 	}
 
 	public void create(String query) {
-		pattern = Pattern
+		Pattern pattern = Pattern
 				.compile("CREATE TABLE ([a-z][a-z0-9]*)\\s*[(]\\s*(.*)\\s*[)]");
-		matcher = pattern.matcher(query);
+		Matcher matcher = pattern.matcher(query);
 		if (matcher.find()) {
 			tableName = matcher.group(1);
 			String attrList = matcher.group(2);
 			System.out.println("CREATE Statement: TableName:" + tableName);
-			System.out.println("CREATE Statement: AttriList:" + attrList);
+			System.out.println("CREATE Statement: AttrList:" + attrList);
 			parseAttibuteList(attrList);
 		} else {
 			System.out.println("ERROR ::: CREATE statement: Invalid:" + query);

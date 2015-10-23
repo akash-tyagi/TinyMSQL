@@ -37,8 +37,12 @@ public class Parser {
 			stmt.create(query);
 			break;
 		case "INSERT":
+			stmt = new InsertStmt();
+			stmt.create(query);
 			break;
 		case "SELECT":
+			stmt = new SelectStmt();
+			stmt.create(query);
 			break;
 		}
 	}
