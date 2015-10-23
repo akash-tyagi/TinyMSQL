@@ -18,15 +18,19 @@ public class Parser {
 	public void parse() {
 		matcher = pattern.matcher(query);
 		if (!matcher.find()) {
-			System.out.println("Statement invalid");
+			System.out.println("Statement: Invalid");
 			System.exit(1);
 		}
 
-		System.out.println("Statement type valid:" + matcher.group(1));
+		System.out.println("Statement Type Valid:" + matcher.group(1));
 		switch (matcher.group(1)) {
 		case "CREATE":
+			stmt = new CreateStmt();
+			stmt.create(query);
 			break;
 		case "DELETE":
+			stmt = new DeleteStmt();
+			stmt.create(query);
 			break;
 		case "DROP":
 			stmt = new DropStmt();
