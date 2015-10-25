@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateStmt extends Stmt {
+public class CreateStmt implements Stmt {
 	class AttrDataTypePair {
 		public AttrDataTypePair(String group1, String group2) {
 			attrType = group1;

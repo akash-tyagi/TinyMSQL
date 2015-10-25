@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InsertStmt extends Stmt {
+public class InsertStmt implements Stmt {
 	String tableName;
 	List<String> attrList;
 

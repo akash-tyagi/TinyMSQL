@@ -1,6 +1,6 @@
 package database.parser;
 
-public class DeleteStmt extends Stmt {
+public class DeleteStmt implements Stmt {
 
 	@Override
 	public void create(String query) {

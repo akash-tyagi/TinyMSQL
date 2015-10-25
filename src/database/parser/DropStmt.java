@@ -3,7 +3,7 @@ package database.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DropStmt extends Stmt {
+public class DropStmt implements Stmt {
 	String tableName;
 
 	public void create(String query) {

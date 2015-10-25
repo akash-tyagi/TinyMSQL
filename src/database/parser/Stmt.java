@@ -1,5 +1,5 @@
 package database.parser;
 
-public abstract class Stmt {
-	public abstract void create(String query);
+public interface Stmt {
+	public void create(String query);
 }
