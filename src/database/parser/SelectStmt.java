@@ -12,6 +12,7 @@ public class SelectStmt implements Stmt {
 	List<String> selectList;
 	List<String> tableList;
 	SearchCond cond;
+	String orderBy;
 
 	public SelectStmt() {
 		selectList = new ArrayList<String>();
@@ -43,7 +44,7 @@ public class SelectStmt implements Stmt {
 	}
 
 	private void parseFromClause(String rawFromClause) {
-		String rawTableList = null, rawSearchCond = null, rawOrderby = null;
+		String rawTableList = null, rawSearchCond = null;
 		Pattern pattern;
 		int num = 0;
 		if (rawFromClause.contains("WHERE")
@@ -65,21 +66,22 @@ public class SelectStmt implements Stmt {
 			switch (num) {
 			case 1:
 				rawSearchCond = matcher.group(2);
-				rawOrderby = matcher.group(3);
+				orderBy = matcher.group(3);
 				break;
 			case 2:
 				rawSearchCond = matcher.group(2);
 				break;
 			case 3:
-				rawOrderby = matcher.group(2);
+				orderBy = matcher.group(2);
 				break;
 			}
 			System.out.println("SELECT Statement: rawTableList:" + rawTableList
-					+ " rawWhereCond:" + rawSearchCond + " rawOrderby:"
-					+ rawOrderby);
+					+ " rawWhereCond:" + rawSearchCond + " Orderby:" + orderBy);
 			tableList = parseCommaSeperatedList(rawTableList);
-			if (rawSearchCond != null)
+			if (rawSearchCond != null) {
 				cond = new SearchCond();
+				cond.create(rawSearchCond);
+			}
 		} else {
 			System.out
 					.println("ERROR ::: SELECT statement: rawTableList Invalid:"
@@ -97,7 +99,8 @@ public class SelectStmt implements Stmt {
 			list.add("*");
 			return list;
 		}
-		Pattern pattern = Pattern.compile("\\s*([a-z][a-z0-9]*)\\s*(,*\\s*.*)");
+		Pattern pattern = Pattern
+				.compile("\\s*([a-z][a-z0-9.]*)\\s*(,*\\s*.*)");
 		Matcher matcher = pattern.matcher(rawList);
 
 		while (matcher.find()) {

@@ -40,7 +40,7 @@ public class CreateStmt implements Stmt {
 			AttrDataTypePair pair = new AttrDataTypePair(attrName, dataType);
 			attrDataTypePairList.add(pair);
 			System.out.println("CREATE Statement: AttrName:" + attrName
-					+ " AttrType:" + dataType);
+					+ "      AttrType:" + dataType);
 			attrList = matcher.group(3);
 			matcher = pattern.matcher(attrList);
 		}

@@ -6,7 +6,9 @@ import java.util.regex.Pattern;
 import database.parser.Stmt;
 
 public class Factor implements Stmt {
-	String name;
+	String colName;
+	String literal;
+	int integer;
 	Expression exp;
 
 	@Override
@@ -14,12 +16,30 @@ public class Factor implements Stmt {
 		if (query.contains("(")) {
 			Pattern pattern = Pattern.compile("\\s*[(](.*)[)]\\s*");
 			Matcher matcher = pattern.matcher(query);
-			exp = new Expression();
-			exp.create(matcher.group(1));
+			if (matcher.find()) {
+				exp = new Expression();
+				exp.create(matcher.group(1));
+			} else {
+				System.out.println("ERROR::: Factor Invalid stmt:" + query);
+			}
 		} else {
-			Pattern pattern = Pattern.compile("\\s*([a-z0-9]*)\\s*");
+			Pattern pattern = Pattern.compile("\\s*(.*)\\s*");
 			Matcher matcher = pattern.matcher(query);
-			name = matcher.group(1);
+			if (matcher.find()) {
+				String temp = matcher.group(1);
+				if (temp.charAt(0) >= '0' && temp.charAt(0) <= '9')
+					integer = Integer.parseInt(temp);
+				else if (query.contains("\""))
+					literal = temp;
+				else
+					colName = temp;
+				System.out.println("FACTOR int:" + integer + " literal:"
+						+ literal + " colName:" + colName);
+
+			} else {
+				System.out.println("ERROR ::: FACTOR Invalid:" + query);
+				System.exit(1);
+			}
 		}
 	}
 }

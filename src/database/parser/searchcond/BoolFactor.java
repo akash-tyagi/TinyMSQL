@@ -1,5 +1,6 @@
 package database.parser.searchcond;
 
+import database.GlobalVariable;
 import database.parser.Stmt;
 
 public class BoolFactor implements Stmt {
@@ -12,6 +13,10 @@ public class BoolFactor implements Stmt {
 			isNot = true;
 			query = query.substring(query.indexOf("NOT") + 4);
 		}
+		if (GlobalVariable.isTest)
+			System.out.println("BOOLFACT--> isNOT:" + isNot
+					+ " RAWBOOL PRIMARY:" + query);
+		boolPrimary = new BoolPrimary();
 		boolPrimary.create(query);
 	}
 

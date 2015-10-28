@@ -3,26 +3,20 @@ package database.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import database.GlobalVariable;
+
 public class Parser {
 
 	public Stmt stmt;
-	public String query;
-	Pattern pattern;
-	Matcher matcher;
 
-	public Parser(String query) {
-		this.query = query;
-		pattern = Pattern.compile("^(DROP|CREATE|DELETE|INSERT|SELECT)");
-	}
+	public void parse(String query) {
+		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
+		Matcher matcher = pattern.matcher(query);
+		if (!matcher.find())
+			System.out.println("XX Parser Statement: Invalid");
+		if (GlobalVariable.isTest)
+			System.out.println("$$ Parser: Statement Type:" + matcher.group(1));
 
-	public void parse() {
-		matcher = pattern.matcher(query);
-		if (!matcher.find()) {
-			System.out.println("Statement: Invalid");
-			System.exit(1);
-		}
-
-		System.out.println("Statement Type Valid:" + matcher.group(1));
 		switch (matcher.group(1)) {
 		case "CREATE":
 			stmt = new CreateStmt();

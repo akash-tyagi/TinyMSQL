@@ -18,12 +18,20 @@ public class CompPredicate implements Stmt {
 			compOp = ">";
 		else
 			compOp = "=";
-		Pattern pattern = Pattern.compile("(.*)" + compOp + "(.*)");
+		Pattern pattern = Pattern.compile("(.*) " + compOp + " (.*)");
 		Matcher matcher = pattern.matcher(query);
 		exp1 = new Expression();
 		exp2 = new Expression();
-		exp1.create(matcher.group(1));
-		exp2.create(matcher.group(2));
+		if (matcher.find()) {
+			System.out.println("COMP PRED-->CompOp:" + compOp
+					+ " RAW EXPRESSIONS:" + matcher.group(1) + ","
+					+ matcher.group(2));
+			exp1.create(matcher.group(1));
+			exp2.create(matcher.group(2));
+		} else {
+			System.out.println("ERROR ::: COMP PREDICATE Invalid:" + query);
+			System.exit(1);
+		}
 	}
 
 }
