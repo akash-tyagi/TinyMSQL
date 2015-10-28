@@ -1,1 +1,1 @@
-SELECT * FROM course WHERE ( exam * 30 + homework * 20 + project * 50 ) / 100 = 100
+SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.grade = "A" AND course2.grade = "A" ] ORDER BY course.exam

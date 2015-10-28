@@ -18,7 +18,7 @@ public class CompPredicate implements Stmt {
 			compOp = ">";
 		else
 			compOp = "=";
-		Pattern pattern = Pattern.compile("(.*) " + compOp + " (.*)");
+		Pattern pattern = Pattern.compile("(.*)" + compOp + "(.*)");
 		Matcher matcher = pattern.matcher(query);
 		exp1 = new Expression();
 		exp2 = new Expression();

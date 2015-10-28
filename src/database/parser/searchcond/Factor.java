@@ -17,29 +17,23 @@ public class Factor implements Stmt {
 			Pattern pattern = Pattern.compile("\\s*[(](.*)[)]\\s*");
 			Matcher matcher = pattern.matcher(query);
 			if (matcher.find()) {
+				System.out.println("Factor-->Exp:" + matcher.group(1));
 				exp = new Expression();
 				exp.create(matcher.group(1));
 			} else {
 				System.out.println("ERROR::: Factor Invalid stmt:" + query);
 			}
 		} else {
-			Pattern pattern = Pattern.compile("\\s*(.*)\\s*");
-			Matcher matcher = pattern.matcher(query);
-			if (matcher.find()) {
-				String temp = matcher.group(1);
-				if (temp.charAt(0) >= '0' && temp.charAt(0) <= '9')
-					integer = Integer.parseInt(temp);
-				else if (query.contains("\""))
-					literal = temp;
-				else
-					colName = temp;
-				System.out.println("FACTOR int:" + integer + " literal:"
-						+ literal + " colName:" + colName);
+			query = query.trim();
+			if (query.charAt(0) >= '0' && query.charAt(0) <= '9')
+				integer = Integer.parseInt(query);
+			else if (query.contains("\""))
+				literal = query;
+			else
+				colName = query;
+			System.out.println("FACTOR int:" + integer + " literal:" + literal
+					+ " colName:" + colName);
 
-			} else {
-				System.out.println("ERROR ::: FACTOR Invalid:" + query);
-				System.exit(1);
-			}
 		}
 	}
 }

@@ -49,7 +49,7 @@ public class Expression implements Stmt {
 			return;
 		}
 
-		System.out.println("Expression--> rawTerm:"
+		System.out.println("Expression--> op:" + op + " rawTerm:"
 				+ query.substring(0, index - 1) + " rawExp:"
 				+ query.substring(index + 1));
 		term.create(query.substring(0, index - 1));
