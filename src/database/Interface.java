@@ -48,5 +48,6 @@ public class Interface {
 		Interface iface = new Interface();
 		iface.readFile("src/testQueries");
 		iface.parseQueries();
+		
 	}
 }
