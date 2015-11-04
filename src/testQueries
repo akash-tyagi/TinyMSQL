@@ -1,1 +1,1 @@
-SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.grade = "A" AND course2.grade = "A" ] ORDER BY course.exam
+INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course

@@ -17,9 +17,10 @@ public class InsertStmt implements Stmt {
 	private void parseAttibuteList(String attrList2) {
 		Pattern pattern = Pattern.compile("([a-z][a-z0-9]*)\\s*(,*\\s*.*)");
 		Matcher matcher = pattern.matcher(attrList2);
-
+		System.out.println("CREATE Statement: PARSING Attribute List");
 		while (matcher.find()) {
 			String attrName = matcher.group(1);
+			attrName = attrName.trim();
 			attrList.add(attrName);
 			System.out.println("CREATE Statement: AttrName:" + attrName);
 			attrList2 = matcher.group(2);
@@ -33,24 +34,20 @@ public class InsertStmt implements Stmt {
 			selectStmt.create(tuples);
 			return;
 		}
-
-		Pattern pattern = Pattern.compile("([a-z][a-z0-9]*)\\s*(,*\\s*.*)");
-		Matcher matcher = pattern.matcher(tuples);
-
-		while (matcher.find()) {
-			String attrName = matcher.group(1);
+		System.out.println("CREATE Statement: PARSING Value List");
+		String[] list = tuples.split(",");
+		for (String attrName : list) {
+			attrName = attrName.trim();
+			attrName = attrName.replaceAll("\"", "");
 			attrList.add(attrName);
 			System.out.println("CREATE Statement: AttrName:" + attrName);
-			tuples = matcher.group(2);
-			matcher = pattern.matcher(tuples);
 		}
 	}
 
 	@Override
 	public void create(String query) {
 		String attrList = "", tuples = "";
-		Pattern pattern = Pattern
-				.compile("INSERT INTO ([a-z][a-z0-9]*)\\s*(.*)");
+		Pattern pattern = Pattern.compile("INSERT INTO ([a-z][a-z0-9]*)(.*)");
 		Matcher matcher = pattern.matcher(query);
 		if (matcher.find()) {
 			tableName = matcher.group(1);
@@ -58,15 +55,14 @@ public class InsertStmt implements Stmt {
 			String rawList = matcher.group(2);
 			if (rawList.contains("VALUES")) {
 				pattern = Pattern
-						.compile("\\s*[(]\\s*(.*)\\s*[)]\\s*VALUES\\s*[(]\\s*(.*)\\s*[)]");
+						.compile("\\s*[(](.*)[)]\\s*VALUES\\s*[(](.*)[)]");
 				matcher = pattern.matcher(rawList);
 				if (matcher.find()) {
 					attrList = matcher.group(1);
 					tuples = matcher.group(2);
 				}
 			} else {
-				pattern = Pattern
-						.compile("\\s*[(]\\s*(.*)\\s*[)]\\s*(SELECT .*)");
+				pattern = Pattern.compile("\\s*[(](.*)[)]\\s*(SELECT .*)");
 				matcher = pattern.matcher(rawList);
 				if (matcher.find()) {
 					attrList = matcher.group(1);
