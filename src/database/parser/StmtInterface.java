@@ -1,5 +1,5 @@
 package database.parser;
 
-public interface Stmt {
+public interface StmtInterface {
 	public void create(String query);
 }

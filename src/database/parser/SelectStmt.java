@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import database.parser.searchcond.SearchCond;
 
-public class SelectStmt implements Stmt {
+public class SelectStmt implements StmtInterface {
 	boolean isDistinct = false;
 	List<String> selectList;
 	List<String> tableList;

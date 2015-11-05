@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.GlobalVariable;
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class SearchCond implements Stmt {
+public class SearchCond implements StmtInterface {
 	BoolTerm boolTerm;
 	SearchCond cond;
 

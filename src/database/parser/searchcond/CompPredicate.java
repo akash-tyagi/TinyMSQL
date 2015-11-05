@@ -3,9 +3,9 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class CompPredicate implements Stmt {
+public class CompPredicate implements StmtInterface {
 	Expression exp1;
 	String compOp;
 	Expression exp2;

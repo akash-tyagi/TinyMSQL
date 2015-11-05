@@ -1,9 +1,9 @@
 package database.parser.searchcond;
 
 import database.GlobalVariable;
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class BoolFactor implements Stmt {
+public class BoolFactor implements StmtInterface {
 	boolean isNot;
 	BoolPrimary boolPrimary;
 

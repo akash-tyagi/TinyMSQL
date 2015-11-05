@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InsertStmt implements Stmt {
+public class InsertStmt implements StmtInterface {
 	String tableName;
 	List<String> attrList;
-	Stmt selectStmt;
+	StmtInterface selectStmt;
 
 	public InsertStmt() {
 		attrList = new ArrayList<String>();

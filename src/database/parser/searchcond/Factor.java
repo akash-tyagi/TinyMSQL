@@ -3,9 +3,9 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class Factor implements Stmt {
+public class Factor implements StmtInterface {
 	String colName;
 	String literal;
 	int integer;

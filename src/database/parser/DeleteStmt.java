@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import database.parser.searchcond.SearchCond;
 
-public class DeleteStmt implements Stmt {
+public class DeleteStmt implements StmtInterface {
 	String tableName;
 	SearchCond cond;
 

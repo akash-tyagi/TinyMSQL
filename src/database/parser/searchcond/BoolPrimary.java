@@ -4,9 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class BoolPrimary implements Stmt {
+public class BoolPrimary implements StmtInterface {
 	SearchCond cond;
 	CompPredicate compPred;
 

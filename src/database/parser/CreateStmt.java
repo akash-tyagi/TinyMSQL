@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateStmt implements Stmt {
+import database.Manager;
+
+public class CreateStmt extends StmtBase implements StmtInterface {
 	class AttrDataTypePair {
 		public AttrDataTypePair(String group1, String group2) {
 			attrType = group1;
@@ -19,7 +21,8 @@ public class CreateStmt implements Stmt {
 	String tableName;
 	List<AttrDataTypePair> attrDataTypePairList;
 
-	public CreateStmt() {
+	public CreateStmt(Manager manager) {
+		super(manager);
 		this.attrDataTypePairList = new ArrayList<AttrDataTypePair>();
 	}
 
@@ -62,4 +65,7 @@ public class CreateStmt implements Stmt {
 		}
 	}
 
+	public void execute() {
+
+	}
 }

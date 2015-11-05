@@ -4,10 +4,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
+import database.Manager;
 
 public class Parser {
 
-	public Stmt stmt;
+	public StmtInterface stmt;
+	Manager manager;
+
+	public Parser(Manager manager) {
+		this.manager = manager;
+	}
 
 	public void parse(String query) {
 		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
@@ -19,7 +25,7 @@ public class Parser {
 
 		switch (matcher.group(1)) {
 		case "CREATE":
-			stmt = new CreateStmt();
+			stmt = new CreateStmt(manager);
 			stmt.create(query);
 			break;
 		case "DELETE":

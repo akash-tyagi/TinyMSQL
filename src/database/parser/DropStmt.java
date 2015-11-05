@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import database.GlobalVariable;
 
-public class DropStmt implements Stmt {
+public class DropStmt implements StmtInterface {
 	String tableName;
 
 	public void create(String query) {

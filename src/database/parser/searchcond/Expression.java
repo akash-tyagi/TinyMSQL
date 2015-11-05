@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class Expression implements Stmt {
+public class Expression implements StmtInterface {
 	Term term;
 	String op;
 	Expression exp;

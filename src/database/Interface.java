@@ -9,10 +9,12 @@ import java.io.InputStreamReader;
 import database.parser.Parser;
 
 public class Interface {
-	public ArrayList<String> queries;
+	ArrayList<String> queries;
+	Manager manager;
 
 	public Interface() {
 		queries = new ArrayList<String>();
+		manager = new Manager();
 	}
 
 	/* Read single query from console */
@@ -34,7 +36,7 @@ public class Interface {
 	}
 
 	public void parseQueries() {
-		Parser parser = new Parser();
+		Parser parser = new Parser(manager);
 		for (String query : queries) {
 			if (query.contains("#"))
 				continue;
@@ -48,6 +50,6 @@ public class Interface {
 		Interface iface = new Interface();
 		iface.readFile("src/testQueries");
 		iface.parseQueries();
-		
+
 	}
 }

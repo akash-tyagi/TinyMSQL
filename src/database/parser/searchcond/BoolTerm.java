@@ -6,9 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
-import database.parser.Stmt;
+import database.parser.StmtInterface;
 
-public class BoolTerm implements Stmt {
+public class BoolTerm implements StmtInterface {
 	BoolTerm boolTerm;
 	BoolFactor boolFactor;
 
