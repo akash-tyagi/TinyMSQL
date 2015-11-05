@@ -59,6 +59,7 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 			System.out.println("ERROR ::: CREATE statement: Invalid:" + query);
 			System.exit(1);
 		}
+		execute();
 	}
 
 	public void execute() {
@@ -74,6 +75,36 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 		System.out.print("Creating table " + relation_name + "\n");
 		Relation relation_reference = manager.schema_manager.createRelation(
 				relation_name, schema);
+
+		// Print the information about the Relation
+		System.out.print("The table has name "
+				+ relation_reference.getRelationName() + "\n");
+		System.out.print("The table has schema:" + "\n");
+		System.out.print(relation_reference.getSchema() + "\n");
+		System.out.print("The table currently have "
+				+ relation_reference.getNumOfBlocks() + " blocks" + "\n");
+		System.out
+				.print("The table currently have "
+						+ relation_reference.getNumOfTuples() + " tuples"
+						+ "\n" + "\n");
+
+		// Print the information provided by the schema manager
+		System.out.print("Current schemas and relations: " + "\n");
+		System.out.print(manager.schema_manager + "\n");
+		System.out
+				.print("From the schema manager, the table "
+						+ relation_name
+						+ " exists: "
+						+ (manager.schema_manager.relationExists(relation_name) ? "TRUE"
+								: "FALSE") + "\n");
+		System.out.print("From the schema manager, the table " + relation_name
+				+ " has schema:" + "\n");
+		System.out
+				.print(manager.schema_manager.getSchema(relation_name) + "\n");
+		System.out.print("From the schema manager, the table " + relation_name
+				+ " has schema:" + "\n");
+		System.out.print(manager.schema_manager.getRelation(relation_name)
+				.getSchema() + "\n");
 
 	}
 }

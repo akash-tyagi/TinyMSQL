@@ -3,11 +3,16 @@ package database.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import database.Manager;
 import database.parser.searchcond.SearchCond;
 
-public class DeleteStmt implements StmtInterface {
+public class DeleteStmt extends StmtBase implements StmtInterface {
 	String tableName;
 	SearchCond cond;
+
+	public DeleteStmt(Manager manager) {
+		super(manager);
+	}
 
 	@Override
 	public void create(String query) {
@@ -31,6 +36,12 @@ public class DeleteStmt implements StmtInterface {
 			System.exit(1);
 		}
 
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

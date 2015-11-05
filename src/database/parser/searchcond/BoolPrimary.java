@@ -30,4 +30,10 @@ public class BoolPrimary implements StmtInterface {
 		compPred.create(query);
 	}
 
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

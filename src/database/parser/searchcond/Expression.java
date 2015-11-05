@@ -56,4 +56,10 @@ public class Expression implements StmtInterface {
 		exp = new Expression();
 		exp.create(query.substring(index + 1));
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -34,4 +34,10 @@ public class CompPredicate implements StmtInterface {
 		}
 	}
 
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

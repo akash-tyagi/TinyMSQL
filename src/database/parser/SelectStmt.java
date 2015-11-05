@@ -5,16 +5,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import database.Manager;
 import database.parser.searchcond.SearchCond;
 
-public class SelectStmt implements StmtInterface {
+public class SelectStmt extends StmtBase implements StmtInterface {
 	boolean isDistinct = false;
 	List<String> selectList;
 	List<String> tableList;
 	SearchCond cond;
 	String orderBy;
 
-	public SelectStmt() {
+	public SelectStmt(Manager manager) {
+		super(manager);
 		selectList = new ArrayList<String>();
 		tableList = new ArrayList<String>();
 	}
@@ -111,5 +113,11 @@ public class SelectStmt implements StmtInterface {
 			matcher = pattern.matcher(rawList);
 		}
 		return list;
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InsertStmt implements StmtInterface {
+import database.Manager;
+
+public class InsertStmt extends StmtBase implements StmtInterface {
 	String tableName;
 	List<String> attrList;
 	StmtInterface selectStmt;
 
-	public InsertStmt() {
+	public InsertStmt(Manager manager) {
+		super(manager);
 		attrList = new ArrayList<String>();
 	}
 
@@ -30,7 +33,7 @@ public class InsertStmt implements StmtInterface {
 
 	private void parseTuples(String tuples) {
 		if (tuples.contains("SELECT")) {
-			selectStmt = new SelectStmt();
+			selectStmt = new SelectStmt(manager);
 			selectStmt.create(tuples);
 			return;
 		}
@@ -77,5 +80,11 @@ public class InsertStmt implements StmtInterface {
 			System.out.println("ERROR ::: CREATE statement: Invalid:" + query);
 			System.exit(1);
 		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }

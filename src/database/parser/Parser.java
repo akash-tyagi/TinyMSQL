@@ -29,19 +29,19 @@ public class Parser {
 			stmt.create(query);
 			break;
 		case "DELETE":
-			stmt = new DeleteStmt();
+			stmt = new DeleteStmt(manager);
 			stmt.create(query);
 			break;
 		case "DROP":
-			stmt = new DropStmt();
+			stmt = new DropStmt(manager);
 			stmt.create(query);
 			break;
 		case "INSERT":
-			stmt = new InsertStmt();
+			stmt = new InsertStmt(manager);
 			stmt.create(query);
 			break;
 		case "SELECT":
-			stmt = new SelectStmt();
+			stmt = new SelectStmt(manager);
 			stmt.create(query);
 			break;
 		}

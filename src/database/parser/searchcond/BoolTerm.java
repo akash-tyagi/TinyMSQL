@@ -63,4 +63,10 @@ public class BoolTerm implements StmtInterface {
 		boolFactor = new BoolFactor();
 		boolFactor.create(rawBoolFactor);
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
+	}
 }

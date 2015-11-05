@@ -52,4 +52,10 @@ public class Term implements StmtInterface {
 		term = new Term();
 		term.create(query.substring(index + 1));
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
+	}
 }

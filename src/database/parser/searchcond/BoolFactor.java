@@ -20,4 +20,10 @@ public class BoolFactor implements StmtInterface {
 		boolPrimary.create(query);
 	}
 
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

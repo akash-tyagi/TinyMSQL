@@ -70,4 +70,10 @@ public class SearchCond implements StmtInterface {
 		boolTerm = new BoolTerm();
 		boolTerm.create(rawBoolTerm);
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

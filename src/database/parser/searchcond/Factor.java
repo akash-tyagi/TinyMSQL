@@ -36,4 +36,10 @@ public class Factor implements StmtInterface {
 
 		}
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }
