@@ -5,25 +5,20 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import storageManager.FieldType;
+import storageManager.Relation;
+import storageManager.Schema;
 import database.Manager;
 
 public class CreateStmt extends StmtBase implements StmtInterface {
-	class AttrDataTypePair {
-		public AttrDataTypePair(String group1, String group2) {
-			attrType = group1;
-			dataType = group2;
-		}
-
-		String attrType;
-		String dataType;
-	};
-
-	String tableName;
-	List<AttrDataTypePair> attrDataTypePairList;
+	String relation_name;
+	ArrayList<String> field_names;
+	ArrayList<FieldType> field_types;
 
 	public CreateStmt(Manager manager) {
 		super(manager);
-		this.attrDataTypePairList = new ArrayList<AttrDataTypePair>();
+		field_names = new ArrayList<String>();
+		field_types = new ArrayList<FieldType>();
 	}
 
 	private void parseAttibuteList(String attrList) {
@@ -32,18 +27,19 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 		Matcher matcher = pattern.matcher(attrList);
 
 		while (matcher.find()) {
-			String attrName = matcher.group(1);
-			String dataType = matcher.group(2);
-			if (attrName.isEmpty() || dataType.isEmpty()) {
+			String fieldName = matcher.group(1);
+			String fieldType = matcher.group(2);
+			if (fieldName.isEmpty() || fieldType.isEmpty()) {
 				System.out
 						.println("ERROR ::: CREATE statement: Invalid Attributes:"
 								+ attrList);
 				System.exit(1);
 			}
-			AttrDataTypePair pair = new AttrDataTypePair(attrName, dataType);
-			attrDataTypePairList.add(pair);
-			System.out.println("CREATE Statement: AttrName:" + attrName
-					+ "      AttrType:" + dataType);
+			field_names.add(fieldName);
+			field_types.add(fieldType.contains("STR") ? FieldType.STR20
+					: FieldType.INT);
+			System.out.println("CREATE Statement: AttrName:" + fieldName
+					+ "      AttrType:" + fieldType);
 			attrList = matcher.group(3);
 			matcher = pattern.matcher(attrList);
 		}
@@ -54,9 +50,9 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 				.compile("CREATE TABLE ([a-z][a-z0-9]*)\\s*[(]\\s*(.*)\\s*[)]");
 		Matcher matcher = pattern.matcher(query);
 		if (matcher.find()) {
-			tableName = matcher.group(1);
+			relation_name = matcher.group(1);
 			String attrList = matcher.group(2);
-			System.out.println("CREATE Statement: TableName:" + tableName);
+			System.out.println("CREATE Statement: TableName:" + relation_name);
 			System.out.println("CREATE Statement: AttrList:" + attrList);
 			parseAttibuteList(attrList);
 		} else {
@@ -66,6 +62,18 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 	}
 
 	public void execute() {
+		System.out
+				.print("=======================Schema========================="
+						+ "\n");
+		// Create a schema
+		System.out.print("Creating a schema" + "\n");
+		Schema schema = new Schema(field_names, field_types);
+
+		// =========Relation & SchemaManager=========
+		System.out.print("=========Relation & SchemaManager======" + "\n");
+		System.out.print("Creating table " + relation_name + "\n");
+		Relation relation_reference = manager.schema_manager.createRelation(
+				relation_name, schema);
 
 	}
 }

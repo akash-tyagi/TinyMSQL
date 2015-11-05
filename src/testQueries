@@ -1,1 +1,1 @@
-INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course
+CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)

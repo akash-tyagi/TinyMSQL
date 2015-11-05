@@ -5,9 +5,9 @@ import storageManager.MainMemory;
 import storageManager.SchemaManager;
 
 public class Manager {
-	SchemaManager schema_manager;
-	MainMemory mem;
-	Disk disk;
+	public SchemaManager schema_manager;
+	public MainMemory mem;
+	public Disk disk;
 
 	public Manager() {
 		mem = new MainMemory();
@@ -16,5 +16,8 @@ public class Manager {
 				+ " blocks" + "\n");
 		System.out.print(mem + "\n" + "\n");
 		schema_manager = new SchemaManager(mem, disk);
+
+		disk.resetDiskIOs();
+		disk.resetDiskTimer();
 	}
 }
