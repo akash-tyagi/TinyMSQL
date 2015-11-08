@@ -3,7 +3,6 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.parser.StmtInterface;
 import storageManager.Tuple;
 
 public class Factor {
@@ -32,7 +31,8 @@ public class Factor {
 				literal = query;
 			else
 				colName = query;
-			System.out.println("FACTOR int:" + integer + " literal:" + literal + " colName:" + colName);
+			System.out.println("FACTOR int:" + integer + " literal:" + literal
+					+ " colName:" + colName);
 
 		}
 	}
@@ -43,7 +43,7 @@ public class Factor {
 		else if (literal != null)
 			return literal;
 		else if (exp != null)
-			return exp.execute();
+			return exp.execute(tuple);
 		return Integer.toString(integer);
 	}
 }

@@ -3,7 +3,7 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.parser.StmtInterface;
+import storageManager.Tuple;
 
 public class CompPredicate {
 	Expression exp1;
@@ -23,7 +23,8 @@ public class CompPredicate {
 		exp2 = new Expression();
 		if (matcher.find()) {
 			System.out.println(
-					"COMP PRED-->CompOp:" + compOp + " RAW EXPRESSIONS:" + matcher.group(1) + "," + matcher.group(2));
+					"COMP PRED-->CompOp:" + compOp + " RAW EXPRESSIONS:"
+							+ matcher.group(1) + "," + matcher.group(2));
 			exp1.create(matcher.group(1));
 			exp2.create(matcher.group(2));
 		} else {
@@ -32,9 +33,9 @@ public class CompPredicate {
 		}
 	}
 
-	public boolean execute() {
-		String res1 = exp1.execute();
-		String res2 = exp2.execute();
+	public boolean execute(Tuple tuple) {
+		String res1 = exp1.execute(tuple);
+		String res2 = exp2.execute(tuple);
 
 		switch (compOp) {
 		case '=':
@@ -44,7 +45,8 @@ public class CompPredicate {
 		case '>':
 			return Integer.getInteger(res1) > Integer.getInteger(res2);
 		}
-		System.out.println("ERROR ::: COMP PREDICATE Execution:" + res1 + " " + compOp + " " + res2);
+		System.out.println("ERROR ::: COMP PREDICATE Execution:" + res1 + " "
+				+ compOp + " " + res2);
 		System.exit(1);
 		return false;
 	}

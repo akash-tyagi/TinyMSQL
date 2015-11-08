@@ -1,7 +1,7 @@
 package database.parser.searchcond;
 
 import database.GlobalVariable;
-import database.parser.StmtInterface;
+import storageManager.Tuple;
 
 public class BoolFactor {
 	boolean isNot;
@@ -13,14 +13,15 @@ public class BoolFactor {
 			query = query.substring(query.indexOf("NOT") + 4);
 		}
 		if (GlobalVariable.isTest)
-			System.out.println("BOOLFACT--> isNOT:" + isNot + " RAWBOOL PRIMARY:" + query);
+			System.out.println(
+					"BOOLFACT--> isNOT:" + isNot + " RAWBOOL PRIMARY:" + query);
 		boolPrimary = new BoolPrimary();
 		boolPrimary.create(query);
 	}
 
-	public boolean execute() {
-		boolean result = boolPrimary.execute();
-		return isNot?!result:result;
+	public boolean execute(Tuple tuple) {
+		boolean result = boolPrimary.execute(tuple);
+		return isNot ? !result : result;
 	}
 
 }

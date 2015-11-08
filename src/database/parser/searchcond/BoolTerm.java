@@ -2,11 +2,8 @@ package database.parser.searchcond;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import database.GlobalVariable;
-import database.parser.StmtInterface;
+import storageManager.Tuple;
 
 public class BoolTerm {
 	BoolTerm boolTerm;
@@ -37,7 +34,8 @@ public class BoolTerm {
 		int index = -1;
 		if (query2.contains("AND")) {
 			index = indexList.get(query2.indexOf("AND"));
-			System.out.println("BOOLTERM-->RAWBOOL TERM:" + query.substring(index + 4));
+			System.out.println(
+					"BOOLTERM-->RAWBOOL TERM:" + query.substring(index + 4));
 			boolTerm = new BoolTerm();
 			boolTerm.create(query.substring(index + 4));
 			rawBoolFactor = query.substring(0, index - 1);
@@ -62,7 +60,7 @@ public class BoolTerm {
 		boolFactor.create(rawBoolFactor);
 	}
 
-	public boolean execute() {
-		return boolFactor.execute() && boolTerm.execute();
+	public boolean execute(Tuple tuple) {
+		return boolFactor.execute(tuple) && boolTerm.execute(tuple);
 	}
 }

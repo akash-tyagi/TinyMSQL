@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
-import database.parser.StmtInterface;
+import storageManager.Tuple;
 
 public class BoolPrimary {
 	SearchCond cond;
@@ -29,8 +29,8 @@ public class BoolPrimary {
 		compPred.create(query);
 	}
 
-	public boolean execute() {
-		return compPred != null ? compPred.execute() : cond.execute();
+	public boolean execute(Tuple tuple) {
+		return compPred != null ? compPred.execute(tuple) : cond.execute(tuple);
 	}
 
 }

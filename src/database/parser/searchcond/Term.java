@@ -2,10 +2,8 @@ package database.parser.searchcond;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import database.parser.StmtInterface;
+import storageManager.Tuple;
 
 public class Term {
 	Factor factor;
@@ -44,19 +42,22 @@ public class Term {
 			factor.create(query);
 			return;
 		}
-		System.out.println("Term--> op:" + op + " rawFactor:" + query.substring(0, index - 1) + " rawTerm:"
+		System.out.println("Term--> op:" + op + " rawFactor:"
+				+ query.substring(0, index - 1) + " rawTerm:"
 				+ query.substring(index + 1));
 		factor.create(query.substring(0, index - 1));
 		term = new Term();
 		term.create(query.substring(index + 1));
 	}
 
-	public String execute() {
+	public String execute(Tuple tuple) {
 		if (op == '*') {
-			return String.valueOf(Integer.getInteger(factor.execute()) * Integer.getInteger(term.execute()));
+			return String.valueOf(Integer.getInteger(factor.execute(tuple))
+					* Integer.getInteger(term.execute(tuple)));
 		} else if (op == '/') {
-			return String.valueOf(Integer.getInteger(factor.execute()) / Integer.getInteger(term.execute()));
+			return String.valueOf(Integer.getInteger(factor.execute(tuple))
+					/ Integer.getInteger(term.execute(tuple)));
 		}
-		return factor.execute();// TODO
+		return factor.execute(tuple);// TODO
 	}
 }

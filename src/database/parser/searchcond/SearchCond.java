@@ -43,7 +43,8 @@ public class SearchCond {
 
 		if (index != -1) {
 			if (GlobalVariable.isTest)
-				System.out.println("SEARCHCOND-->RAWBOOL TERM:" + rawBoolTerm.substring(0, index - 1) + " SearchCond:"
+				System.out.println("SEARCHCOND-->RAWBOOL TERM:"
+						+ rawBoolTerm.substring(0, index - 1) + " SearchCond:"
 						+ rawBoolTerm.substring(index + 2));
 			cond = new SearchCond();
 			cond.create(rawBoolTerm.substring(index + 2));
@@ -55,7 +56,7 @@ public class SearchCond {
 		boolTerm.create(rawBoolTerm);
 	}
 
-	public boolean execute() {
-		return (boolTerm.execute() || cond.execute());
+	public boolean execute(Tuple tuple) {
+		return (boolTerm.execute(tuple) || cond.execute(tuple));
 	}
 }
