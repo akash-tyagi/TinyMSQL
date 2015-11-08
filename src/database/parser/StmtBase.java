@@ -1,11 +1,11 @@
 package database.parser;
 
-import database.Manager;
+import database.DbManager;
 
 public class StmtBase {
-	Manager manager;
+	DbManager dbManager;
 
-	public StmtBase(Manager manager) {
-		this.manager = manager;
+	public StmtBase(DbManager dbManager) {
+		this.dbManager = dbManager;
 	}
 }
