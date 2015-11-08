@@ -8,11 +8,10 @@ import java.util.regex.Pattern;
 import database.GlobalVariable;
 import database.parser.StmtInterface;
 
-public class BoolTerm implements StmtInterface {
+public class BoolTerm {
 	BoolTerm boolTerm;
 	BoolFactor boolFactor;
 
-	@Override
 	public void create(String query) {
 		String rawBoolFactor = query;
 
@@ -38,8 +37,7 @@ public class BoolTerm implements StmtInterface {
 		int index = -1;
 		if (query2.contains("AND")) {
 			index = indexList.get(query2.indexOf("AND"));
-			System.out.println("BOOLTERM-->RAWBOOL TERM:"
-					+ query.substring(index + 4));
+			System.out.println("BOOLTERM-->RAWBOOL TERM:" + query.substring(index + 4));
 			boolTerm = new BoolTerm();
 			boolTerm.create(query.substring(index + 4));
 			rawBoolFactor = query.substring(0, index - 1);
@@ -64,9 +62,7 @@ public class BoolTerm implements StmtInterface {
 		boolFactor.create(rawBoolFactor);
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
+	public boolean execute() {
+		return boolFactor.execute() && boolTerm.execute();
 	}
 }

@@ -6,11 +6,10 @@ import java.util.regex.Pattern;
 import database.GlobalVariable;
 import database.parser.StmtInterface;
 
-public class BoolPrimary implements StmtInterface {
+public class BoolPrimary {
 	SearchCond cond;
 	CompPredicate compPred;
 
-	@Override
 	public void create(String query) {
 		if (query.contains("[")) {
 			Pattern pattern = Pattern.compile("\\s*\\[ (.*) \\]\\s*");
@@ -30,10 +29,8 @@ public class BoolPrimary implements StmtInterface {
 		compPred.create(query);
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public boolean execute() {
+		return compPred != null ? compPred.execute() : cond.execute();
 	}
 
 }

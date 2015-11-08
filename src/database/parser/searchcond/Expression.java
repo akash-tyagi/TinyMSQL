@@ -7,12 +7,11 @@ import java.util.regex.Pattern;
 
 import database.parser.StmtInterface;
 
-public class Expression implements StmtInterface {
+public class Expression {
 	Term term;
-	String op;
+	char op;
 	Expression exp;
 
-	@Override
 	public void create(String query) {
 		term = new Term();
 
@@ -38,10 +37,10 @@ public class Expression implements StmtInterface {
 
 		int index = 0;
 		if (query2.contains("+")) {
-			op = "+";
+			op = '+';
 			index = indexList.get(query2.indexOf('+'));
 		} else if (query2.contains("-")) {
-			op = "-";
+			op = '-';
 			index = indexList.get(query2.indexOf('-'));
 		} else {
 			System.out.println("Expression--> rawTerm:" + query);
@@ -49,17 +48,19 @@ public class Expression implements StmtInterface {
 			return;
 		}
 
-		System.out.println("Expression--> op:" + op + " rawTerm:"
-				+ query.substring(0, index - 1) + " rawExp:"
+		System.out.println("Expression--> op:" + op + " rawTerm:" + query.substring(0, index - 1) + " rawExp:"
 				+ query.substring(index + 1));
 		term.create(query.substring(0, index - 1));
 		exp = new Expression();
 		exp.create(query.substring(index + 1));
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public String execute() {
+		if (op == '+') {
+			return String.valueOf(Integer.getInteger(term.execute()) + Integer.getInteger(exp.execute()));
+		} else if (op == '-') {
+			return String.valueOf(Integer.getInteger(term.execute()) - Integer.getInteger(exp.execute()));
+		}
+		return term.execute();
 	}
 }

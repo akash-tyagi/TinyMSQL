@@ -7,12 +7,11 @@ import java.util.regex.Pattern;
 
 import database.parser.StmtInterface;
 
-public class Term implements StmtInterface {
+public class Term {
 	Factor factor;
 	Term term;
-	String op;
+	char op;
 
-	@Override
 	public void create(String query) {
 		factor = new Factor();
 		List<Integer> factorList = new ArrayList<Integer>();
@@ -35,27 +34,29 @@ public class Term implements StmtInterface {
 		}
 		int index = 0;
 		if (query2.contains("*")) {
-			op = "*";
+			op = '*';
 			index = indexList.get(query2.indexOf('*'));
 		} else if (query2.contains("/")) {
-			op = "/";
+			op = '/';
 			index = indexList.get(query2.indexOf('/'));
 		} else {
 			System.out.println("Term--> rawFactor:" + query);
 			factor.create(query);
 			return;
 		}
-		System.out.println("Term--> op:" + op + " rawFactor:"
-				+ query.substring(0, index - 1) + " rawTerm:"
+		System.out.println("Term--> op:" + op + " rawFactor:" + query.substring(0, index - 1) + " rawTerm:"
 				+ query.substring(index + 1));
 		factor.create(query.substring(0, index - 1));
 		term = new Term();
 		term.create(query.substring(index + 1));
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
+	public String execute() {
+		if (op == '*') {
+			return String.valueOf(Integer.getInteger(factor.execute()) * Integer.getInteger(term.execute()));
+		} else if (op == '/') {
+			return String.valueOf(Integer.getInteger(factor.execute()) / Integer.getInteger(term.execute()));
+		}
+		return factor.execute();// TODO
 	}
 }

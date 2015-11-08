@@ -5,12 +5,12 @@ import java.util.List;
 
 import database.GlobalVariable;
 import database.parser.StmtInterface;
+import storageManager.Tuple;
 
-public class SearchCond implements StmtInterface {
+public class SearchCond {
 	BoolTerm boolTerm;
 	SearchCond cond;
 
-	@Override
 	public void create(String query) {
 
 		System.out.println("\n\n SEARCH CONDITION ----------------");
@@ -41,25 +41,9 @@ public class SearchCond implements StmtInterface {
 			index = indexList.get(query2.indexOf("OR"));
 		}
 
-		// while (query.contains("OR")) {
-		// int pos = query.indexOf("OR");
-		// int pos1 = query.indexOf('[');
-		// int pos2 = query.indexOf(']');
-		//
-		// if (pos1 != -1 && pos1 < pos && pos2 > pos) {
-		// query = query.substring(pos2 + 1);
-		// } else if ((pos1 != -1 && pos1 < pos && pos2 < pos) || pos1 == -1) {
-		// index = pos;
-		// break;
-		// } else if (pos1 != -1 && pos < pos1) {
-		// index = pos;
-		// break;
-		// }
-		// }
 		if (index != -1) {
 			if (GlobalVariable.isTest)
-				System.out.println("SEARCHCOND-->RAWBOOL TERM:"
-						+ rawBoolTerm.substring(0, index - 1) + " SearchCond:"
+				System.out.println("SEARCHCOND-->RAWBOOL TERM:" + rawBoolTerm.substring(0, index - 1) + " SearchCond:"
 						+ rawBoolTerm.substring(index + 2));
 			cond = new SearchCond();
 			cond.create(rawBoolTerm.substring(index + 2));
@@ -71,9 +55,7 @@ public class SearchCond implements StmtInterface {
 		boolTerm.create(rawBoolTerm);
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public boolean execute() {
+		return (boolTerm.execute() || cond.execute());
 	}
 }
