@@ -10,11 +10,11 @@ import database.parser.Parser;
 
 public class Interface {
 	ArrayList<String> queries;
-	Manager manager;
+	DbManager manager;
 
 	public Interface() {
-		queries = new ArrayList<String>();
-		manager = new Manager();
+		queries = new ArrayList<>();
+		manager = new DbManager();
 	}
 
 	/* Read single query from console */
@@ -50,6 +50,5 @@ public class Interface {
 		Interface iface = new Interface();
 		iface.readFile("src/testQueries");
 		iface.parseQueries();
-
 	}
 }

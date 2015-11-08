@@ -3,14 +3,14 @@ package database.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import database.Manager;
+import database.DbManager;
 import database.parser.searchcond.SearchCond;
 
 public class DeleteStmt extends StmtBase implements StmtInterface {
 	String tableName;
 	SearchCond cond;
 
-	public DeleteStmt(Manager manager) {
+	public DeleteStmt(DbManager manager) {
 		super(manager);
 	}
 

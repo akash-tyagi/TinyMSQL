@@ -4,12 +4,12 @@ import storageManager.Disk;
 import storageManager.MainMemory;
 import storageManager.SchemaManager;
 
-public class Manager {
+public class DbManager {
 	public SchemaManager schema_manager;
 	public MainMemory mem;
 	public Disk disk;
 
-	public Manager() {
+	public DbManager() {
 		mem = new MainMemory();
 		disk = new Disk();
 		System.out.print("The memory contains " + mem.getMemorySize()
