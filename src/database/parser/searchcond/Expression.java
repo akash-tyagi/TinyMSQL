@@ -55,12 +55,18 @@ public class Expression {
 	}
 
 	public String execute(Tuple tuple) {
+		String str1 = term.execute(tuple);
+		String str2 = "";
+		if (exp != null)
+			str2 = exp.execute(tuple);
+		System.out.println("EXPRESSION EXECUTE op:" + op + " val1:" + str1
+				+ " val2:" + str2);
 		if (op == '+') {
-			return String.valueOf(Integer.getInteger(term.execute(tuple))
-					+ Integer.getInteger(exp.execute(tuple)));
+			return String.valueOf(
+					Integer.getInteger(str1) + Integer.getInteger(str2));
 		} else if (op == '-') {
-			return String.valueOf(Integer.getInteger(term.execute(tuple))
-					- Integer.getInteger(exp.execute(tuple)));
+			return String.valueOf(
+					Integer.getInteger(str1) - Integer.getInteger(str2));
 		}
 		return term.execute(tuple);
 	}

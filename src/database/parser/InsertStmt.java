@@ -49,7 +49,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 		String[] list = tuples.split(",");
 		for (String value : list) {
 			value = value.trim();
-//			value = value.replaceAll("\"", "");
+			// value = value.replaceAll("\"", "");
 			valueList.add(value);
 			System.out.println("INSERT Statement: value:" + value);
 		}

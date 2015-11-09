@@ -61,6 +61,10 @@ public class BoolTerm {
 	}
 
 	public boolean execute(Tuple tuple) {
-		return boolFactor.execute(tuple) && boolTerm.execute(tuple);
+		boolean res = boolFactor.execute(tuple);
+		// factor and term have and condition
+		if (res == true && boolTerm != null)
+			res = boolTerm.execute(tuple);
+		return res;
 	}
 }

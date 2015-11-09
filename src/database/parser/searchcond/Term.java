@@ -51,13 +51,20 @@ public class Term {
 	}
 
 	public String execute(Tuple tuple) {
+
+		String str1 = factor.execute(tuple);
+		String str2 = "";
+		if (term != null)
+			str2 = term.execute(tuple);
+		System.out.println(
+				"TERM EXECUTE op:" + op + " val1:" + str1 + " val2:" + str2);
 		if (op == '*') {
-			return String.valueOf(Integer.getInteger(factor.execute(tuple))
-					* Integer.getInteger(term.execute(tuple)));
+			return String.valueOf(
+					Integer.getInteger(str1) * Integer.getInteger(str2));
 		} else if (op == '/') {
-			return String.valueOf(Integer.getInteger(factor.execute(tuple))
-					/ Integer.getInteger(term.execute(tuple)));
+			return String.valueOf(
+					Integer.getInteger(str1) / Integer.getInteger(str2));
 		}
-		return factor.execute(tuple);// TODO
+		return str1;// TODO
 	}
 }

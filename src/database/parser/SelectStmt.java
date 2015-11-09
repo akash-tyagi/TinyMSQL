@@ -7,10 +7,13 @@ import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.parser.searchcond.SearchCond;
+import jdk.nashorn.internal.ir.BlockLexicalContext;
+import storageManager.Block;
 import storageManager.FieldType;
 import storageManager.Relation;
 import storageManager.Schema;
 import storageManager.Tuple;
+import sun.text.normalizer.UCharacter.NumericType;
 
 public class SelectStmt extends StmtBase implements StmtInterface {
 
@@ -121,6 +124,13 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 		return list;
 	}
 
+	private void callWhereCondition(Tuple tuple) {
+		if (cond == null || cond.execute(tuple)) {
+			System.out.println("Cond stisfied:" + tuple.toString());
+		} else
+			System.out.println("Cond Not stisfied:" + tuple.toString());
+	}
+
 	@Override
 	public void execute() {
 		// NOTE : WE WILL NEED BELOW STEPS IFF WE NEED TO READ FROM DISK.
@@ -131,6 +141,7 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 		// relation_reference.getBlocks(0, 0, 1);
 		ArrayList<Tuple> tuples = dbManager.mem.getTuples(0, 1);
 		System.out.println(tuples.get(0));
+		productOperation();
 	}
 
 	public void productOperation() {
@@ -157,13 +168,47 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 		}
 		Schema super_schema = new Schema(field_names, field_types);
 
-		// Read tuples from relation and create a super tuple to be send to the
-		// where condition
-
 		// Create super tuple
 		Relation super_relation = dbManager.schema_manager
 				.createRelation("ExampleTable3", super_schema);
 		Tuple super_tuple = super_relation.createTuple();
 
+		// Read tuples from each relation and create super tuple for where
+		// Implemented for only single table now
+		int memBlockNum = 0;
+		Relation relation = relations.get(0);
+		System.out.println("TSTIG:::" + relation.getRelationName() + " "
+				+ relation.getNumOfTuples() + " " + relation.getNumOfBlocks());
+
+		// PRINTING MEM DUMP WITH ALL DATA
+		// relation.getBlocks(0, 0, relation.getNumOfBlocks());
+		// System.out.print("Now the memory contains: " + "\n");
+		// System.out.print(dbManager.mem + "\n");
+		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+			// Reading the blocks of the relation into memory block 0
+			relation.getBlock(i, memBlockNum);
+			Block block_reference = dbManager.mem.getBlock(memBlockNum);
+			System.out.println(block_reference);
+			ArrayList<Tuple> tuples = block_reference.getTuples();
+			System.out.print("Again the tuples in the memory block "
+					+ memBlockNum + " are:" + "\n");
+			for (int j = 0; j < tuples.size(); j++) {
+				Tuple tuple = tuples.get(j);
+				// System.out.print(tuples.get(j).toString() + "\n");
+				for (int offset = 0; offset < tuple
+						.getNumOfFields(); offset++) {
+					System.out.println(tuple.getField(offset));
+					if (tuple.getField(offset).type == FieldType.INT) {
+						super_tuple.setField(offset,
+								tuple.getField(offset).integer);
+					} else
+						super_tuple.setField(offset,
+								tuple.getField(offset).str);
+				}
+				System.out
+						.print("SUPER TUPLE:" + super_tuple.toString() + "\n");
+				callWhereCondition(super_tuple);
+			}
+		}
 	}
 }

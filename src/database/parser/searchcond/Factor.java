@@ -38,9 +38,22 @@ public class Factor {
 	}
 
 	public String execute(Tuple tuple) {
-		if (colName != null)
-			return tuple.getField(colName).toString();
-		else if (literal != null)
+		if (colName != null) {
+			// find the right field name
+			for (String field_name : tuple.getSchema().getFieldNames()) {
+				if (field_name.contains(colName)) {
+					System.out.println("FACTOR found colName" + colName
+							+ " FieldName:" + field_name + " FieldValue:"
+							+ tuple.getField(field_name).toString());
+					return tuple.getField(field_name).toString();
+				}
+			}
+			System.out.println(
+					"ERROR Factor couldnt find the field,colName:" + colName);
+			System.out.print("Schema:" + tuple.getSchema());
+			System.exit(1);
+			return "";
+		} else if (literal != null)
 			return literal;
 		else if (exp != null)
 			return exp.execute(tuple);

@@ -37,9 +37,11 @@ public class CompPredicate {
 		String res1 = exp1.execute(tuple);
 		String res2 = exp2.execute(tuple);
 
+		System.out.println(
+				"COMP PREDICATE Execution:" + res1 + " " + compOp + " " + res2);
 		switch (compOp) {
 		case '=':
-			return res1 == res2;
+			return res1.equals(res2);
 		case '<':
 			return Integer.getInteger(res1) < Integer.getInteger(res2);
 		case '>':

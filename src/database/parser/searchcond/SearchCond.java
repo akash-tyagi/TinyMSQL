@@ -57,6 +57,9 @@ public class SearchCond {
 	}
 
 	public boolean execute(Tuple tuple) {
-		return (boolTerm.execute(tuple) || cond.execute(tuple));
+		boolean res = boolTerm.execute(tuple);
+		if (res == false && cond != null)
+			res = cond.execute(tuple);
+		return res;
 	}
 }
