@@ -1,10 +1,14 @@
 package database.parser;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.parser.searchcond.SearchCond;
+import storageManager.Block;
+import storageManager.Relation;
+import storageManager.Tuple;
 
 public class DeleteStmt extends StmtBase implements StmtInterface {
 	String tableName;
@@ -40,8 +44,31 @@ public class DeleteStmt extends StmtBase implements StmtInterface {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		Relation relation = dbManager.schema_manager.getRelation(tableName);
+		int memIndex = 0;
+		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+			relation.getBlock(i, memIndex);
+			Block block_reference = dbManager.mem.getBlock(memIndex);
+			boolean isTupleRemoved = false;
+			boolean isBlockEmpty = true;
+			for (int j = 0; j < block_reference.getNumTuples(); j++) {
+				Tuple tuple = block_reference.getTuple(j);
+				// TODO Assumption: deleting all tuples if where cond is null
+				if (cond == null || cond.execute(tuple)) {
+					block_reference.invalidateTuple(j);
+					isTupleRemoved = true;
+					continue;
+				}
+				// Condition will only be set to false if some tuple is still
+				// left in block
+				isBlockEmpty = false;
+			}
+
+			if (isBlockEmpty)
+				relation.deleteBlocks(i);
+			else if (isTupleRemoved)
+				relation.setBlock(i, memIndex);
+		}
 	}
 
 }

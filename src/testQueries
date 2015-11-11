@@ -2,4 +2,4 @@
 #INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
 CREATE TABLE course2 (sid INT, exam INT, grade STR20)
 INSERT INTO course2 (sid, exam, grade) VALUES (1, 100, "A")
-SELECT * FROM course2 WHERE grade = "B"
+#SELECT * FROM course2 WHERE grade = "B"
