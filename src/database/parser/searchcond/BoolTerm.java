@@ -3,6 +3,7 @@ package database.parser.searchcond;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.GlobalVariable;
 import storageManager.Tuple;
 
 public class BoolTerm {
@@ -34,8 +35,9 @@ public class BoolTerm {
 		int index = -1;
 		if (query2.contains("AND")) {
 			index = indexList.get(query2.indexOf("AND"));
-			System.out.println(
-					"BOOLTERM-->RAWBOOL TERM:" + query.substring(index + 4));
+			if (GlobalVariable.isTestExecution)
+				System.out.println("BOOLTERM-->RAWBOOL TERM:"
+						+ query.substring(index + 4));
 			boolTerm = new BoolTerm();
 			boolTerm.create(query.substring(index + 4));
 			rawBoolFactor = query.substring(0, index - 1);
@@ -55,7 +57,8 @@ public class BoolTerm {
 		// System.exit(1);
 		// }
 		// }
-		System.out.println("BOOLTERM-->RAWBOOL FACTOR:" + rawBoolFactor);
+		if (GlobalVariable.isTestExecution)
+			System.out.println("BOOLTERM-->RAWBOOL FACTOR:" + rawBoolFactor);
 		boolFactor = new BoolFactor();
 		boolFactor.create(rawBoolFactor);
 	}

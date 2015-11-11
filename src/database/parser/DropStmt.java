@@ -25,7 +25,7 @@ public class DropStmt extends StmtBase implements StmtInterface {
 		}
 		tableName = matcher.group(1);
 
-		if (GlobalVariable.isTest) {
+		if (GlobalVariable.isTestExecution) {
 			System.out.println("$$ DROP Statement: TableName:" + tableName);
 			execute();
 		}

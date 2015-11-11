@@ -3,6 +3,7 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import database.GlobalVariable;
 import storageManager.Tuple;
 
 public class Factor {
@@ -16,7 +17,8 @@ public class Factor {
 			Pattern pattern = Pattern.compile("\\s*[(](.*)[)]\\s*");
 			Matcher matcher = pattern.matcher(query);
 			if (matcher.find()) {
-				System.out.println("Factor-->Exp:" + matcher.group(1));
+				if (GlobalVariable.isTestParsing)
+					System.out.println("Factor-->Exp:" + matcher.group(1));
 				exp = new Expression();
 				exp.create(matcher.group(1));
 			} else {
@@ -31,8 +33,9 @@ public class Factor {
 				literal = query;
 			else
 				colName = query;
-			System.out.println("FACTOR int:" + integer + " literal:" + literal
-					+ " colName:" + colName);
+			if (GlobalVariable.isTestParsing)
+				System.out.println("FACTOR int:" + integer + " literal:"
+						+ literal + " colName:" + colName);
 
 		}
 	}
@@ -42,9 +45,10 @@ public class Factor {
 			// find the right field name
 			for (String field_name : tuple.getSchema().getFieldNames()) {
 				if (field_name.contains(colName)) {
-					System.out.println("FACTOR found colName" + colName
-							+ " FieldName:" + field_name + " FieldValue:"
-							+ tuple.getField(field_name).toString());
+					if (GlobalVariable.isTestExecution)
+						System.out.println("FACTOR found colName" + colName
+								+ " FieldName:" + field_name + " FieldValue:"
+								+ tuple.getField(field_name).toString());
 					return tuple.getField(field_name).toString();
 				}
 			}

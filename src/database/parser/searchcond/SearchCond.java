@@ -12,8 +12,8 @@ public class SearchCond {
 	SearchCond cond;
 
 	public void create(String query) {
-
-		System.out.println("\n\n SEARCH CONDITION ----------------");
+		if (GlobalVariable.isTestParsing)
+			System.out.println("\n\n SEARCH CONDITION ----------------");
 		String rawBoolTerm = query;
 		int index = -1;
 
@@ -42,7 +42,7 @@ public class SearchCond {
 		}
 
 		if (index != -1) {
-			if (GlobalVariable.isTest)
+			if (GlobalVariable.isTestExecution)
 				System.out.println("SEARCHCOND-->RAWBOOL TERM:"
 						+ rawBoolTerm.substring(0, index - 1) + " SearchCond:"
 						+ rawBoolTerm.substring(index + 2));
@@ -50,7 +50,7 @@ public class SearchCond {
 			cond.create(rawBoolTerm.substring(index + 2));
 			rawBoolTerm = rawBoolTerm.substring(0, index - 1);
 		}
-		if (GlobalVariable.isTest)
+		if (GlobalVariable.isTestExecution)
 			System.out.println("SEARCHCOND-->RAWBOOL TERM:" + rawBoolTerm);
 		boolTerm = new BoolTerm();
 		boolTerm.create(rawBoolTerm);

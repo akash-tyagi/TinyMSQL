@@ -3,6 +3,7 @@ package database.parser.searchcond;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.GlobalVariable;
 import storageManager.Tuple;
 
 public class Term {
@@ -38,13 +39,15 @@ public class Term {
 			op = '/';
 			index = indexList.get(query2.indexOf('/'));
 		} else {
-			System.out.println("Term--> rawFactor:" + query);
+			if (GlobalVariable.isTestParsing)
+				System.out.println("Term--> rawFactor:" + query);
 			factor.create(query);
 			return;
 		}
-		System.out.println("Term--> op:" + op + " rawFactor:"
-				+ query.substring(0, index - 1) + " rawTerm:"
-				+ query.substring(index + 1));
+		if (GlobalVariable.isTestParsing)
+			System.out.println("Term--> op:" + op + " rawFactor:"
+					+ query.substring(0, index - 1) + " rawTerm:"
+					+ query.substring(index + 1));
 		factor.create(query.substring(0, index - 1));
 		term = new Term();
 		term.create(query.substring(index + 1));
@@ -56,14 +59,15 @@ public class Term {
 		String str2 = "";
 		if (term != null)
 			str2 = term.execute(tuple);
-		System.out.println(
-				"TERM EXECUTE op:" + op + " val1:" + str1 + " val2:" + str2);
+		if (GlobalVariable.isTestExecution)
+			System.out.println("TERM EXECUTE op:" + op + " val1:" + str1
+					+ " val2:" + str2);
 		if (op == '*') {
 			return String.valueOf(
-					Integer.getInteger(str1) * Integer.getInteger(str2));
+					Integer.parseInt(str1) * Integer.parseInt(str2));
 		} else if (op == '/') {
 			return String.valueOf(
-					Integer.getInteger(str1) / Integer.getInteger(str2));
+					Integer.parseInt(str1) / Integer.parseInt(str2));
 		}
 		return str1;// TODO
 	}

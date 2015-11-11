@@ -3,6 +3,7 @@ package database.parser.searchcond;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.GlobalVariable;
 import storageManager.Tuple;
 
 public class Expression {
@@ -41,14 +42,15 @@ public class Expression {
 			op = '-';
 			index = indexList.get(query2.indexOf('-'));
 		} else {
-			System.out.println("Expression--> rawTerm:" + query);
+			if (GlobalVariable.isTestParsing)
+				System.out.println("Expression--> rawTerm:" + query);
 			term.create(query);
 			return;
 		}
-
-		System.out.println("Expression--> op:" + op + " rawTerm:"
-				+ query.substring(0, index - 1) + " rawExp:"
-				+ query.substring(index + 1));
+		if (GlobalVariable.isTestParsing)
+			System.out.println("Expression--> op:" + op + " rawTerm:"
+					+ query.substring(0, index - 1) + " rawExp:"
+					+ query.substring(index + 1));
 		term.create(query.substring(0, index - 1));
 		exp = new Expression();
 		exp.create(query.substring(index + 1));
@@ -59,14 +61,15 @@ public class Expression {
 		String str2 = "";
 		if (exp != null)
 			str2 = exp.execute(tuple);
-		System.out.println("EXPRESSION EXECUTE op:" + op + " val1:" + str1
-				+ " val2:" + str2);
+		if (GlobalVariable.isTestExecution)
+			System.out.println("EXPRESSION EXECUTE op:" + op + " val1:" + str1
+					+ " val2:" + str2);
 		if (op == '+') {
 			return String.valueOf(
-					Integer.getInteger(str1) + Integer.getInteger(str2));
+					Integer.parseInt(str1) + Integer.parseInt(str2));
 		} else if (op == '-') {
 			return String.valueOf(
-					Integer.getInteger(str1) - Integer.getInteger(str2));
+					Integer.parseInt(str1) - Integer.parseInt(str2));
 		}
 		return term.execute(tuple);
 	}

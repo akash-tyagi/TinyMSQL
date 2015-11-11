@@ -3,6 +3,7 @@ package database.parser.searchcond;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import database.GlobalVariable;
 import storageManager.Tuple;
 
 public class CompPredicate {
@@ -22,9 +23,10 @@ public class CompPredicate {
 		exp1 = new Expression();
 		exp2 = new Expression();
 		if (matcher.find()) {
-			System.out.println(
-					"COMP PRED-->CompOp:" + compOp + " RAW EXPRESSIONS:"
-							+ matcher.group(1) + "," + matcher.group(2));
+			if (GlobalVariable.isTestParsing)
+				System.out.println(
+						"COMP PRED-->CompOp:" + compOp + " RAW EXPRESSIONS:"
+								+ matcher.group(1) + "," + matcher.group(2));
 			exp1.create(matcher.group(1));
 			exp2.create(matcher.group(2));
 		} else {
@@ -36,19 +38,20 @@ public class CompPredicate {
 	public boolean execute(Tuple tuple) {
 		String res1 = exp1.execute(tuple);
 		String res2 = exp2.execute(tuple);
-
-		System.out.println(
-				"COMP PREDICATE Execution:" + res1 + " " + compOp + " " + res2);
+		if (GlobalVariable.isTestExecution)
+			System.out.println("COMP PREDICATE Execution:" + res1 + " " + compOp
+					+ " " + res2);
 		switch (compOp) {
 		case '=':
 			return res1.equals(res2);
 		case '<':
-			return Integer.getInteger(res1) < Integer.getInteger(res2);
+			return Integer.parseInt(res1) < Integer.parseInt(res2);
 		case '>':
-			return Integer.getInteger(res1) > Integer.getInteger(res2);
+			return Integer.parseInt(res1) > Integer.parseInt(res2);
 		}
-		System.out.println("ERROR ::: COMP PREDICATE Execution:" + res1 + " "
-				+ compOp + " " + res2);
+		if (GlobalVariable.isTestExecution)
+			System.out.println("ERROR ::: COMP PREDICATE Execution:" + res1
+					+ " " + compOp + " " + res2);
 		System.exit(1);
 		return false;
 	}

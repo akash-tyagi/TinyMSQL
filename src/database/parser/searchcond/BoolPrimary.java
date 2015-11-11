@@ -23,7 +23,7 @@ public class BoolPrimary {
 				System.exit(1);
 			}
 		}
-		if (GlobalVariable.isTest)
+		if (GlobalVariable.isTestExecution)
 			System.out.println("BoolPrimeary-->RAW COMP PREDICATE:" + query);
 		compPred = new CompPredicate();
 		compPred.create(query);

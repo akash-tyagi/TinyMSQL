@@ -20,7 +20,7 @@ public class Parser {
 		Matcher matcher = pattern.matcher(query);
 		if (!matcher.find())
 			System.out.println("XX Parser Statement: Invalid");
-		if (GlobalVariable.isTest)
+		if (GlobalVariable.isTestExecution)
 			System.out.println("$$ Parser: Statement Type:" + matcher.group(1));
 
 		switch (matcher.group(1)) {

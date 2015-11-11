@@ -12,7 +12,7 @@ public class BoolFactor {
 			isNot = true;
 			query = query.substring(query.indexOf("NOT") + 4);
 		}
-		if (GlobalVariable.isTest)
+		if (GlobalVariable.isTestExecution)
 			System.out.println(
 					"BOOLFACT--> isNOT:" + isNot + " RAWBOOL PRIMARY:" + query);
 		boolPrimary = new BoolPrimary();
