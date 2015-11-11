@@ -7,20 +7,17 @@ import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.parser.searchcond.SearchCond;
-import jdk.nashorn.internal.ir.BlockLexicalContext;
-import storageManager.Block;
 import storageManager.FieldType;
 import storageManager.Relation;
 import storageManager.Schema;
 import storageManager.Tuple;
-import sun.text.normalizer.UCharacter.NumericType;
 
 public class SelectStmt extends StmtBase implements StmtInterface {
 
 	boolean isDistinct = false;
-	List<String> selectList;
-	List<String> tableList;
-	SearchCond cond;
+	public List<String> selectList;
+	public List<String> tableList;
+	public SearchCond cond;
 	String orderBy;
 
 	public SelectStmt(DbManager manager) {
@@ -145,9 +142,9 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 	}
 
 	public void productOperation() {
-		// Creating a single schema with combined schema of all the tables and
-		// combining tuples into one large tuple to send into thfe where
-		// condition
+		// Creating a single super schema with combined schema of all the tables
+		// and combining tuples into one large tuple for where condition
+
 		List<Relation> relations = new ArrayList<Relation>();
 		for (String relation_name : tableList) {
 			relations.add(dbManager.schema_manager.getRelation(relation_name));
@@ -168,47 +165,54 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 		}
 		Schema super_schema = new Schema(field_names, field_types);
 
-		// Create super tuple
 		Relation super_relation = dbManager.schema_manager
-				.createRelation("ExampleTable3", super_schema);
-		Tuple super_tuple = super_relation.createTuple();
+				.createRelation("SuperRelation", super_schema);
+		List<Tuple> super_tuples = new ArrayList<Tuple>();
+		getSuperTupleList(super_relation, relations, 0, super_tuples, null);
 
-		// Read tuples from each relation and create super tuple for where
-		// Implemented for only single table now
-		int memBlockNum = 0;
-		Relation relation = relations.get(0);
-		System.out.println("TSTIG:::" + relation.getRelationName() + " "
-				+ relation.getNumOfTuples() + " " + relation.getNumOfBlocks());
+		for (Tuple tuple : super_tuples) {
+			callWhereCondition(tuple);
+		}
 
-		// PRINTING MEM DUMP WITH ALL DATA
-		// relation.getBlocks(0, 0, relation.getNumOfBlocks());
-		// System.out.print("Now the memory contains: " + "\n");
-		// System.out.print(dbManager.mem + "\n");
+	}
+
+	/*
+	 * Read single block of each relation and create as many super tuples
+	 * possible, index is the relation num and mem block index for that relation
+	 */
+	public void getSuperTupleList(Relation super_relation,
+			List<Relation> relations, int index, List<Tuple> superTuples,
+			Tuple currSuperTuple) {
+		if (index == relations.size()) {
+			Tuple tuple = super_relation.createTuple();
+			copyTupleFields(currSuperTuple, tuple, null, false);
+			superTuples.add(tuple);
+			return;
+		}
+
+		Relation relation = relations.get(index);
 		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
-			// Reading the blocks of the relation into memory block 0
-			relation.getBlock(i, memBlockNum);
-			Block block_reference = dbManager.mem.getBlock(memBlockNum);
-			System.out.println(block_reference);
-			ArrayList<Tuple> tuples = block_reference.getTuples();
-			System.out.print("Again the tuples in the memory block "
-					+ memBlockNum + " are:" + "\n");
-			for (int j = 0; j < tuples.size(); j++) {
-				Tuple tuple = tuples.get(j);
-				// System.out.print(tuples.get(j).toString() + "\n");
-				for (int offset = 0; offset < tuple
-						.getNumOfFields(); offset++) {
-					System.out.println(tuple.getField(offset));
-					if (tuple.getField(offset).type == FieldType.INT) {
-						super_tuple.setField(offset,
-								tuple.getField(offset).integer);
-					} else
-						super_tuple.setField(offset,
-								tuple.getField(offset).str);
-				}
-				System.out
-						.print("SUPER TUPLE:" + super_tuple.toString() + "\n");
-				callWhereCondition(super_tuple);
+			relation.getBlock(i, index);
+			ArrayList<Tuple> tuples = dbManager.mem.getBlock(index).getTuples();
+			for (Tuple tuple : tuples) {
+				copyTupleFields(tuple, currSuperTuple,
+						relation.getRelationName(), true);
+				getSuperTupleList(super_relation, relations, index + 1,
+						superTuples, currSuperTuple);
 			}
+		}
+	}
+
+	public void copyTupleFields(Tuple t1, Tuple t2, String relName,
+			boolean appendRelName) {
+		for (int offset = 0; offset < t1.getNumOfFields(); offset++) {
+			String field_name = t1.getSchema().getFieldName(offset);
+			if (appendRelName)
+				field_name = relName + '.' + field_name;
+			if (t1.getField(offset).type == FieldType.INT) {
+				t2.setField(field_name, t1.getField(offset).integer);
+			} else
+				t2.setField(field_name, t1.getField(offset).str);
 		}
 	}
 }
