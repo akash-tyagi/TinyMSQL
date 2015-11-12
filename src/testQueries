@@ -1,10 +1,10 @@
 CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
-SELECT * FROM course
+#SELECT * FROM course
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
-SELECT * FROM course
+#SELECT * FROM course
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 199, 200, 200, "B")
+SELECT * FROM course WHERE grade = "B"
+DELETE FROM course WHERE grade = "B"
 SELECT * FROM course
-DELETE FROM course
-SELECT * FROM course
-INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 199, 200, 200, "B")
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 199, 200, 200, "C")
 SELECT * FROM course
