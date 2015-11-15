@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.parser.searchcond.SearchCond;
+import database.utils.TwoPassUtils;
 import storageManager.FieldType;
 import storageManager.Relation;
 import storageManager.Schema;
@@ -133,6 +134,13 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 
 	// @Override
 	public void execute() {
+		// NOTE : WE WILL NEED BELOW STEPS IFF WE NEED TO READ FROM DISK.
+		// IF DATA BLOCK COPY ALREADY IN MEMORY, WE NEED TO KEEP TRACK OF IT
+		// OURSELF
+                
+                // Sorting test
+                // TwoPassUtils.sortRelationForPhase1(dbManager, "course", new String[] {"homework", "grade"});
+            
 		productOperation();
 	}
 

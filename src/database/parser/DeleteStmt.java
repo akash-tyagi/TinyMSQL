@@ -1,6 +1,5 @@
 package database.parser;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +10,7 @@ import storageManager.Relation;
 import storageManager.Tuple;
 
 public class DeleteStmt extends StmtBase implements StmtInterface {
+
 	String tableName;
 	SearchCond cond;
 
@@ -44,32 +44,49 @@ public class DeleteStmt extends StmtBase implements StmtInterface {
 
 	@Override
 	public void execute() {
+		Block last_block = dbManager.mem
+				.getBlock(dbManager.mem.getMemorySize() - 1);
+		last_block.clear();
+		int diskPointer = 0;
 		Relation relation = dbManager.schema_manager.getRelation(tableName);
 		int memIndex = 0;
 		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
 			relation.getBlock(i, memIndex);
 			Block block_reference = dbManager.mem.getBlock(memIndex);
-			boolean isTupleRemoved = false;
-			boolean isBlockEmpty = true;
 			for (int j = 0; j < block_reference.getNumTuples(); j++) {
 				Tuple tuple = block_reference.getTuple(j);
 				// TODO Assumption: deleting all tuples if where cond is null
-				if (cond == null || cond.execute(tuple)) {
-					System.out.println("DELETED:");
-					block_reference.invalidateTuple(j);
-					isTupleRemoved = true;
-					continue;
+				if (!(cond == null || cond.execute(tuple))) {
+					boolean blockWrittenToDisk = saveTupleToLastBlock(tuple,
+							last_block, relation, diskPointer,
+							dbManager.mem.getMemorySize() - 1);
+					if (blockWrittenToDisk) {
+						diskPointer++;
+					}
 				}
-				// Condition will only be set to false if some tuple is still
-				// left in block
-				isBlockEmpty = false;
+
 			}
 
-			if (isBlockEmpty)
-				relation.deleteBlocks(i);
-			else if (isTupleRemoved)
-				relation.setBlock(i, memIndex);
+			if (!last_block.isEmpty()) {
+				relation.setBlock(diskPointer,
+						dbManager.mem.getMemorySize() - 1);
+				diskPointer++;
+			}
+
+			relation.deleteBlocks(diskPointer);
+
 		}
+	}
+
+	private boolean saveTupleToLastBlock(Tuple tuple, Block last_block,
+			Relation relation, int diskPointer, int temp_location) {
+		last_block.appendTuple(tuple);
+		if (last_block.isFull()) {
+			relation.setBlock(diskPointer, temp_location);
+			last_block.clear();
+			return true;
+		}
+		return false;
 	}
 
 }

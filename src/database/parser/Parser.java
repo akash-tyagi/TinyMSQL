@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import database.GlobalVariable;
 import database.DbManager;
+import database.utils.GeneralUtils;
 
 public class Parser {
 
@@ -16,6 +17,7 @@ public class Parser {
 	}
 
 	public StmtInterface parse(String query) {
+		GeneralUtils.cleanMainMemory(dbManager.mem);
 		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
 		Matcher matcher = pattern.matcher(query);
 		if (!matcher.find())
