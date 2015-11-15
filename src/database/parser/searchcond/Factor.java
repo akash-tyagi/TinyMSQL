@@ -1,9 +1,12 @@
 package database.parser.searchcond;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
+import storageManager.Relation;
+import storageManager.Schema;
 import storageManager.Tuple;
 
 public class Factor {
@@ -62,5 +65,39 @@ public class Factor {
 		else if (exp != null)
 			return exp.execute(tuple);
 		return Integer.toString(integer);
+	}
+
+	public boolean isSelectionOptimizable(List<Relation> relations) {
+		if (exp != null)
+			return exp.isSelectionOptimizable(relations);
+		if (colName == null) {
+			return true;
+		}
+		for (Relation relation : relations) {
+			String relName = relation.getRelationName();
+			Schema schema = relation.getSchema();
+			// If column is not of same table
+			if (colName.contains(".")
+					&& colName.split("\\.")[0].equals(relName) == false)
+				return false;
+			for (String fieldName : schema.getFieldNames())
+				if (colName.contains(fieldName)) {
+					return true;
+				}
+		}
+		return false;
+	}
+
+	public void print() {
+		if (exp != null) {
+			exp.print();
+			return;
+		}
+		if (colName != null)
+			System.out.print("(" + colName + ")");
+		else if (literal != null)
+			System.out.print("(" + literal + ")");
+		else
+			System.out.print("(" + integer + ")");
 	}
 }

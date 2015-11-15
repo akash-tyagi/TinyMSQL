@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.GlobalVariable;
+import storageManager.Relation;
+import storageManager.Schema;
 import storageManager.Tuple;
 
 public class Expression {
@@ -65,12 +67,32 @@ public class Expression {
 			System.out.println("EXPRESSION EXECUTE op:" + op + " val1:" + str1
 					+ " val2:" + str2);
 		if (op == '+') {
-			return String.valueOf(
-					Integer.parseInt(str1) + Integer.parseInt(str2));
+			return String
+					.valueOf(Integer.parseInt(str1) + Integer.parseInt(str2));
 		} else if (op == '-') {
-			return String.valueOf(
-					Integer.parseInt(str1) - Integer.parseInt(str2));
+			return String
+					.valueOf(Integer.parseInt(str1) - Integer.parseInt(str2));
 		}
-		return term.execute(tuple);
+		return str1;
+	}
+
+	public boolean isSelectionOptimizable(List<Relation> relations) {
+		if (exp == null) {
+			return term.isSelectionOptimizable(relations);
+		}
+		return exp.isSelectionOptimizable(relations)
+				&& term.isSelectionOptimizable(relations);
+
+	}
+
+	public void print() {
+		term.print();
+		if (exp == null)
+			return;
+		if (op == '+')
+			System.out.print(" + ");
+		else
+			System.out.print(" - ");
+		exp.print();
 	}
 }

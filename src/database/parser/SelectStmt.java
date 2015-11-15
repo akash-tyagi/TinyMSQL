@@ -48,7 +48,7 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 			System.out.println("ERROR ::: SELECT statement: Invalid:" + query);
 			System.exit(1);
 		}
-		execute();
+		// execute();
 	}
 
 	private void parseFromClause(String rawFromClause) {
@@ -133,26 +133,8 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 
 	// @Override
 	public void execute() {
-		// NOTE : WE WILL NEED BELOW STEPS IFF WE NEED TO READ FROM DISK.
-		// IF DATA BLOCK COPY ALREADY IN MEMORY, WE NEED TO KEEP TRACK OF IT
-		// OURSELF
 		productOperation();
 	}
-
-	// @Override
-	// public void execute() {
-	// Relation relation_reference = dbManager.schema_manager
-	// .getRelation(tableList.get(0));
-	// int memIndex = 0;
-	// for (int i = 0; i < relation_reference.getNumOfBlocks(); i++) {
-	// relation_reference.getBlock(i, memIndex);
-	// Block block_reference = dbManager.mem.getBlock(memIndex);
-	// for (int j = 0; j < block_reference.getNumTuples(); j++) {
-	// Tuple tuple = block_reference.getTuple(j);
-	// System.out.println("Tuple:" + tuple);
-	// }
-	// }
-	// }
 
 	public void productOperation() {
 		// Creating a single super schema with combined schema of all the tables

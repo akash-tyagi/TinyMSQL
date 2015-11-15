@@ -3,7 +3,7 @@ package database.parser;
 import database.DbManager;
 
 public class StmtBase {
-	DbManager dbManager;
+	public DbManager dbManager;
 
 	public StmtBase(DbManager dbManager) {
 		this.dbManager = dbManager;

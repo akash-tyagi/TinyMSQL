@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.GlobalVariable;
+import storageManager.Relation;
+import storageManager.Schema;
 import storageManager.Tuple;
 
 public class Term {
@@ -54,7 +56,6 @@ public class Term {
 	}
 
 	public String execute(Tuple tuple) {
-
 		String str1 = factor.execute(tuple);
 		String str2 = "";
 		if (term != null)
@@ -63,12 +64,30 @@ public class Term {
 			System.out.println("TERM EXECUTE op:" + op + " val1:" + str1
 					+ " val2:" + str2);
 		if (op == '*') {
-			return String.valueOf(
-					Integer.parseInt(str1) * Integer.parseInt(str2));
+			return String
+					.valueOf(Integer.parseInt(str1) * Integer.parseInt(str2));
 		} else if (op == '/') {
-			return String.valueOf(
-					Integer.parseInt(str1) / Integer.parseInt(str2));
+			return String
+					.valueOf(Integer.parseInt(str1) / Integer.parseInt(str2));
 		}
 		return str1;// TODO
+	}
+
+	public boolean isSelectionOptimizable(List<Relation> relations) {
+		if (term == null)
+			return factor.isSelectionOptimizable(relations);
+		return factor.isSelectionOptimizable(relations)
+				&& term.isSelectionOptimizable(relations);
+	}
+
+	public void print() {
+		factor.print();
+		if (term == null)
+			return;
+		if (op == '*')
+			System.out.print(" * ");
+		else
+			System.out.print(" / ");
+		term.print();
 	}
 }

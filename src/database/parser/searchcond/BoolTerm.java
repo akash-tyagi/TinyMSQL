@@ -4,11 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.GlobalVariable;
+import storageManager.Relation;
+import storageManager.Schema;
 import storageManager.Tuple;
 
 public class BoolTerm {
 	BoolTerm boolTerm;
 	BoolFactor boolFactor;
+
+	public BoolTerm() {
+	}
+
+	public BoolTerm(BoolFactor boolFactor, BoolTerm boolTerm) {
+		this.boolFactor = boolFactor;
+		this.boolTerm = boolTerm;
+	}
+
+	public BoolTerm(BoolFactor boolFactor) {
+		this.boolFactor = boolFactor;
+	}
+
+	public BoolTerm(BoolTerm boolTerm) {
+		this.boolTerm = boolTerm;
+	}
 
 	public void create(String query) {
 		String rawBoolFactor = query;
@@ -63,11 +81,44 @@ public class BoolTerm {
 		boolFactor.create(rawBoolFactor);
 	}
 
+	public BoolTerm getSelectionCond(List<Relation> relations) {
+		BoolFactor bFactor = null;
+		BoolTerm bTerm = null;
+		if (boolFactor != null)
+			bFactor = boolFactor.getSelectionCond(relations);
+		if (boolTerm != null)
+			bTerm = boolTerm.getSelectionCond(relations);
+
+		if (bFactor != null && bTerm != null)
+			return new BoolTerm(bFactor, bTerm);
+		else if (bFactor != null)
+			return new BoolTerm(bFactor);
+		else if (bTerm != null)
+			return new BoolTerm(bTerm);
+		return null;
+	}
+
 	public boolean execute(Tuple tuple) {
-		boolean res = boolFactor.execute(tuple);
-		// factor and term have and condition
+		boolean res = true;
+		if (boolFactor != null)
+			res = boolFactor.execute(tuple);
+		// factor and term have AND condition
 		if (res == true && boolTerm != null)
 			res = boolTerm.execute(tuple);
 		return res;
+	}
+
+	public void print() {
+		System.out.print("[");
+		if (boolFactor != null)
+			boolFactor.print();
+		if (boolTerm == null) {
+			System.out.print("]");
+			return;
+		}
+		if (!(boolTerm == null || boolFactor == null))
+			System.out.print("] AND [");
+		boolTerm.print();
+		System.out.print("]");
 	}
 }

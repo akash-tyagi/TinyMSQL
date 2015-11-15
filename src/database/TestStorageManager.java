@@ -381,7 +381,6 @@ public class TestStorageManager {
 		block_reference.invalidateTuples();
 		System.out.print("Now the memory block 0 contains:" + "\n");
 		System.out.print(block_reference + "\n");
-
 		System.out
 				.print("(Remove all tuples;) Set only the first tuple" + "\n");
 		block_reference.setTuples(tuples, 0, 1);

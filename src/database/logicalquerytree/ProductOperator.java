@@ -14,8 +14,8 @@ public class ProductOperator {
 	List<String> tableList;
 	DbManager dbManager;
 
-	public ProductOperator(List<String> tableList) {
-		this.tableList = tableList;
+	public ProductOperator(SelectStmt stmt) {
+		this.tableList = stmt.tableList;
 	}
 
 	public void execute(SelectStmt stmt) {

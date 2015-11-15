@@ -7,11 +7,12 @@ public class SelectionOperator {
 	SearchCond cond;
 	ProductOperator productOperator;
 
-	public SelectionOperator(SearchCond cond) {
-		this.cond = cond;
+	public SelectionOperator(SelectStmt stmt) {
+		this.cond = stmt.cond;
+		productOperator = new ProductOperator(stmt);
 	}
 
 	public void execute(SelectStmt stmt) {
-		productOperator = new ProductOperator(stmt.tableList);
+		
 	}
 }

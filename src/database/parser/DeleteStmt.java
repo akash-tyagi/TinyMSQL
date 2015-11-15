@@ -39,7 +39,7 @@ public class DeleteStmt extends StmtBase implements StmtInterface {
 			System.out.println("ERROR ::: DELETE statement: Invalid:" + query);
 			System.exit(1);
 		}
-
+		execute();
 	}
 
 	@Override
@@ -55,6 +55,7 @@ public class DeleteStmt extends StmtBase implements StmtInterface {
 				Tuple tuple = block_reference.getTuple(j);
 				// TODO Assumption: deleting all tuples if where cond is null
 				if (cond == null || cond.execute(tuple)) {
+					System.out.println("DELETED:");
 					block_reference.invalidateTuple(j);
 					isTupleRemoved = true;
 					continue;

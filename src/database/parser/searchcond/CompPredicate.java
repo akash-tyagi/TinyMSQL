@@ -1,15 +1,29 @@
 package database.parser.searchcond;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.GlobalVariable;
+import storageManager.Relation;
+import storageManager.Schema;
 import storageManager.Tuple;
 
 public class CompPredicate {
 	Expression exp1;
 	char compOp;
 	Expression exp2;
+	// boolean isSelectionOptmized = false;
+
+	public CompPredicate() {
+
+	}
+
+	public CompPredicate(Expression exp1, Expression exp2, char compOp) {
+		this.exp1 = exp1;
+		this.exp2 = exp2;
+		this.compOp = compOp;
+	}
 
 	public void create(String query) {
 		if (query.contains("<"))
@@ -54,6 +68,25 @@ public class CompPredicate {
 					+ " " + compOp + " " + res2);
 		System.exit(1);
 		return false;
+	}
+
+	public CompPredicate getSelectionCond(List<Relation> relations) {
+		if (!(exp1.isSelectionOptimizable(relations)
+				&& exp2.isSelectionOptimizable(relations)))
+			return null;
+		return new CompPredicate(exp1, exp2, compOp);
+
+	}
+
+	public void print() {
+		exp1.print();
+		if (compOp == '=')
+			System.out.print(" = ");
+		else if (compOp == '>')
+			System.out.print(" > ");
+		else
+			System.out.print(" < ");
+		exp2.print();
 	}
 
 }

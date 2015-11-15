@@ -6,7 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import database.logicalquerytree.LogicalQuery;
 import database.parser.Parser;
+import database.parser.SelectStmt;
+import database.parser.StmtInterface;
 
 public class Interface {
 	ArrayList<String> queries;
@@ -19,7 +22,8 @@ public class Interface {
 
 	/* Read single query from console */
 	public void readText() throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(System.in));
 		System.out.print("Enter Query:");
 		String q = br.readLine();
 		queries.add(q);
@@ -42,7 +46,10 @@ public class Interface {
 				continue;
 			System.out.println("--------------------Parsing Query:" + query
 					+ "-------------");
-			parser.parse(query);
+			StmtInterface stmt = parser.parse(query);
+			if (stmt instanceof SelectStmt) {
+				LogicalQuery logicalQuery = new LogicalQuery((SelectStmt) stmt);
+			}
 		}
 	}
 

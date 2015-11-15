@@ -15,7 +15,7 @@ public class Parser {
 		this.dbManager = dbManager;
 	}
 
-	public void parse(String query) {
+	public StmtInterface parse(String query) {
 		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
 		Matcher matcher = pattern.matcher(query);
 		if (!matcher.find())
@@ -45,5 +45,6 @@ public class Parser {
 			stmt.create(query);
 			break;
 		}
+		return stmt;
 	}
 }
