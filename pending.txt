@@ -1,1 +1,17 @@
 1. Presently we are removing holes while deleting tuples from a relation. This is a costly affair and requires rewriting of all the valid tuples back to Disk after deletion operation completes. Check if there is any performance improvement if we do not handle this issue and let the holes be there.
+
+
+
+
+
+
+
+
+
+######## ASSUMPTIONS ######
+1. If single table then super tuple will not have the table name 
+If multiple tables then super tuple will have table name too with field name
+Needed in the execute of the factor where the colName value is fetched
+
+2. If OR condition then complete condition needs to be satisfied as
+union operation is needed, so no selection optimization is performed

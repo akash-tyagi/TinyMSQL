@@ -1,12 +1,4 @@
 CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
-<<<<<<< HEAD
 CREATE TABLE course2 (sid INT, exam INT, grade STR20)
 CREATE TABLE course3 (sid INT, exam INT, grade STR20)
 SELECT * FROM course, course2, course3 WHERE course.exam > 2 AND course.homework = 100
-=======
-INSERT INTO course (sid, homework, project, exam, grade) VALUES (4, 199, 100, 100, "A")
-INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
-INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 99, 200, 200, "B")
-INSERT INTO course (sid, homework, project, exam, grade) VALUES (3, 99, 100, 100, "A")
-SELECT * FROM course
->>>>>>> e224ddc0140e06e0dcdac33a7295256108b163d8
