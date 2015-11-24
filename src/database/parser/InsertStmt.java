@@ -100,28 +100,50 @@ public class InsertStmt extends StmtBase implements StmtInterface {
                 .getRelation(tableName);
         Schema schema = relation_reference.getSchema();
         ArrayList<FieldType> field_types = schema.getFieldTypes();
-		// POINT 1 : EVEN THOUGH RELATION RETURNS TUPLE. THIS IS JUST A TUPLE
+        ArrayList<String> field_names = schema.getFieldNames();
+        // POINT 1 : EVEN THOUGH RELATION RETURNS TUPLE. THIS IS JUST A TUPLE
         // "new Tuple()"
         // WITH NO LINK WHATSOEVER WITH THE RELATION WHICH CREATES THIS TUPLE.
         // ASSUME FOR NOW THAT THIS IS JUST A DESIGN FLAW.
         Tuple tuple = relation_reference.createTuple();
         if (attrList.size() != valueList.size()) {
             for (int i = 0; i < valueList.size(); i++) {
+                // No need to set Field if value is "NULL"
+                // Field.str defaults to null
+                // Field.integer defaults to Integer.MIN_VALUE
+                if (valueList.get(i).equalsIgnoreCase("NULL")) {
+                    updateVTable(i, field_names);
+                    continue;
+                }
+
                 if (field_types.get(i) == FieldType.STR20) {
                     tuple.setField(i, valueList.get(i));
                 } else {
                     tuple.setField(i, Integer.parseInt(valueList.get(i)));
                 }
+
+                // Update vTable
+                updateVTable(i, field_names);
             }
         } else {
             for (int i = 0; i < valueList.size(); i++) {
-                ArrayList<String> field_names = schema.getFieldNames();
+                // No need to set Field if value is "NULL"
+                // Field.str defaults to null
+                // Field.integer defaults to Integer.MIN_VALUE
+                if (valueList.get(i).equalsIgnoreCase("NULL")) {
+                    updateVTable(i);
+                    continue;
+                }
+
                 int myIndex = field_names.indexOf(attrList.get(i));
                 if (field_types.get(myIndex) == FieldType.STR20) {
                     tuple.setField(myIndex, valueList.get(i));
                 } else {
                     tuple.setField(myIndex, Integer.parseInt(valueList.get(i)));
                 }
+
+                // Update vTable
+                updateVTable(i);
             }
         }
         appendTupleToRelation(relation_reference, dbManager.mem, 0, tuple);
@@ -158,6 +180,25 @@ public class InsertStmt extends StmtBase implements StmtInterface {
                 System.out.print("Write to the last block of the relation" + "\n");
                 relation_reference.setBlock(relation_reference.getNumOfBlocks() - 1, memory_block_index); //write back to the relation
             }
+        }
+    }
+
+    // updateVTable keeps NULL values as "NULL" String
+    private void updateVTable(int fieldPtr, ArrayList<String> field_names) {
+        Integer curValue = dbManager.vTable.get(tableName).get(field_names.get(fieldPtr)).get(valueList.get(fieldPtr));
+        if (curValue != null) {
+            dbManager.vTable.get(tableName).get(field_names.get(fieldPtr)).put(valueList.get(fieldPtr), curValue + 1);
+        } else {
+            dbManager.vTable.get(tableName).get(field_names.get(fieldPtr)).put(valueList.get(fieldPtr), 1);
+        }
+    }
+
+    private void updateVTable(int fieldPtr) {
+        Integer curValue = dbManager.vTable.get(tableName).get(attrList.get(fieldPtr)).get(valueList.get(fieldPtr));
+        if (curValue != null) {
+            dbManager.vTable.get(tableName).get(attrList.get(fieldPtr)).put(valueList.get(fieldPtr), curValue + 1);
+        } else {
+            dbManager.vTable.get(tableName).get(attrList.get(fieldPtr)).put(valueList.get(fieldPtr), 1);
         }
     }
 

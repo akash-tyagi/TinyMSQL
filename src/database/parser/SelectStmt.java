@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.parser.searchcond.SearchCond;
-import database.utils.TwoPassUtils;
 import storageManager.FieldType;
 import storageManager.Relation;
 import storageManager.Schema;
