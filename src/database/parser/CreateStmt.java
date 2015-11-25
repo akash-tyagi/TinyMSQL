@@ -8,6 +8,7 @@ import storageManager.FieldType;
 import storageManager.Relation;
 import storageManager.Schema;
 import database.DbManager;
+import java.util.HashMap;
 
 public class CreateStmt extends StmtBase implements StmtInterface {
 
@@ -112,5 +113,13 @@ public class CreateStmt extends StmtBase implements StmtInterface {
     public void execute() {
         Schema schema = new Schema(field_names, field_types);
         Relation relation_reference = dbManager.schema_manager.createRelation(relation_name, schema);
+
+        // Make a new entry to vTable for this relation
+        HashMap<String, HashMap<String, Integer>> columnMap = new HashMap<>();
+        for (String field_name : field_names) {
+            columnMap.put(field_name, new HashMap<>());
+        }
+        dbManager.vTable.put(relation_name, columnMap);
+
     }
 }

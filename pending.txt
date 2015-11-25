@@ -1,5 +1,8 @@
 1. Presently we are removing holes while deleting tuples from a relation. This is a costly affair and requires rewriting of all the valid tuples back to Disk after deletion operation completes. Check if there is any performance improvement if we do not handle this issue and let the holes be there.
 
+2. Field in a row can be NULL. Check that in updating vTable
+
+3. INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course : Not working
 
 
 
