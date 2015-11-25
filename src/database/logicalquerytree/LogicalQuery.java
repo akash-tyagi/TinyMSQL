@@ -39,6 +39,7 @@ public class LogicalQuery {
 
 	}
 
+	// Expecting at max 2 tables for optimization
 	public SearchCond getSelectionOptimizationCond(List<String> tables) {
 		List<Relation> relations = new ArrayList<Relation>();
 		if (tables.size() == 1) {
