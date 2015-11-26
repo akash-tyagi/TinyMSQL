@@ -2,6 +2,7 @@ package database;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +11,7 @@ import database.logicalquerytree.LogicalQuery;
 import database.parser.Parser;
 import database.parser.SelectStmt;
 import database.parser.StmtInterface;
+import database.physicalquery.JoinOptimization;
 
 public class Interface {
 	ArrayList<String> queries;
@@ -54,8 +56,15 @@ public class Interface {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Interface iface = new Interface();
-		iface.readFile("src/testQueries");
-		iface.parseQueries();
+		// Interface iface = new Interface();
+		// iface.readFile("src/testQueries");
+		// iface.parseQueries();
+		JoinOptimization jOptimization = new JoinOptimization();
+		List<String> tables = new ArrayList<>();
+		tables.add("a");
+		tables.add("b");
+		tables.add("c");
+		tables.add("d");
+		jOptimization.getLeftJoinOptimizedSequence(tables);
 	}
 }

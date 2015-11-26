@@ -16,7 +16,7 @@ public class LogicalQuery {
 	Map<List<Relation>, SearchCond> map = new HashMap<List<Relation>, SearchCond>();
 
 	public LogicalQuery(SelectStmt stmt) {
-		// projection = new ProjectionOperator(stmt);
+		System.out.println("IN LOGICAL QUERY");
 		List<String> tables = stmt.tableList;
 		dbManager = stmt.dbManager;
 		SearchCond cond = stmt.cond;
@@ -36,7 +36,6 @@ public class LogicalQuery {
 				map.put(relations, cond.getSelectionCond(relations));
 			}
 		}
-
 	}
 
 	// Expecting at max 2 tables for optimization

@@ -1,4 +1,3 @@
 CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
 CREATE TABLE course2 (sid INT, exam INT, grade STR20)
-CREATE TABLE course3 (sid INT, exam INT, grade STR20)
-SELECT * FROM course, course2, course3 WHERE course.exam > 2 AND course.homework = 100
+SELECT * FROM course, course2 WHERE course.sid = course2.sid ORDER BY course.exam
