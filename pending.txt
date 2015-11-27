@@ -4,8 +4,10 @@
 
 3. INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course : Not working
 
-
-
+4. For large ralations (no 1 pass or 2 pass), still we can use the max # of blocks fitting in main memory for one of the relations.
+   (Notes 14 - slide 66)
+   
+5. Not making vTable entries for temp relations for now.
 
 
 ######## ASSUMPTIONS ######
