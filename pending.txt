@@ -10,7 +10,6 @@
 5. Not making vTable entries for temp relations for now.
 
 
-
 ######## ASSUMPTIONS ######
 1. If single table then super tuple will not have the table name 
 If multiple tables then super tuple will have table name too with field name
