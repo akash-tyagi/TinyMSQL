@@ -1,3 +1,4 @@
-CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
-CREATE TABLE course2 (sid INT, exam INT, grade STR20)
-SELECT * FROM course, course2 WHERE course.sid = course2.sid ORDER BY course.exam
+CREATE TABLE e (a INT, b INT, c INT)
+CREATE TABLE f (a INT, b INT, d INT)
+CREATE TABLE g (a INT, c INT, d INT)
+CREATE TABLE h (b INT, c INT, d INT)

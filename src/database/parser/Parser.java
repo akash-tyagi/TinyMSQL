@@ -21,7 +21,7 @@ public class Parser {
 		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
 		Matcher matcher = pattern.matcher(query);
 		if (!matcher.find())
-			System.out.println("XX Parser Statement: Invalid");
+			System.out.println("Parser: Statement Invalid:" + query);
 		if (GlobalVariable.isTestExecution)
 			System.out.println("$$ Parser: Statement Type:" + matcher.group(1));
 
