@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import database.DbManager;
+import database.utils.GeneralUtils;
 import storageManager.Block;
 import storageManager.FieldType;
 import storageManager.MainMemory;
@@ -103,8 +104,8 @@ public class InsertStmt extends StmtBase implements StmtInterface {
         ArrayList<String> field_names = schema.getFieldNames();
         // POINT 1 : EVEN THOUGH RELATION RETURNS TUPLE. THIS IS JUST A TUPLE
         // "new Tuple()"
-        // WITH NO LINK WHATSOEVER WITH THE RELATION WHICH CREATES THIS TUPLE.
-        // ASSUME FOR NOW THAT THIS IS JUST A DESIGN FLAW.
+        // WITH NO LINK WHATSOEVER WITH THE RELATION WHICH CREATES THIS TUPLE
+        // EXCEPT FOR THE FACT THAT IT GETS THE SCHEMA INFORMATION FOR THE RELATION.
         Tuple tuple = relation_reference.createTuple();
         if (attrList.size() != valueList.size()) {
             for (int i = 0; i < valueList.size(); i++) {
@@ -141,46 +142,15 @@ public class InsertStmt extends StmtBase implements StmtInterface {
                 } else {
                     tuple.setField(myIndex, Integer.parseInt(valueList.get(i)));
                 }
-
                 // Update vTable
                 updateVTable(i);
             }
         }
-        appendTupleToRelation(relation_reference, dbManager.mem, 0, tuple);
+        GeneralUtils.appendTupleToRelation(relation_reference, dbManager.mem, 0, tuple);
 //        Block block_reference = dbManager.mem.getBlock(0);
 //        block_reference.appendTuple(tuple);
 //        // NOTE : BELOW STEP IS NECESSARY. SEE POINT 1 ABOVE
 //        relation_reference.setBlock(relation_reference.getNumOfBlocks(), 0);
-    }
-
-    private static void appendTupleToRelation(Relation relation_reference, MainMemory mem, int memory_block_index, Tuple tuple) {
-        Block block_reference;
-        if (relation_reference.getNumOfBlocks() == 0) {
-            System.out.print("The relation is empty" + "\n");
-            System.out.print("Get the handle to the memory block " + memory_block_index + " and clear it" + "\n");
-            block_reference = mem.getBlock(memory_block_index);
-            block_reference.clear(); //clear the block
-            block_reference.appendTuple(tuple); // append the tuple
-            System.out.print("Write to the first block of the relation" + "\n");
-            relation_reference.setBlock(relation_reference.getNumOfBlocks(), memory_block_index);
-        } else {
-            System.out.print("Read the last block of the relation into memory block 5:" + "\n");
-            relation_reference.getBlock(relation_reference.getNumOfBlocks() - 1, memory_block_index);
-            block_reference = mem.getBlock(memory_block_index);
-
-            if (block_reference.isFull()) {
-                System.out.print("(The block is full: Clear the memory block and append the tuple)" + "\n");
-                block_reference.clear(); //clear the block
-                block_reference.appendTuple(tuple); // append the tuple
-                System.out.print("Write to a new block at the end of the relation" + "\n");
-                relation_reference.setBlock(relation_reference.getNumOfBlocks(), memory_block_index); //write back to the relation
-            } else {
-                System.out.print("(The block is not full: Append it directly)" + "\n");
-                block_reference.appendTuple(tuple); // append the tuple
-                System.out.print("Write to the last block of the relation" + "\n");
-                relation_reference.setBlock(relation_reference.getNumOfBlocks() - 1, memory_block_index); //write back to the relation
-            }
-        }
     }
 
     // updateVTable keeps NULL values as "NULL" String
