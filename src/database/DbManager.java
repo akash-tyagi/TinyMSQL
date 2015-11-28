@@ -9,17 +9,17 @@ public class DbManager {
 	public SchemaManager schema_manager;
 	public MainMemory mem;
 	public Disk disk;
-        
-        /*
-         * vTable has three levels of Mapping
-         * Level 1         : Map<relation_name, info1>         -- relation_name is  table name (R)
-         * Level 2 (info1) : Map<attribute_name, info2>        -- attribute_name is  column name (A)
-         * Level 3 (info2) : Map<attribute_value, count>      -- attribute_value is one of different attribute values
-         *                                            -- for column A
-         * The V(R,A) value is size of Level 3 map. We are keeping a count to remove an attribute value from map
-         * when the count reaches 0 after repeated deletions.
-         */
-        public HashMap<String, HashMap<String, HashMap<String, Integer>>> vTable;
+
+	/*
+	 * vTable has three levels of Mapping Level 1 : Map<relation_name, info1> --
+	 * relation_name is table name (R) Level 2 (info1) : Map<attribute_name,
+	 * info2> -- attribute_name is column name (A) Level 3 (info2) :
+	 * Map<attribute_value, count> -- attribute_value is one of different
+	 * attribute values -- for column A The V(R,A) value is size of Level 3 map.
+	 * We are keeping a count to remove an attribute value from map when the
+	 * count reaches 0 after repeated deletions.
+	 */
+	public HashMap<String, HashMap<String, HashMap<String, Integer>>> vTable;
 
 	public DbManager() {
 		mem = new MainMemory();
@@ -31,7 +31,7 @@ public class DbManager {
 
 		disk.resetDiskIOs();
 		disk.resetDiskTimer();
-                
-                vTable = new HashMap<>();
+
+		vTable = new HashMap<>();
 	}
 }

@@ -1,26 +1,22 @@
 package database;
 
 import java.io.BufferedReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
-import database.logicalquerytree.LogicalQuery;
 import database.parser.Parser;
-import database.parser.SelectStmt;
 import database.parser.StmtInterface;
-import database.physicalquery.JoinOptimization;
+import database.physicalquery.PhysicalTree;
 
 public class Interface {
 	ArrayList<String> queries;
-	DbManager manager;
+	DbManager dbManager;
 
 	public Interface() {
 		queries = new ArrayList<>();
-		manager = new DbManager();
+		dbManager = new DbManager();
 	}
 
 	/* Read single query from console */
@@ -42,24 +38,27 @@ public class Interface {
 		}
 	}
 
-	public void parseQueries() {
-		Parser parser = new Parser(manager);
+	public void executeQueries() {
+		Parser parser = new Parser(dbManager);
 		for (String query : queries) {
 			if (query.contains("#"))
 				continue;
-			System.out.println("--------------------Parsing Query:" + query
-					+ "-------------");
+			System.out.println("--------PARSING QUERY:" + query + "----");
 			StmtInterface stmt = parser.parse(query);
-			// if (stmt instanceof SelectStmt) {
-			// LogicalQuery logicalQuery = new LogicalQuery((SelectStmt) stmt);
-			// }
+			System.out.println("--------PARSING DONE:" + query + "-----");
+
+			System.out.println("--------PHYSICAL TREE:" + query + "-----");
+			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
+			physicalTree.execute();
+			System.out.println("--------PHYSICAL DONE:" + query + "-----");
+
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
 		Interface iface = new Interface();
 		iface.readFile("src/testQueries");
-		iface.parseQueries();
+		iface.executeQueries();
 
 		// DO NOT DELETE
 		// TESTING CODE FOR JOIN OPTMIZATION

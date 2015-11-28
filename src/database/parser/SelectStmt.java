@@ -14,7 +14,7 @@ import storageManager.Tuple;
 
 public class SelectStmt extends StmtBase implements StmtInterface {
 
-    boolean isDistinct = false;
+    public boolean isDistinct = false;
     public List<String> selectList;
     public List<String> tableList;
     public SearchCond cond;
@@ -48,7 +48,7 @@ public class SelectStmt extends StmtBase implements StmtInterface {
             System.out.println("ERROR ::: SELECT statement: Invalid:" + query);
             System.exit(1);
         }
-        // execute();
+//         execute();
     }
 
     private void parseFromClause(String rawFromClause) {
