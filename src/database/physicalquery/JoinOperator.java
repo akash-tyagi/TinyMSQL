@@ -25,7 +25,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 	@Override
 	public void setNextOperator(OperatorInterface operator) {
-		this.operator = operator;
+		this.nextOperator = operator;
 	}
 
 }

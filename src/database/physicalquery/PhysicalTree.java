@@ -1,16 +1,15 @@
 package database.physicalquery;
 
 import database.DbManager;
-import database.logicalquerytree.LogicalQuery;
 import database.parser.SelectStmt;
 import database.parser.StmtInterface;
 
 public class PhysicalTree {
 	OperatorInterface operator;
-	DbManager manager;
+	DbManager dbManager;
 
 	public PhysicalTree(DbManager dbManager, StmtInterface stmt) {
-		this.manager = dbManager;
+		this.dbManager = dbManager;
 		JoinOptimization jOptimization = new JoinOptimization(dbManager);
 
 		if (stmt instanceof SelectStmt)
@@ -41,18 +40,22 @@ public class PhysicalTree {
 		SelectStmt selectStmt = (SelectStmt) stmt;
 		// SINGLE TABLE SELECT OPERATOR
 		if (selectStmt.tableList.size() == 1) {
-			operator = new SelectOperator(manager, selectStmt.tableList.get(0),
-					selectStmt.cond);
+			operator = new SelectOperator(dbManager,
+					selectStmt.tableList.get(0), selectStmt.cond);
 			OperatorInterface nextOperator, prevOperator;
 			prevOperator = operator;
 			if (selectStmt.isDistinct) {
 				// add a duplicate removal operator
 			}
-			if (selectStmt.selectList != null) {
-				// add projection operator
+			if (selectStmt.selectList != null
+					&& !selectStmt.selectList.get(0).equals("*")) {
+				System.out.println(selectStmt.selectList);
+				System.out.println("ADDING PROJECTION");
+				nextOperator = new ProjectionOperator(dbManager,
+						selectStmt.selectList);
+				prevOperator.setNextOperator(nextOperator);
 			}
 		}
-
 	}
 
 	public void execute() {
