@@ -33,18 +33,18 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		// code for storing all the results in main memory and pass on
 		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
 			int endBlock = readIntoMemBlocks(rel);
-			if (nextOperator != null)
-				nextOperator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
+			if (next_operator != null)
+				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
 		}
 		// code to create new temp table and pass the table name to next
 		// operator
 		else {
 			String new_relation_name = selectBlockByBlock(rel);
-			if (nextOperator != null)
-				nextOperator.setRelationName(new_relation_name);
+			if (next_operator != null)
+				next_operator.setRelationName(new_relation_name);
 		}
-		if (nextOperator != null)
-			nextOperator.execute();
+		if (next_operator != null)
+			next_operator.execute();
 	}
 
 	// returns the last memory block address in memory, starting is 0
@@ -65,7 +65,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 				if (callWhereCondition(tuple) == false)
 					continue;
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
-				if (nextOperator == null) {
+				if (next_operator == null) {
 					System.out.print(tuples.toString() + " RESULT\n");
 					continue;
 				}
@@ -99,7 +99,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 				if (callWhereCondition(tuple) == false)
 					continue;
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
-				if (nextOperator == null) {
+				if (next_operator == null) {
 					System.out.print(tuples.toString() + "\n");
 					continue;
 				}
@@ -112,7 +112,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 			}
 		}
 		// WRITE LAST BLOCK PENDING IN MEMORY If NOT EMPTY
-		if (nextOperator != null && !write_block_ref.isEmpty()) {
+		if (next_operator != null && !write_block_ref.isEmpty()) {
 			new_relation.setBlock(new_relation.getNumOfBlocks(),
 					BLOCK_FOR_WRITING);
 			write_block_ref.clear();

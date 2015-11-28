@@ -18,7 +18,7 @@ public class SelectStmt extends StmtBase implements StmtInterface {
     public List<String> selectList;
     public List<String> tableList;
     public SearchCond cond;
-    String orderBy;
+    public String orderBy;
 
     public SelectStmt(DbManager manager) {
         super(manager);

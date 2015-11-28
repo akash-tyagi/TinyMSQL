@@ -4,24 +4,24 @@ import database.DbManager;
 
 public class OperatorBase {
 	DbManager dbManager;
-	OperatorInterface nextOperator;
+	OperatorInterface next_operator;
 	boolean isReadFromMem;
 	String relation_name;
 
-	int START_BLOCK;
-	int FINAL_BLOCK;
+	int start_block;
+	int end_block;
 
-	public OperatorBase(DbManager manager) {
-		this.dbManager = manager;
+	public OperatorBase(DbManager dbManager) {
+		this.dbManager = dbManager;
 	}
 
 	public void setNextOperator(OperatorInterface operator) {
-		this.nextOperator = operator;
+		this.next_operator = operator;
 	}
 
 	public void setBlocksNumbers(int start, int end) {
-		START_BLOCK = start;
-		FINAL_BLOCK = end;
+		start_block = start;
+		end_block = end;
 		isReadFromMem = true;
 	}
 

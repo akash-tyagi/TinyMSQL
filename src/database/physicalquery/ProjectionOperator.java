@@ -39,7 +39,7 @@ public class ProjectionOperator extends OperatorBase
 	}
 
 	private void readFromMemory() {
-		for (int i = START_BLOCK; i <= FINAL_BLOCK; i++)
+		for (int i = start_block; i <= end_block; i++)
 			printMemBlock(dbManager.mem.getBlock(i));
 	}
 

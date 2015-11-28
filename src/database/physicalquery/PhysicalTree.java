@@ -47,6 +47,12 @@ public class PhysicalTree {
 			if (selectStmt.isDistinct) {
 				// add a duplicate removal operator
 			}
+			if (selectStmt.orderBy != null) {
+				nextOperator = new SortingOperator(dbManager,
+						selectStmt.orderBy);
+				prevOperator.setNextOperator(nextOperator);
+				prevOperator = nextOperator;
+			}
 			if (selectStmt.selectList != null
 					&& !selectStmt.selectList.get(0).equals("*")) {
 				System.out.println(selectStmt.selectList);
@@ -54,6 +60,7 @@ public class PhysicalTree {
 				nextOperator = new ProjectionOperator(dbManager,
 						selectStmt.selectList);
 				prevOperator.setNextOperator(nextOperator);
+				prevOperator = nextOperator;
 			}
 		}
 	}
