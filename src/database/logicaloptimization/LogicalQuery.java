@@ -1,4 +1,4 @@
-package database.logicalquerytree;
+package database.logicaloptimization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import database.parser.searchcond.SearchCond;
 import storageManager.Relation;
 
 public class LogicalQuery {
-	ProjectionOperator projection;
 	DbManager dbManager;
 	Map<List<Relation>, SearchCond> map = new HashMap<List<Relation>, SearchCond>();
 

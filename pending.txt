@@ -13,6 +13,10 @@
 
 7. We need to delete temp relations once the query is completed (Keep all temp relations in a HashMap) 
 
+#### NAME CHANGES #### 
+make the new temp table name as combined table name 
+
+
 ######## ASSUMPTIONS ######
 1. If single table then super tuple will not have the table name 
 If multiple tables then super tuple will have table name too with field name
