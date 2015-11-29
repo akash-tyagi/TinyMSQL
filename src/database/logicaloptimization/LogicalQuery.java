@@ -1,4 +1,4 @@
-package database.logicalquerytree;
+package database.logicaloptimization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
