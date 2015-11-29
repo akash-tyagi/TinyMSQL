@@ -21,6 +21,7 @@ public class OnePassUtils {
     public static Relation onePassJoin(DbManager dbManager,
             String relation_name1,
             String relation_name2,
+            ArrayList<String> commonCols,
             boolean storeOutputToDisk) {
         Relation r1 = dbManager.schema_manager.getRelation(relation_name1);
         Relation r2 = dbManager.schema_manager.getRelation(relation_name2);
@@ -28,7 +29,9 @@ public class OnePassUtils {
         ArrayList<String> r1_fields = r1.getSchema().getFieldNames();
         ArrayList<String> r2_fields = r2.getSchema().getFieldNames();
 
-        ArrayList<String> commonCols = getCommmonCols(r1_fields, r2_fields);
+        if(commonCols == null){
+            commonCols = getCommmonCols(r1_fields, r2_fields);
+        }
 
         updateInfoForTempSchema(r1, r2);
 
