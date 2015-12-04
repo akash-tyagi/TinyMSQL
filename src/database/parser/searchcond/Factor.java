@@ -68,6 +68,9 @@ public class Factor {
 	}
 
 	public boolean isSelectionOptimizable(List<Relation> relations) {
+		// System.out.println("Checking for factor");
+		// print();
+//		System.out.println("");
 		if (exp != null)
 			return exp.isSelectionOptimizable(relations);
 		if (colName == null) {
@@ -77,13 +80,17 @@ public class Factor {
 			String relName = relation.getRelationName();
 			Schema schema = relation.getSchema();
 			// If column is not of same table
+//			System.out.println("relation:" + relation.getRelationName());
+//			System.out.println(colName.split("\\.")[0]);
 			if (colName.contains(".")
 					&& colName.split("\\.")[0].equals(relName) == false)
-				return false;
-			for (String fieldName : schema.getFieldNames())
+				continue;
+			for (String fieldName : schema.getFieldNames()) {
 				if (colName.contains(fieldName)) {
+					// System.out.println("Found");
 					return true;
 				}
+			}
 		}
 		return false;
 	}

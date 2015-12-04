@@ -51,7 +51,6 @@ public class Interface {
 			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
 			physicalTree.execute();
 			System.out.println("--------PHYSICAL DONE:" + query + "-----");
-
 		}
 	}
 

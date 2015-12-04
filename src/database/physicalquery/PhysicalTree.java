@@ -1,8 +1,8 @@
 package database.physicalquery;
 
 import java.util.List;
-
 import database.DbManager;
+import database.logicaloptimization.LogicalQuery;
 import database.parser.SelectStmt;
 import database.parser.StmtInterface;
 
@@ -14,8 +14,11 @@ public class PhysicalTree {
 		this.dbManager = dbManager;
 		JoinOptimization jOptimization = new JoinOptimization(dbManager);
 
-		if (stmt instanceof SelectStmt)
-			constructSelectTree(stmt);
+		if (stmt instanceof SelectStmt) {
+			LogicalQuery lQuery = new LogicalQuery((SelectStmt) stmt);
+			lQuery.printSelectionOptimizations();
+			// constructSelectTree(stmt);
+		}
 	}
 
 	private void constructSelectTree(StmtInterface stmt) {

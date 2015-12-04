@@ -15,7 +15,7 @@ public class LogicalQuery {
 	Map<List<Relation>, SearchCond> map = new HashMap<List<Relation>, SearchCond>();
 
 	public LogicalQuery(SelectStmt stmt) {
-		System.out.println("IN LOGICAL QUERY");
+		System.out.println(" ######## IN LOGICAL QUERY #######");
 		List<String> tables = stmt.tableList;
 		dbManager = stmt.dbManager;
 		SearchCond cond = stmt.cond;
@@ -25,6 +25,7 @@ public class LogicalQuery {
 			relations.add(dbManager.schema_manager.getRelation(table));
 			map.put(relations, cond.getSelectionCond(relations));
 		}
+
 		for (int i = 0; i < tables.size() - 1; i++) {
 			for (int j = i + 1; j < tables.size(); j++) {
 				List<Relation> relations = new ArrayList<Relation>();
@@ -32,6 +33,9 @@ public class LogicalQuery {
 						dbManager.schema_manager.getRelation(tables.get(i)));
 				relations.add(
 						dbManager.schema_manager.getRelation(tables.get(j)));
+				System.out.println(
+						"\nADDING:" + tables.get(i) + ":" + tables.get(j));
+				// cond.getSelectionCond(relations).print();
 				map.put(relations, cond.getSelectionCond(relations));
 			}
 		}
@@ -59,17 +63,20 @@ public class LogicalQuery {
 	}
 
 	public void printSelectionOptimizations() {
+		System.out.println("\n########SELECTION OPTIMIZATION #####");
 		for (List<Relation> relations : map.keySet()) {
-			System.out.print("\nFor Relations: \n");
 			for (Relation relation : relations) {
 				System.out.print(relation.getRelationName() + ",");
 			}
+			System.out.print("::");
 			SearchCond temp = map.get(relations);
-			if (temp != null)
+			if (temp != null) {
 				temp.print();
-			else
+				System.out.println("");
+			} else
 				System.out.println("NO Condition");
 		}
+		System.out.println("");
 	}
 
 	public void create(SelectStmt stmt) {
