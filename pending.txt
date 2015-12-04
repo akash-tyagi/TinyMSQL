@@ -9,6 +9,10 @@
    
 5. Not making vTable entries for temp relations for now.
 
+6. Implementation of pushinng of "selection condition" in phase1(sorting) of 2 pass algo is TBD
+
+7. We need to delete temp relations once the query is completed (Keep all temp relations in a HashMap) 
+
 #### NAME CHANGES #### 
 make the new temp table name as combined table name 
 

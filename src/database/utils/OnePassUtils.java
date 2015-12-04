@@ -21,6 +21,7 @@ public class OnePassUtils {
     public static Relation onePassJoin(DbManager dbManager,
             String relation_name1,
             String relation_name2,
+            ArrayList<String> commonCols,
             boolean storeOutputToDisk) {
         Relation r1 = dbManager.schema_manager.getRelation(relation_name1);
         Relation r2 = dbManager.schema_manager.getRelation(relation_name2);
@@ -28,9 +29,11 @@ public class OnePassUtils {
         ArrayList<String> r1_fields = r1.getSchema().getFieldNames();
         ArrayList<String> r2_fields = r2.getSchema().getFieldNames();
 
-        ArrayList<String> commonCols = getCommmonCols(r1_fields, r2_fields);
+        if (commonCols == null) {
+            commonCols = getCommmonCols(r1_fields, r2_fields);
+        }
 
-        updateInfoForTempSchema(r1, r2);
+        updateInfoForTempSchema(r1, r2, commonCols);
 
         int availableMemorySize;
         availableMemorySize = storeOutputToDisk ? dbManager.mem.getMemorySize() - 2 : dbManager.mem.getMemorySize() - 1;
@@ -58,14 +61,14 @@ public class OnePassUtils {
 
         // Temp relation for one-pass join
         Schema schema = new Schema(temp_field_names, temp_field_types);
-        Relation one_pass_temp_relation = dbManager.schema_manager.createRelation("join_" + relation_name1 + "_" + relation_name2, schema);
+        Relation one_pass_temp_relation = dbManager.schema_manager.createRelation(r1.getRelationName() + "_" + r2.getRelationName(), schema);
 
         // One-pass algorithm
         for (int i = 0; i < secondRel.getNumOfBlocks(); i++) {
             secondRel.getBlock(i, memIndex);
 
             for (int j = 0; j < memIndex; j++) {
-                joinBlocksData(dbManager.mem, dbManager.mem.getBlock(j), dbManager.mem.getBlock(memIndex), one_pass_temp_relation, storeOutputToDisk, commonCols, memIndex);
+                joinBlocksData(dbManager.mem, r1, r2, dbManager.mem.getBlock(j), dbManager.mem.getBlock(memIndex), one_pass_temp_relation, storeOutputToDisk, commonCols, memIndex);
             }
         }
 
@@ -78,25 +81,38 @@ public class OnePassUtils {
         return commonCols;
     }
 
-    private static void updateInfoForTempSchema(Relation r1, Relation r2) {
+    private static void updateInfoForTempSchema(Relation r1, Relation r2, ArrayList<String> commonCols) {
         temp_field_names = new ArrayList<>();
         temp_field_types = new ArrayList<>();
 
         for (String s : r1.getSchema().getFieldNames()) {
-            temp_field_names.add(s);
+            if (commonCols.contains(s)) {
+                continue;  // don't add if in common list
+            }
+            temp_field_names.add(r1.getRelationName() + "." + s);
             temp_field_types.add(r1.getSchema().getFieldType(s));
         }
 
+        for (String s : commonCols) {
+            temp_field_names.add(r1.getRelationName() + "_" + r2.getRelationName() + "." + s);
+            temp_field_types.add(r1.getSchema().getFieldType(s));  // we could have taken either of r1 OR r2
+        }
+
         for (String s : r2.getSchema().getFieldNames()) {
-            if (r1.getSchema().getFieldNames().contains(s)) {
-                continue;  // don't add if already added in r1 loop
+            if (commonCols.contains(s)) {
+                continue;  // don't add if in common list
             }
-            temp_field_names.add(s);
+            temp_field_names.add(r2.getRelationName() + "." + s);
             temp_field_types.add(r2.getSchema().getFieldType(s));
         }
     }
 
+    // Note : r1 and r2 are not directly related to r1_block and r2_block
+    // r1 and r2 are used just to define the order in column names
+    // r1_block and r2_block are related to firstRel and secondRel
     private static void joinBlocksData(MainMemory mem,
+            Relation r1,
+            Relation r2,
             Block r1_block,
             Block r2_block,
             Relation one_pass_temp_relation,
@@ -117,9 +133,9 @@ public class OnePassUtils {
                         Field f2 = t2.getField(field_name);
                         if (f1.toString().equals(f2.toString())) {
                             if (f1.type == FieldType.INT) {
-                                tuple.setField(field_name, f1.integer);
+                                tuple.setField(r1.getRelationName() + "_" + r2.getRelationName() + "." + field_name, f1.integer);
                             } else {
-                                tuple.setField(field_name, f1.str);
+                                tuple.setField(r1.getRelationName() + "_" + r2.getRelationName() + "." + field_name, f1.str);
                             }
                         } else {
                             toInclude = false;
@@ -127,9 +143,9 @@ public class OnePassUtils {
                         }
                     } else {
                         if (f1.type == FieldType.INT) {
-                            tuple.setField(field_name, f1.integer);
+                            tuple.setField(r1.getRelationName() + "." + field_name, f1.integer);
                         } else {
-                            tuple.setField(field_name, f1.str);
+                            tuple.setField(r1.getRelationName() + "." + field_name, f1.str);
                         }
                     }
                 }
@@ -140,9 +156,9 @@ public class OnePassUtils {
                         String field_name = t2.getSchema().getFieldName(i);
                         if (!commonCols.contains(field_name)) {
                             if (f2.type == FieldType.INT) {
-                                tuple.setField(field_name, f2.integer);
+                                tuple.setField(r2.getRelationName() + "." + field_name, f2.integer);
                             } else {
-                                tuple.setField(field_name, f2.str);
+                                tuple.setField(r2.getRelationName() + "." + field_name, f2.str);
                             }
                         }
                     }
