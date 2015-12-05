@@ -15,7 +15,6 @@ public class LogicalQuery {
 	Map<List<Relation>, SearchCond> map = new HashMap<List<Relation>, SearchCond>();
 
 	public LogicalQuery(SelectStmt stmt) {
-		System.out.println(" ######## IN LOGICAL QUERY #######");
 		List<String> tables = stmt.tableList;
 		dbManager = stmt.dbManager;
 		SearchCond cond = stmt.cond;

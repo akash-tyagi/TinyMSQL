@@ -1,6 +1,9 @@
 package database.physicalquery;
 
+import java.util.List;
+
 import database.DbManager;
+import storageManager.Tuple;
 import sun.security.pkcs11.Secmod.DbMode;
 
 public class JoinOperator extends OperatorBase implements OperatorInterface {
@@ -19,8 +22,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 	}
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public List<Tuple> execute(boolean printResult) {
+		return null;
 	}
 
 	@Override

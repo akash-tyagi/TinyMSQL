@@ -17,39 +17,44 @@ public class ProjectionOperator extends OperatorBase
 	}
 
 	@Override
-	public void execute() {
+	public List<Tuple> execute(boolean printResult) {
 		System.out.println("******FINAL RESULT*********");
 		for (String col : selectList)
 			System.out.print(col + "\t");
 		System.out.println("");
 
 		if (isReadFromMem) {
-			readFromMemory();
+			readFromMemory(printResult);
 		} else {
-			readFromDisk();
+			readFromDisk(printResult);
 		}
+		return res_tuples;
 	}
 
-	private void readFromDisk() {
+	private void readFromDisk(boolean printResult) {
 		Relation rel = dbManager.schema_manager.getRelation(relation_name);
 		for (int i = 0; i < rel.getNumOfBlocks(); i++) {
 			rel.getBlock(i, BLOCK_FOR_READING);
-			printMemBlock(dbManager.mem.getBlock(BLOCK_FOR_READING));
+			printMemBlock(dbManager.mem.getBlock(BLOCK_FOR_READING),
+					printResult);
 		}
 	}
 
-	private void readFromMemory() {
+	private void readFromMemory(boolean printResult) {
 		for (int i = start_block; i <= end_block; i++)
-			printMemBlock(dbManager.mem.getBlock(i));
+			printMemBlock(dbManager.mem.getBlock(i), printResult);
 	}
 
-	private void printMemBlock(Block block) {
+	private void printMemBlock(Block block, boolean printResult) {
 		List<Tuple> tuples = block.getTuples();
 		for (Tuple tuple : tuples) {
-			for (String col : selectList) {
-				System.out.print(tuple.getField(col).toString() + "\t");
+			if (printResult) {
+				for (String col : selectList) {
+					System.out.print(tuple.getField(col).toString() + "\t");
+				}
+				System.out.println("");
 			}
-			System.out.println("");
+			res_tuples.add(tuple);
 		}
 	}
 

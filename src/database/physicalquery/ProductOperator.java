@@ -28,29 +28,31 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 	}
 
 	@Override
-	public void execute() {
+	public List<Tuple> execute(boolean printResult) {
 		// TODO: try one pass for product if possible
 		Relation rel1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation rel2 = dbManager.schema_manager.getRelation(relation_name2);
 		System.out.println("###### PRODUCT BETWEEN:" + relation_name + " "
 				+ relation_name2);
-		String rel = productOperation(rel1, rel2);
+		String rel = productOperation(rel1, rel2, printResult);
 		if (next_operator != null) {
 			next_operator.setRelationName(rel);
-			next_operator.execute();
+			return next_operator.execute(printResult);
 		}
+		return res_tuples;
 	}
 
-	public String productOperation(Relation rel1, Relation rel2) {
+	public String productOperation(Relation rel1, Relation rel2,
+			boolean printResult) {
 		SearchCond cond1 = logicalQuery
 				.getSelectOptCondSingleTable(relation_name);
 		SearchCond cond2 = logicalQuery
 				.getSelectOptCondSingleTable(relation_name2);
 		List<SearchCond> conds = logicalQuery.getSelectOptConds(relation_name,
 				relation_name2);
-//		for (SearchCond searchCond : conds) {
-//			searchCond.print();
-//		}
+		// for (SearchCond searchCond : conds) {
+		// searchCond.print();
+		// }
 
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
@@ -100,7 +102,9 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 							continue;
 						total_tuples++;
 						if (next_operator == null) {
-							System.out.println(join_tuple.toString());
+							if (printResult)
+								System.out.println(join_tuple.toString());
+							res_tuples.add(join_tuple);
 							continue;
 						}
 						while (!write_block_ref.appendTuple(join_tuple)) {
@@ -126,8 +130,8 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 
 	private boolean check_search_conds(List<SearchCond> conds, Tuple tuple) {
 		for (SearchCond searchCond : conds) {
-//			System.out.println("CUrrently checking");
-//			searchCond.print();
+			// System.out.println("CUrrently checking");
+			// searchCond.print();
 			if (!searchCond.execute(tuple))
 				return false;
 		}

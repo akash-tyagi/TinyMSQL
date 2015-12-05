@@ -1,6 +1,7 @@
 package database.physicalquery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import database.DbManager;
 import database.GlobalVariable;
@@ -22,7 +23,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 	}
 
 	// @Override
-	public void execute() {
+	public List<Tuple> execute(boolean printResult) {
 		/*
 		 * Selection can be done in one pass or two pass if one pass then simply
 		 * let the other operator know if two pass create another table and
@@ -32,23 +33,24 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		Relation rel = dbManager.schema_manager.getRelation(relation_name);
 		// code for storing all the results in main memory and pass on
 		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
-			int endBlock = readIntoMemBlocks(rel);
+			int endBlock = readIntoMemBlocks(rel, printResult);
 			if (next_operator != null)
 				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
 		}
 		// code to create new temp table and pass the table name to next
 		// operator
 		else {
-			String new_relation_name = selectBlockByBlock(rel);
+			String new_relation_name = selectBlockByBlock(rel, printResult);
 			if (next_operator != null)
 				next_operator.setRelationName(new_relation_name);
 		}
 		if (next_operator != null)
-			next_operator.execute();
+			return next_operator.execute(printResult);
+		return res_tuples;
 	}
 
 	// returns the last memory block address in memory, starting is 0
-	private int readIntoMemBlocks(Relation rel) {
+	private int readIntoMemBlocks(Relation rel, boolean printResult) {
 		Block write_block_ref = dbManager.mem.getBlock(BLOCK_FOR_WRITING);
 		write_block_ref.clear();
 		int lastWriteBlock = 0;
@@ -66,7 +68,9 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
 				if (next_operator == null) {
-					System.out.print(tuples.toString() + " RESULT\n");
+					if (printResult)
+						System.out.print(tuple.toString() + "\n");
+					res_tuples.add(tuple);
 					continue;
 				}
 				// STORE IN MEMORY FOR NEXT OPERATOR
@@ -80,7 +84,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		return lastWriteBlock;
 	}
 
-	private String selectBlockByBlock(Relation rel) {
+	private String selectBlockByBlock(Relation rel, boolean printResult) {
 		// CREATING TEMP TABLE FOR SELECTION RESULT
 		String new_relation_name = "select_" + relation_name;
 		Relation new_relation = dbManager.schema_manager.createRelation(
@@ -100,7 +104,9 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
 				if (next_operator == null) {
-					System.out.print(tuples.toString() + "\n");
+					if (printResult)
+						System.out.print(tuple.toString() + "\n");
+					res_tuples.add(tuple);
 					continue;
 				}
 				// STORE IN TEMP TABLE FOR NEXT OPERATOR
@@ -129,4 +135,5 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 			return false;
 		}
 	}
+
 }

@@ -44,16 +44,15 @@ public class Interface {
 		for (String query : queries) {
 			if (query.contains("#"))
 				continue;
-			GeneralUtils.restartTimer();
-			System.out.println("--------PARSING QUERY:" + query + "----");
-			StmtInterface stmt = parser.parse(query);
-			System.out.println("--------PARSING DONE:" + query + "-----");
+			System.out.println(query);
+			GeneralUtils.restartTimer(dbManager);
 
-			System.out.println("--------PHYSICAL TREE:" + query + "-----");
+			StmtInterface stmt = parser.parse(query);
 			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
 			physicalTree.execute();
-			System.out.println("--------PHYSICAL DONE:" + query + "-----");
 			GeneralUtils.printExecutionStats(dbManager);
+
+			System.out.println("");
 		}
 	}
 

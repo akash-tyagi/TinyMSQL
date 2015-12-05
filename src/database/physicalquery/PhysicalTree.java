@@ -7,7 +7,7 @@ import database.parser.SelectStmt;
 import database.parser.StmtInterface;
 
 public class PhysicalTree {
-	OperatorInterface operator;
+	public OperatorInterface operator;
 	DbManager dbManager;
 	LogicalQuery logicalQuery;
 
@@ -17,7 +17,7 @@ public class PhysicalTree {
 
 		if (stmt instanceof SelectStmt) {
 			logicalQuery = new LogicalQuery((SelectStmt) stmt);
-			logicalQuery.printSelectionOptimizations();
+			// logicalQuery.printSelectionOptimizations();
 			constructSelectTree(stmt);
 		}
 	}
@@ -78,6 +78,6 @@ public class PhysicalTree {
 
 	public void execute() {
 		if (operator != null)
-			operator.execute();
+			operator.execute(false);
 	}
 }
