@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import database.parser.Parser;
 import database.parser.StmtInterface;
 import database.physicalquery.PhysicalTree;
+import database.utils.GeneralUtils;
 
 public class Interface {
 	ArrayList<String> queries;
@@ -43,6 +44,7 @@ public class Interface {
 		for (String query : queries) {
 			if (query.contains("#"))
 				continue;
+			GeneralUtils.restartTimer();
 			System.out.println("--------PARSING QUERY:" + query + "----");
 			StmtInterface stmt = parser.parse(query);
 			System.out.println("--------PARSING DONE:" + query + "-----");
@@ -51,6 +53,7 @@ public class Interface {
 			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
 			physicalTree.execute();
 			System.out.println("--------PHYSICAL DONE:" + query + "-----");
+			GeneralUtils.printExecutionStats(dbManager);
 		}
 	}
 
