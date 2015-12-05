@@ -12,6 +12,11 @@ import storageManager.Relation;
 import storageManager.Tuple;
 
 public class GeneralUtils {
+	static long startTime;
+
+	public static void restartTimer() {
+		startTime = System.currentTimeMillis();
+	}
 
     public static void cleanMainMemory(MainMemory mem) {
         for (int i = 0; i < mem.getMemorySize(); i++) {
@@ -135,4 +140,15 @@ public class GeneralUtils {
         }
     }
 
+	public static void printExecutionStats(DbManager dbManager) {
+		long elapsedTimeMillis = System.currentTimeMillis() - startTime;
+		System.out.print(
+				"Computer elapse time = " + elapsedTimeMillis + " ms" + "\n");
+		System.out.print("Execution time: = " + dbManager.disk.getDiskTimer()
+				+ " ms" + "\n");
+		System.out.print("Disk I/Os = " + dbManager.disk.getDiskIOs() + "\n");
+		dbManager.disk.resetDiskIOs();
+		dbManager.disk.resetDiskTimer();
+		restartTimer();
+	}
 }

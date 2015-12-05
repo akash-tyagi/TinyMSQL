@@ -1,21 +1,25 @@
 package database.physicalquery;
 
 import java.util.List;
-
 import database.DbManager;
+import database.logicaloptimization.LogicalQuery;
 import database.parser.SelectStmt;
 import database.parser.StmtInterface;
 
 public class PhysicalTree {
 	OperatorInterface operator;
 	DbManager dbManager;
+	LogicalQuery logicalQuery;
 
 	public PhysicalTree(DbManager dbManager, StmtInterface stmt) {
 		this.dbManager = dbManager;
 		JoinOptimization jOptimization = new JoinOptimization(dbManager);
 
-		if (stmt instanceof SelectStmt)
+		if (stmt instanceof SelectStmt) {
+			logicalQuery = new LogicalQuery((SelectStmt) stmt);
+			logicalQuery.printSelectionOptimizations();
 			constructSelectTree(stmt);
+		}
 	}
 
 	private void constructSelectTree(StmtInterface stmt) {
@@ -55,7 +59,8 @@ public class PhysicalTree {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
 			System.out.println("Combining tables:" + rel1 + ":" + rel2);
-			nextOperator = new ProductOperator(dbManager, rel1, rel2);
+			nextOperator = new ProductOperator(dbManager, logicalQuery, rel1,
+					rel2);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);

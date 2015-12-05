@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.DbManager;
+import database.logicaloptimization.LogicalQuery;
+import database.parser.searchcond.SearchCond;
 import storageManager.Block;
 import storageManager.FieldType;
 import storageManager.Relation;
@@ -12,23 +14,26 @@ import storageManager.Tuple;
 
 public class ProductOperator extends OperatorBase implements OperatorInterface {
 	String relation_name2;
+	LogicalQuery logicalQuery;
 	int block_for_reading_1 = 0;
 	int block_for_reading_2 = 1;
 	int block_for_writing = 2;
 
-	public ProductOperator(DbManager manager, String rel1, String rel2) {
+	public ProductOperator(DbManager manager, LogicalQuery logicalQuery,
+			String rel1, String rel2) {
 		super(manager);
-		// TODO Auto-generated constructor stub
+		this.logicalQuery = logicalQuery;
 		relation_name = rel1;
 		relation_name2 = rel2;
 	}
 
 	@Override
 	public void execute() {
+		// TODO: try one pass for product if possible
 		Relation rel1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation rel2 = dbManager.schema_manager.getRelation(relation_name2);
-		System.out.println(
-				"PRODUCT BETWEEN:" + relation_name + " " + relation_name2);
+		System.out.println("###### PRODUCT BETWEEN:" + relation_name + " "
+				+ relation_name2);
 		String rel = productOperation(rel1, rel2);
 		if (next_operator != null) {
 			next_operator.setRelationName(rel);
@@ -37,6 +42,16 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 	}
 
 	public String productOperation(Relation rel1, Relation rel2) {
+		SearchCond cond1 = logicalQuery
+				.getSelectOptCondSingleTable(relation_name);
+		SearchCond cond2 = logicalQuery
+				.getSelectOptCondSingleTable(relation_name2);
+		List<SearchCond> conds = logicalQuery.getSelectOptConds(relation_name,
+				relation_name2);
+//		for (SearchCond searchCond : conds) {
+//			searchCond.print();
+//		}
+
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
 		List<Relation> relations = new ArrayList<Relation>();
@@ -65,17 +80,24 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 			Block rel1_block = dbManager.mem.getBlock(block_for_reading_1);
 			List<Tuple> rel1_tuples = rel1_block.getTuples();
 			for (Tuple tuple1 : rel1_tuples) {
+				if (cond1 != null && cond1.execute(tuple1) == false)
+					continue;
 				for (int j = 0; j < rel2.getNumOfBlocks(); j++) {
 					rel2.getBlock(j, block_for_reading_2);
 					Block rel2_block = dbManager.mem
 							.getBlock(block_for_reading_2);
 					List<Tuple> rel2_tuples = rel2_block.getTuples();
 					for (Tuple tuple2 : rel2_tuples) {
+						if (cond2 != null && cond2.execute(tuple2) == false)
+							continue;
 						join_tuple = join_relation.createTuple();
 						List<Tuple> from = new ArrayList<Tuple>();
 						from.add(tuple1);
 						from.add(tuple2);
 						copyTupleFields(from, join_tuple);
+						if (conds != null && check_search_conds(conds,
+								join_tuple) == false)
+							continue;
 						total_tuples++;
 						if (next_operator == null) {
 							System.out.println(join_tuple.toString());
@@ -100,6 +122,16 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 		System.out.println("PRODUCT:" + relation_name + " and " + relation_name2
 				+ " tuples generated:" + total_tuples);
 		return join_relation_name;
+	}
+
+	private boolean check_search_conds(List<SearchCond> conds, Tuple tuple) {
+		for (SearchCond searchCond : conds) {
+//			System.out.println("CUrrently checking");
+//			searchCond.print();
+			if (!searchCond.execute(tuple))
+				return false;
+		}
+		return true;
 	}
 
 	public void copyTupleFields(List<Tuple> from, Tuple to) {
