@@ -78,6 +78,6 @@ public class PhysicalTree {
 
 	public void execute() {
 		if (operator != null)
-			operator.execute(false);
+			operator.execute(true);
 	}
 }

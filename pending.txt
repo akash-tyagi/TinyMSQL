@@ -28,3 +28,12 @@ Needed in the execute of the factor where the colName value is fetched
 
 2. If OR condition then complete condition needs to be satisfied as
 union operation is needed, so no selection optimization is performed
+
+############# OPTIMZATIONS POSSIBLE #############
+1.Bulk insert from select statement, currently tuple is appended one by one, may be we can
+	do bulk insert to improve I/O
+2.Product operation with results in main memory and do not write in disk
+3.Check for other places where we can perform the entire operation in table
+4.Write results in a file
+5.Right product operation table order for first operation to fit in memory
+6. 

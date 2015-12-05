@@ -11,6 +11,7 @@ import database.physicalquery.PhysicalTree;
 import database.physicalquery.SelectOperator;
 import database.utils.GeneralUtils;
 import storageManager.Block;
+import storageManager.Field;
 import storageManager.FieldType;
 import storageManager.MainMemory;
 import storageManager.Relation;
@@ -23,6 +24,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 	List<String> attrList;
 	List<String> valueList;
 	StmtInterface selectStmt;
+	List<Tuple> res_tuples;
 
 	public InsertStmt(DbManager dbManager) {
 		super(dbManager);
@@ -46,6 +48,16 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 		}
 	}
 
+	private void tuplesToValueList() {
+		for (Tuple tuple : res_tuples) {
+			for (int i = 0; i < tuple.getNumOfFields(); i++) {
+				valueList.add(tuple.getField(i).toString());
+			}
+			execute();
+			valueList = new ArrayList<>();
+		}
+	}
+
 	private void parseTuples(String tuples) {
 		if (tuples.contains("SELECT")) {
 			System.out.println(tuples);
@@ -53,7 +65,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 			StmtInterface stmt = parser.parse(tuples);
 			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
 			SelectOperator selectOperator = (SelectOperator) physicalTree.operator;
-			
+			res_tuples = selectOperator.execute(true);
 			return;
 		}
 		if (GlobalVariable.isTestParsing)
@@ -103,8 +115,10 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 			System.out.println("ERROR ::: INSERT statement: Invalid:" + query);
 			System.exit(1);
 		}
-
-		execute();
+		if (res_tuples == null)
+			execute();
+		else
+			tuplesToValueList();
 	}
 
 	@Override
