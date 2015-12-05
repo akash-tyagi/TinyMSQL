@@ -1,7 +1,10 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.List;
 import database.DbManager;
+import database.GlobalVariable;
+import jdk.nashorn.internal.objects.Global;
 import storageManager.Block;
 import storageManager.Relation;
 import storageManager.Tuple;
@@ -11,18 +14,19 @@ public class ProjectionOperator extends OperatorBase
 	public List<String> selectList;
 	final int BLOCK_FOR_READING = 9;
 
-	public ProjectionOperator(DbManager manager, List<String> selectList) {
-		super(manager);
+	public ProjectionOperator(DbManager manager, List<String> selectList,
+			PrintWriter writer) {
+		super(manager, writer);
 		this.selectList = selectList;
 	}
 
 	@Override
 	public List<Tuple> execute(boolean printResult) {
-		System.out.println("******FINAL RESULT*********");
-		for (String col : selectList)
-			System.out.print(col + "\t");
-		System.out.println("");
-
+		if (GlobalVariable.isTestExecution) {
+			for (String col : selectList)
+				System.out.print(col + "\t");
+			System.out.println("");
+		}
 		if (isReadFromMem) {
 			readFromMemory(printResult);
 		} else {
@@ -51,8 +55,10 @@ public class ProjectionOperator extends OperatorBase
 			if (printResult) {
 				for (String col : selectList) {
 					System.out.print(tuple.getField(col).toString() + "\t");
+					writer.print(tuple.getField(col).toString() + "\t");
 				}
 				System.out.println("");
+				writer.println();
 			}
 			res_tuples.add(tuple);
 		}

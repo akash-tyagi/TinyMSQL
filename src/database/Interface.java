@@ -1,9 +1,12 @@
 package database;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import database.parser.Parser;
@@ -14,10 +17,14 @@ import database.utils.GeneralUtils;
 public class Interface {
 	ArrayList<String> queries;
 	DbManager dbManager;
+	PrintWriter writer;
 
-	public Interface() {
+	public Interface()
+			throws FileNotFoundException, UnsupportedEncodingException {
 		queries = new ArrayList<>();
 		dbManager = new DbManager();
+		writer = new PrintWriter("OUTPUT.txt", "UTF-8");
+
 	}
 
 	/* Read single query from console */
@@ -45,22 +52,27 @@ public class Interface {
 			if (query.contains("#"))
 				continue;
 			System.out.println(query);
+			writer.println(query);
 			GeneralUtils.restartTimer(dbManager);
 
 			StmtInterface stmt = parser.parse(query);
-			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
+			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt,writer);
 			physicalTree.execute();
-			GeneralUtils.printExecutionStats(dbManager);
 
+			GeneralUtils.printExecutionStats(dbManager, writer);
 			System.out.println("");
+			writer.println();
 		}
+		writer.close();
 	}
 
 	public static void main(String[] args) throws IOException {
 		Interface iface = new Interface();
-		iface.readFile("src/testQueries");
+		if (GlobalVariable.isReadFromConsole)
+			iface.readText();
+		else
+			iface.readFile("src/testQueries");
 		iface.executeQueries();
-
 		// DO NOT DELETE
 		// TESTING CODE FOR JOIN OPTMIZATION
 		// JoinOptimization jOptimization = new JoinOptimization(iface.manager);

@@ -4,4 +4,4 @@ INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (17, 100, 100, 100, "A")
 #SELECT * FROM course
 INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course
-SELECT * FROM course
+SELECT sid FROM course

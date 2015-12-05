@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import database.DbManager;
@@ -10,8 +11,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 	String relationName1;
 	String relationName2;
 
-	public JoinOperator(String rel1, String rel2, DbManager manager) {
-		super(manager);
+	public JoinOperator(String rel1, String rel2, DbManager manager, PrintWriter writer) {
+		super(manager, writer);
 		relationName1 = rel1;
 		relationName2 = rel2;
 		this.dbManager = manager;

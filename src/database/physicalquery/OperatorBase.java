@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,15 @@ public class OperatorBase {
 	boolean isReadFromMem;
 	String relation_name;
 	List<Tuple> res_tuples;
+	PrintWriter writer;
 
 	int start_block;
 	int end_block;
 
-	public OperatorBase(DbManager dbManager) {
+	public OperatorBase(DbManager dbManager, PrintWriter writer) {
 		this.dbManager = dbManager;
 		res_tuples = new ArrayList<Tuple>();
+		this.writer = writer;
 	}
 
 	public void setNextOperator(OperatorInterface operator) {

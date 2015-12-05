@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 	int block_for_writing = 2;
 
 	public ProductOperator(DbManager manager, LogicalQuery logicalQuery,
-			String rel1, String rel2) {
-		super(manager);
+			String rel1, String rel2, PrintWriter writer) {
+		super(manager, writer);
 		this.logicalQuery = logicalQuery;
 		relation_name = rel1;
 		relation_name2 = rel2;
@@ -102,8 +103,10 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 							continue;
 						total_tuples++;
 						if (next_operator == null) {
-							if (printResult)
+							if (printResult) {
 								System.out.println(join_tuple.toString());
+								writer.println(join_tuple.toString());
+							}
 							res_tuples.add(join_tuple);
 							continue;
 						}

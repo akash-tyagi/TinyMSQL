@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +12,9 @@ import storageManager.Tuple;
 public class SortingOperator extends OperatorBase implements OperatorInterface {
 	String column_name;
 
-	public SortingOperator(DbManager dbManager, String column_name) {
-		super(dbManager);
+	public SortingOperator(DbManager dbManager, String column_name,
+			PrintWriter writer) {
+		super(dbManager, writer);
 		this.column_name = column_name;
 	}
 

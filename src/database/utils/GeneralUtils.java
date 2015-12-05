@@ -1,5 +1,6 @@
 package database.utils;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -157,13 +158,17 @@ public class GeneralUtils {
 		}
 	}
 
-	public static void printExecutionStats(DbManager dbManager) {
+	public static void printExecutionStats(DbManager dbManager,
+			PrintWriter writer) {
 		long elapsedTimeMillis = System.currentTimeMillis() - startTime;
-		// System.out.print(
-		// "Computer elapse time = " + elapsedTimeMillis + " ms" + "\n");
+		System.out.print(
+				"Computer elapse time = " + elapsedTimeMillis + " ms" + "\n");
 		System.out.print("Execution time: = " + dbManager.disk.getDiskTimer()
 				+ " ms" + "\n");
+		writer.println(
+				"Execution time: = " + dbManager.disk.getDiskTimer() + " ms");
 		System.out.print("Disk I/Os = " + dbManager.disk.getDiskIOs() + "\n");
+		writer.println("Disk I/Os = " + dbManager.disk.getDiskIOs());
 		dbManager.disk.resetDiskIOs();
 		dbManager.disk.resetDiskTimer();
 		restartTimer(dbManager);

@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.List;
 import database.DbManager;
 import database.logicaloptimization.LogicalQuery;
@@ -10,9 +11,12 @@ public class PhysicalTree {
 	public OperatorInterface operator;
 	DbManager dbManager;
 	LogicalQuery logicalQuery;
+	PrintWriter writer;
 
-	public PhysicalTree(DbManager dbManager, StmtInterface stmt) {
+	public PhysicalTree(DbManager dbManager, StmtInterface stmt,
+			PrintWriter writer) {
 		this.dbManager = dbManager;
+		this.writer = writer;
 		JoinOptimization jOptimization = new JoinOptimization(dbManager);
 
 		if (stmt instanceof SelectStmt) {
@@ -28,7 +32,7 @@ public class PhysicalTree {
 		// SINGLE TABLE SELECT OPERATOR
 		if (selectStmt.tableList.size() == 1) {
 			currOperator = operator = new SelectOperator(dbManager,
-					selectStmt.tableList.get(0), selectStmt.cond);
+					selectStmt.tableList.get(0), selectStmt.cond, writer);
 		} // PRODUCT/THETA OPEARATION ONLY FOR NOW
 		else {
 			currOperator = constructProductTree(selectStmt.tableList);
@@ -38,7 +42,8 @@ public class PhysicalTree {
 			// add a duplicate removal operator
 		}
 		if (selectStmt.orderBy != null) {
-			nextOperator = new SortingOperator(dbManager, selectStmt.orderBy);
+			nextOperator = new SortingOperator(dbManager, selectStmt.orderBy,
+					writer);
 			currOperator.setNextOperator(nextOperator);
 			currOperator = nextOperator;
 		}
@@ -47,7 +52,7 @@ public class PhysicalTree {
 			System.out.println(selectStmt.selectList);
 			System.out.println("ADDING PROJECTION");
 			nextOperator = new ProjectionOperator(dbManager,
-					selectStmt.selectList);
+					selectStmt.selectList, writer);
 			currOperator.setNextOperator(nextOperator);
 			currOperator = nextOperator;
 		}
@@ -60,7 +65,7 @@ public class PhysicalTree {
 			String rel2 = tables.get(1);
 			System.out.println("Combining tables:" + rel1 + ":" + rel2);
 			nextOperator = new ProductOperator(dbManager, logicalQuery, rel1,
-					rel2);
+					rel2, writer);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);

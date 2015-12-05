@@ -1,5 +1,6 @@
 package database.physicalquery;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 	final int BLOCK_FOR_WRITING = 0;
 
 	public SelectOperator(DbManager manager, String relation_name,
-			SearchCond cond) {
-		super(manager);
+			SearchCond cond, PrintWriter writer) {
+		super(manager, writer);
 		this.cond = cond;
 		this.relation_name = relation_name;
 	}

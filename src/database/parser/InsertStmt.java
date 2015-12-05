@@ -63,7 +63,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 			System.out.println(tuples);
 			Parser parser = new Parser(dbManager);
 			StmtInterface stmt = parser.parse(tuples);
-			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt);
+			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt, null);
 			SelectOperator selectOperator = (SelectOperator) physicalTree.operator;
 			res_tuples = selectOperator.execute(true);
 			return;
