@@ -13,6 +13,10 @@
 
 7. We need to delete temp relations once the query is completed (Keep all temp relations in a HashMap) 
 
+8. Two pass algo for single relation
+
+9. Join for A.x = B.y not getting handled -> We are hadling only A.x = B.x
+
 #### NAME CHANGES #### 
 make the new temp table name as combined table name 
 

@@ -13,8 +13,16 @@ public class TestObject {
 //            System.out.println("Nana");
 //        }
         
-            ArrayList<String> temp = OnePassUtils.getCommmonCols(new ArrayList<>(Arrays.asList("homework", "grade")), 
-                                                                 new ArrayList<>(Arrays.asList("homework1", "grade")));
-            System.out.println(temp);
+//            ArrayList<String> temp = GeneralUtils.getCommmonCols(new ArrayList<>(Arrays.asList("homework", "grade")), 
+//                                                                 new ArrayList<>(Arrays.asList("homework1", "grade")));
+//            System.out.println(temp);
+        
+        String s1 = "abc";
+        String s2 = "a" + "bc";
+        
+        if(s1 == s2)
+            System.out.println("Hello");
+        else
+            System.out.println("Not Hello");
     }
 }

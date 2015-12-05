@@ -1,6 +1,7 @@
 package database;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import storageManager.Disk;
 import storageManager.MainMemory;
 import storageManager.SchemaManager;
@@ -20,6 +21,9 @@ public class DbManager {
 	 * count reaches 0 after repeated deletions.
 	 */
 	public HashMap<String, HashMap<String, HashMap<String, Integer>>> vTable;
+        
+        // Keep track for the temp relations so that they may be deleted after each query run
+        public LinkedList<String> temporaryCreatedRelations = new LinkedList<>();
 
 	public DbManager() {
 		mem = new MainMemory();

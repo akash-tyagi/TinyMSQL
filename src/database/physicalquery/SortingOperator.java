@@ -23,7 +23,7 @@ public class SortingOperator extends OperatorBase implements OperatorInterface {
 			if (next_operator != null)
 				next_operator.setBlocksNumbers(start_block, end_block);
 		} else {
-//			sortDisk();
+//			sortDisk();  // return the sorted table name
 			if (next_operator != null)
 				next_operator.setRelationName(relation_name);
 		}

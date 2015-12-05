@@ -12,12 +12,9 @@ import storageManager.Tuple;
 
 public class OnePassUtils {
 
-    static ArrayList<String> temp_field_names;
-    static ArrayList<FieldType> temp_field_types;
-
     // Will return null if the memory is not enough for doing one-pass join on these two relations
     // Will return an empty relation if storeOutputToDisk is false
-    // Will return a temp relation "join_relation_name1_relation_name2" with the join output if storeOutputToDisk is true
+    // Will return a temp relation "relation_name1_relation_name2" with the join output if storeOutputToDisk is true
     public static Relation onePassJoin(DbManager dbManager,
             String relation_name1,
             String relation_name2,
@@ -30,10 +27,12 @@ public class OnePassUtils {
         ArrayList<String> r2_fields = r2.getSchema().getFieldNames();
 
         if (commonCols == null) {
-            commonCols = getCommmonCols(r1_fields, r2_fields);
+            commonCols = GeneralUtils.getCommmonCols(r1_fields, r2_fields);
         }
 
-        updateInfoForTempSchema(r1, r2, commonCols);
+        ArrayList<String> temp_field_names = new ArrayList<>();
+        ArrayList<FieldType> temp_field_types = new ArrayList<>();
+        GeneralUtils.updateInfoForTempSchema(r1, r2, commonCols, temp_field_names, temp_field_types);
 
         int availableMemorySize;
         availableMemorySize = storeOutputToDisk ? dbManager.mem.getMemorySize() - 2 : dbManager.mem.getMemorySize() - 1;
@@ -62,6 +61,8 @@ public class OnePassUtils {
         // Temp relation for one-pass join
         Schema schema = new Schema(temp_field_names, temp_field_types);
         Relation one_pass_temp_relation = dbManager.schema_manager.createRelation(r1.getRelationName() + "_" + r2.getRelationName(), schema);
+        
+        dbManager.temporaryCreatedRelations.add(r1.getRelationName() + "_" + r2.getRelationName());
 
         // One-pass algorithm
         for (int i = 0; i < secondRel.getNumOfBlocks(); i++) {
@@ -73,38 +74,6 @@ public class OnePassUtils {
         }
 
         return one_pass_temp_relation;
-    }
-
-    public static ArrayList<String> getCommmonCols(ArrayList<String> r1_fields, ArrayList<String> r2_fields) {
-        ArrayList<String> commonCols = new ArrayList<>(r1_fields);
-        commonCols.retainAll(r2_fields);
-        return commonCols;
-    }
-
-    private static void updateInfoForTempSchema(Relation r1, Relation r2, ArrayList<String> commonCols) {
-        temp_field_names = new ArrayList<>();
-        temp_field_types = new ArrayList<>();
-
-        for (String s : r1.getSchema().getFieldNames()) {
-            if (commonCols.contains(s)) {
-                continue;  // don't add if in common list
-            }
-            temp_field_names.add(r1.getRelationName() + "." + s);
-            temp_field_types.add(r1.getSchema().getFieldType(s));
-        }
-
-        for (String s : commonCols) {
-            temp_field_names.add(r1.getRelationName() + "_" + r2.getRelationName() + "." + s);
-            temp_field_types.add(r1.getSchema().getFieldType(s));  // we could have taken either of r1 OR r2
-        }
-
-        for (String s : r2.getSchema().getFieldNames()) {
-            if (commonCols.contains(s)) {
-                continue;  // don't add if in common list
-            }
-            temp_field_names.add(r2.getRelationName() + "." + s);
-            temp_field_types.add(r2.getSchema().getFieldType(s));
-        }
     }
 
     // Note : r1 and r2 are not directly related to r1_block and r2_block
