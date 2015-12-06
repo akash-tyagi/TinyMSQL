@@ -30,6 +30,10 @@ INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99
 Execution time: = 149.26 ms
 Disk I/Os = 2
 
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (4, 100, 100, 97, "D")
 Execution time: = 149.26 ms
 Disk I/Os = 2
@@ -342,57 +346,13 @@ INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 Execution time: = 149.26 ms
 Disk I/Os = 2
 
-SELECT * FROM course, course2 WHERE course.sid = course2.sid
-1	99	100	100	"A"	1	100	"A"	
-3	100	100	98	"C"	3	98	"C"	
-3	100	69	64	"C"	3	98	"C"	
-17	100	100	100	"A"	17	0	"A"	
-2	100	100	99	"B"	2	99	"B"	
-4	100	100	97	"D"	4	97	"D"	
-5	100	100	66	"A"	5	66	"A"	
-6	100	100	65	"B"	6	65	"B"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-16	0	0	0	"E"	16	25	"E"	
-17	100	100	100	"A"	17	0	"A"	
-Execution time: = 58211.39999999925 ms
-Disk I/Os = 780
+SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
+"A"	"A"	
+"B"	"B"	
+"C"	"B"	
+"C"	"C"	
+"D"	"D"	
+"E"	"E"	
+Execution time: = 68703.65999999916 ms
+Disk I/Os = 927
 
