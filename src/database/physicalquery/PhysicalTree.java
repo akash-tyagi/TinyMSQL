@@ -4,6 +4,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
 import database.DbManager;
 import database.logicaloptimization.LogicalQuery;
 import database.parser.SelectStmt;
@@ -41,9 +44,11 @@ public class PhysicalTree {
 		}
 
 		if (selectStmt.isDistinct) {
-			// add a duplicate removal operator
-		}
-		if (selectStmt.orderBy != null) {
+			nextOperator = new DuplicateOperator(dbManager, writer,
+					selectStmt.orderBy);
+			currOperator.setNextOperator(nextOperator);
+			currOperator = nextOperator;
+		} else if (selectStmt.orderBy != null) {
 			nextOperator = new SortingOperator(dbManager, selectStmt.orderBy,
 					writer);
 			currOperator.setNextOperator(nextOperator);
@@ -60,23 +65,24 @@ public class PhysicalTree {
 		}
 	}
 
-	private OperatorInterface constructProductTree(List<String> join_tables) {
+	private OperatorInterface constructProductTree(List<String> tables) {
 		OperatorInterface head = null, currOperator = null, nextOperator = null;
 		List<Integer> tableSizes = new ArrayList<Integer>();
-		for (String table : join_tables) {
-			int blocks = dbManager.schema_manager.getRelation(table)
-					.getNumOfBlocks();
-			tableSizes.add(blocks);
-		}
-		int size = join_tables.size();
-		List<String> tables = new ArrayList<String>();
-
-		for (int i = 0; i < size; i++) {
-			int min = Collections.min(tableSizes);
-			int index = tableSizes.indexOf(min);
-			tables.add(join_tables.remove(index));
-		}
-
+		// for (String table : join_tables) {
+		// int blocks = dbManager.schema_manager.getRelation(table)
+		// .getNumOfBlocks();
+		// tableSizes.add(blocks);
+		// }
+		// int size = join_tables.size();
+		// List<String> tables = new ArrayList<String>();
+		// for (int i = 0; i < size; i++) {
+		// int min = Collections.min(tableSizes);
+		// int index = tableSizes.indexOf(min);
+		// tables.add(join_tables.remove(index));
+		// tableSizes.remove((Integer) min);
+		//
+		// }
+		
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
@@ -100,6 +106,6 @@ public class PhysicalTree {
 
 	public void execute() {
 		if (operator != null)
-			operator.execute(true);
+			System.out.println("Total Tuples:" + operator.execute(true).size());
 	}
 }

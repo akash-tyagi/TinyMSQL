@@ -5,7 +5,7 @@ import storageManager.Tuple;
 
 public class TupleObject implements Comparable<TupleObject> {
 
-    Tuple tuple;
+    public Tuple tuple;
     ArrayList<String> colValues = new ArrayList<>();
 
     public TupleObject(Tuple tuple, ArrayList<String> colValues) {

@@ -64,4 +64,15 @@ public class ProjectionOperator extends OperatorBase
 		}
 	}
 
+	public void printTuple(Tuple tuple, boolean printResult) {
+		if (printResult) {
+			for (String col : selectList) {
+				System.out.print(tuple.getField(col).toString() + "\t");
+				writer.print(tuple.getField(col).toString() + "\t");
+			}
+			System.out.println("");
+			writer.println();
+		}
+		res_tuples.add(tuple);
+	}
 }

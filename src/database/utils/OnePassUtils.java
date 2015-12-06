@@ -136,7 +136,7 @@ public class OnePassUtils {
             System.out.println(t);
 
             for (int i = 0; i < relation.getNumOfBlocks(); i++) {
-                Block mb = dbManager.mem.getBlock(0);
+                Block mb = dbManager.mem.getBlock(i);
                 ArrayList<Tuple> blockTuples = mb.getTuples();
 
                 for (Tuple t1 : blockTuples) {

@@ -69,8 +69,10 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
 				if (next_operator == null) {
-					if (printResult)
+					if (printResult) {
 						System.out.print(tuple.toString() + "\n");
+						writer.println(tuple);
+					}
 					res_tuples.add(tuple);
 					continue;
 				}
@@ -103,27 +105,36 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 			for (Tuple tuple : tuples) {
 				if (callWhereCondition(tuple) == false)
 					continue;
+				res_tuples.add(tuple);
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
 				if (next_operator == null) {
-					if (printResult)
+					if (printResult) {
 						System.out.print(tuple.toString() + "\n");
-					res_tuples.add(tuple);
+						writer.println(tuple);
+					}
 					continue;
-				}
-				// STORE IN TEMP TABLE FOR NEXT OPERATOR
-				while (!write_block_ref.appendTuple(tuple)) {
-					new_relation.setBlock(new_relation.getNumOfBlocks(),
-							BLOCK_FOR_WRITING);
-					write_block_ref.clear();
+				} else if (next_operator instanceof ProjectionOperator) {
+					((ProjectionOperator) next_operator).printTuple(tuple,
+							printResult);
+				} else {
+					// STORE IN TEMP TABLE FOR NEXT OPERATOR
+					while (!write_block_ref.appendTuple(tuple)) {
+						new_relation.setBlock(new_relation.getNumOfBlocks(),
+								BLOCK_FOR_WRITING);
+						write_block_ref.clear();
+					}
 				}
 			}
 		}
 		// WRITE LAST BLOCK PENDING IN MEMORY If NOT EMPTY
-		if (next_operator != null && !write_block_ref.isEmpty()) {
-			new_relation.setBlock(new_relation.getNumOfBlocks(),
-					BLOCK_FOR_WRITING);
-			write_block_ref.clear();
-		}
+		if (!(next_operator instanceof ProjectionOperator)) {
+			if (next_operator != null && !write_block_ref.isEmpty()) {
+				new_relation.setBlock(new_relation.getNumOfBlocks(),
+						BLOCK_FOR_WRITING);
+				write_block_ref.clear();
+			}
+		} else
+			next_operator = null;
 		return new_relation_name;
 	}
 
