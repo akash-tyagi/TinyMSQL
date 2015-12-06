@@ -61,7 +61,7 @@ public class OnePassUtils {
         // Temp relation for one-pass join
         Schema schema = new Schema(temp_field_names, temp_field_types);
         Relation one_pass_temp_relation = dbManager.schema_manager.createRelation(r1.getRelationName() + "_" + r2.getRelationName(), schema);
-        
+
         dbManager.temporaryCreatedRelations.add(r1.getRelationName() + "_" + r2.getRelationName());
 
         // One-pass algorithm
@@ -74,6 +74,80 @@ public class OnePassUtils {
         }
 
         return one_pass_temp_relation;
+    }
+
+    public static Relation onePassRemoveDuplicate(DbManager dbManager,
+            String relation_name,
+            ArrayList<String> sortingCols,
+            boolean storeOutputToDisk) {
+
+        if (storeOutputToDisk) {
+            if (dbManager.schema_manager.getRelation(relation_name).getNumOfBlocks() >= dbManager.mem.getMemorySize()) {
+                return null;
+            }
+        }
+
+        if (!storeOutputToDisk) {
+            if (dbManager.schema_manager.getRelation(relation_name).getNumOfBlocks() > dbManager.mem.getMemorySize()) {
+                return null;
+            }
+        }
+
+        // Add the remaining columns of relation to sortingCols.
+        // If sortingCols == null, add all the columns of the relation to sortingCols
+        for (String field_name : dbManager.schema_manager.getRelation(relation_name).getSchema().getFieldNames()) {
+            if (!sortingCols.contains(field_name)) {
+                sortingCols.add(field_name);
+            }
+        }
+
+        Relation relation = dbManager.schema_manager.getRelation(relation_name);
+        // Copy relation to memory
+        int memIndex = 0;
+        for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+            relation.getBlock(i, memIndex++);
+        }
+
+        GeneralUtils.sortMainMemory(dbManager, sortingCols, relation.getNumOfBlocks());
+
+        if (storeOutputToDisk) {
+            Relation sorted_unique_relation = dbManager.schema_manager.createRelation("sorted_unique_" + relation_name, relation.getSchema());
+            dbManager.temporaryCreatedRelations.add("sorted_unique_" + relation_name);
+            Tuple t = dbManager.mem.getBlock(0).getTuple(0);
+            GeneralUtils.appendTupleToRelation(sorted_unique_relation,
+                    dbManager.mem, dbManager.mem.getMemorySize() - 1,
+                    t);
+            for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+                Block mb = dbManager.mem.getBlock(0);
+                ArrayList<Tuple> blockTuples = mb.getTuples();
+
+                for (Tuple t1 : blockTuples) {
+                    if (!t.toString().equals(t1.toString())) {
+                        t = t1;
+                        GeneralUtils.appendTupleToRelation(sorted_unique_relation,
+                                dbManager.mem, dbManager.mem.getMemorySize() - 1,
+                                t);
+                    }
+                }
+            }
+            return sorted_unique_relation;
+        } else {
+            Tuple t = dbManager.mem.getBlock(0).getTuple(0);
+            System.out.println(t);
+
+            for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+                Block mb = dbManager.mem.getBlock(0);
+                ArrayList<Tuple> blockTuples = mb.getTuples();
+
+                for (Tuple t1 : blockTuples) {
+                    if (!t.toString().equals(t1.toString())) {
+                        t = t1;
+                        System.out.println(t);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     // Note : r1 and r2 are not directly related to r1_block and r2_block

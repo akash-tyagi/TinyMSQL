@@ -4,6 +4,7 @@ import database.DbManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import storageManager.Block;
+import storageManager.Field;
 import storageManager.FieldType;
 import storageManager.MainMemory;
 import storageManager.Relation;
@@ -34,6 +35,7 @@ public class TwoPassUtils {
         ArrayList<FieldType> temp_field_types = new ArrayList<>();
         GeneralUtils.updateInfoForTempSchema(r1, r2, commonCols, temp_field_names, temp_field_types);
 
+        // For 1 pass
         int availableMemorySize;
         availableMemorySize = storeOutputToDisk ? dbManager.mem.getMemorySize() - 2 : dbManager.mem.getMemorySize() - 1;
 
@@ -41,10 +43,26 @@ public class TwoPassUtils {
             return OnePassUtils.onePassJoin(dbManager, relation_name1, relation_name2, commonCols, storeOutputToDisk);
         }
 
-        int firstRelBlockReq = r1.getNumOfBlocks() / dbManager.mem.getMemorySize();
-        int secondRelBlockReq = r2.getNumOfBlocks() / dbManager.mem.getMemorySize();
+        int firstRelBlockReq;
+        if ((r1.getNumOfBlocks() % dbManager.mem.getMemorySize()) == 0) {
+            firstRelBlockReq = (r1.getNumOfBlocks() / dbManager.mem.getMemorySize());
+        } else {
+            firstRelBlockReq = (r1.getNumOfBlocks() / dbManager.mem.getMemorySize()) + 1;
+        }
 
-        if (firstRelBlockReq + secondRelBlockReq + 1 > dbManager.mem.getMemorySize()) {
+        int secondRelBlockReq;
+        if ((r2.getNumOfBlocks() % dbManager.mem.getMemorySize()) == 0) {
+            secondRelBlockReq = (r2.getNumOfBlocks() / dbManager.mem.getMemorySize());
+        } else {
+            secondRelBlockReq = (r2.getNumOfBlocks() / dbManager.mem.getMemorySize()) + 1;
+        }
+
+        int minMemoryNeeded = firstRelBlockReq + secondRelBlockReq;
+        if (storeOutputToDisk) {
+            minMemoryNeeded = minMemoryNeeded + 1;
+        }
+
+        if (minMemoryNeeded > dbManager.mem.getMemorySize()) {
             return null;    // memory not enough for two pass algos
         }
 
@@ -55,21 +73,107 @@ public class TwoPassUtils {
         sortRelationForPhase1(dbManager, relation_name1, commonCols);
         sortRelationForPhase1(dbManager, relation_name2, commonCols);
 
-        ArrayList<Integer> r1Idx = new ArrayList<>();
-        ArrayList<Integer> r2Idx = new ArrayList<>();
+        // TODO start
+        // Check number of blocks left (total - (firstRelBlockReq + secondRelBlockReq + 1))
+        // Check if extras can be adjusted in them
+        int surplusBlockCount = dbManager.mem.getMemorySize() - minMemoryNeeded;
 
-        for (int i = 0; i < firstRelBlockReq; i++) {
-            r1Idx.add(i * dbManager.mem.getMemorySize());
+        // Read tuples to temp array for relation r1
+        ArrayList<TupleObject> tupleObjectArray1 = new ArrayList<>();
+
+        int relationTempSize = r1.getNumOfBlocks();
+        int currRelationIdx = 0;
+
+        while (relationTempSize > currRelationIdx) {
+            r1.getBlock(currRelationIdx, 0);
+            Block mb = dbManager.mem.getBlock(0);
+            ArrayList<Tuple> blockTuples = mb.getTuples();
+            GeneralUtils.addTuplesToArray(tupleObjectArray1, blockTuples, commonCols);
+            currRelationIdx++;
         }
 
-        for (int i = 0; i < secondRelBlockReq; i++) {
-            r2Idx.add(i * dbManager.mem.getMemorySize());
+        // Sort the array
+        Collections.sort(tupleObjectArray1);
+
+        // Read tuples to temp array for relation r2
+        ArrayList<TupleObject> tupleObjectArray2 = new ArrayList<>();
+
+        relationTempSize = r2.getNumOfBlocks();
+        currRelationIdx = 0;
+
+        while (relationTempSize > currRelationIdx) {
+            r2.getBlock(currRelationIdx, 0);
+            Block mb = dbManager.mem.getBlock(0);
+            ArrayList<Tuple> blockTuples = mb.getTuples();
+            GeneralUtils.addTuplesToArray(tupleObjectArray2, blockTuples, commonCols);
+            currRelationIdx++;
         }
 
-        while (!relationIsTraversed(r1Idx, dbManager.mem, r1) && !relationIsTraversed(r2Idx, dbManager.mem, r2)) {
+        // Sort the array
+        Collections.sort(tupleObjectArray2);
 
+        int idx1 = 0;
+        int idx2 = 0;
+
+        while (idx1 < tupleObjectArray1.size() && idx2 < tupleObjectArray2.size()) {
+            ArrayList<TupleObject> tempTOA1 = new ArrayList<>();
+            ArrayList<TupleObject> tempTOA2 = new ArrayList<>();
+
+            while ((idx1 < tupleObjectArray1.size() && idx2 < tupleObjectArray2.size())
+                    && (tupleObjectArray1.get(idx1).compareTo(tupleObjectArray2.get(idx2)) == 0)) {
+                tempTOA1.add(tupleObjectArray1.get(idx1));
+                tempTOA2.add(tupleObjectArray2.get(idx2));
+                idx1++;
+                idx2++;
+            }
+
+            // doJoin
+            int surplusBlocksReqRel1;
+            int tuplesPerBlockForRel1 = 8 / tupleObjectArray1.get(0).tuple.getNumOfFields();
+            if (tempTOA1.size() % tuplesPerBlockForRel1 == 0) {
+                surplusBlocksReqRel1 = tempTOA1.size() / tuplesPerBlockForRel1;
+            } else {
+                surplusBlocksReqRel1 = (tempTOA1.size() / tuplesPerBlockForRel1) + 1;
+            }
+
+            int surplusBlocksReqRel2;
+            int tuplesPerBlockForRel2 = 8 / tupleObjectArray2.get(0).tuple.getNumOfFields();
+            if (tempTOA2.size() % tuplesPerBlockForRel2 == 0) {
+                surplusBlocksReqRel2 = tempTOA2.size() / tuplesPerBlockForRel2;
+            } else {
+                surplusBlocksReqRel2 = (tempTOA2.size() / tuplesPerBlockForRel2) + 1;
+            }
+
+            if (surplusBlocksReqRel1 + surplusBlocksReqRel2 > surplusBlockCount) {
+                return null;
+            }
+
+            joinTOAData(dbManager.mem, r1, r2, tempTOA1, tempTOA2, two_pass_temp_relation, storeOutputToDisk, commonCols);
+
+            if (idx1 < tupleObjectArray1.size() && idx2 < tupleObjectArray2.size()) {
+                if (tupleObjectArray1.get(idx1).compareTo(tupleObjectArray2.get(idx2)) > 0) {
+                    idx2++;
+                } else if (tupleObjectArray1.get(idx1).compareTo(tupleObjectArray2.get(idx2)) < 0) {
+                    idx1++;
+                }
+            }
         }
 
+        // Also implement normal join - simple
+//        ArrayList<Integer> r1Idx = new ArrayList<>();
+//        ArrayList<Integer> r2Idx = new ArrayList<>();
+//
+//        for (int i = 0; i < firstRelBlockReq; i++) {
+//            r1Idx.add(i * dbManager.mem.getMemorySize());
+//        }
+//
+//        for (int i = 0; i < secondRelBlockReq; i++) {
+//            r2Idx.add(i * dbManager.mem.getMemorySize());
+//        }
+//
+//        while (!relationIsTraversed(r1Idx, dbManager.mem, r1) && !relationIsTraversed(r2Idx, dbManager.mem, r2)) {
+//
+//        }
         return two_pass_temp_relation;
     }
 
@@ -168,8 +272,8 @@ public class TwoPassUtils {
         return null;
     }
 
-    // In case we need sorting only for duplicat removal i.e no ORDER BY i.e sortingCols is empty
-    // don't pass sortingCols = null, else pass sortingCols = new ArrayList<String>();
+    // In case we need sorting only for duplicate removal i.e no ORDER BY i.e sortingCols is empty
+    // don't pass sortingCols = null, instead, pass sortingCols = new ArrayList<String>();
     public static Relation twoPassRemoveDuplicate(DbManager dbManager,
             String relation_name,
             ArrayList<String> sortingCols,
@@ -314,6 +418,71 @@ public class TwoPassUtils {
             }
         }
         return true;
+    }
+
+    private static void joinTOAData(MainMemory mem,
+            Relation r1,
+            Relation r2,
+            ArrayList<TupleObject> tempTOA1,
+            ArrayList<TupleObject> tempTOA2,
+            Relation two_pass_temp_relation,
+            boolean storeOutputToDisk,
+            ArrayList<String> commonCols) {
+
+        for (TupleObject to1 : tempTOA1) {
+            for (TupleObject to2 : tempTOA2) {
+                Tuple t1 = to1.tuple;
+                Tuple t2 = to2.tuple;
+                boolean toInclude = true;
+                Tuple tuple = two_pass_temp_relation.createTuple();
+                for (int i = 0; i < t1.getNumOfFields(); i++) {
+                    Field f1 = t1.getField(i);
+                    String field_name = t1.getSchema().getFieldName(i);
+                    if (commonCols.contains(field_name)) {
+                        Field f2 = t2.getField(field_name);
+                        if (f1.toString().equals(f2.toString())) {
+                            if (f1.type == FieldType.INT) {
+                                tuple.setField(r1.getRelationName() + "_" + r2.getRelationName() + "." + field_name, f1.integer);
+                            } else {
+                                tuple.setField(r1.getRelationName() + "_" + r2.getRelationName() + "." + field_name, f1.str);
+                            }
+                        } else {
+                            toInclude = false;
+                            break;
+                        }
+                    } else {
+                        if (f1.type == FieldType.INT) {
+                            tuple.setField(r1.getRelationName() + "." + field_name, f1.integer);
+                        } else {
+                            tuple.setField(r1.getRelationName() + "." + field_name, f1.str);
+                        }
+                    }
+                }
+
+                if (toInclude) {
+                    for (int i = 0; i < t2.getNumOfFields(); i++) {
+                        Field f2 = t2.getField(i);
+                        String field_name = t2.getSchema().getFieldName(i);
+                        if (!commonCols.contains(field_name)) {
+                            if (f2.type == FieldType.INT) {
+                                tuple.setField(r2.getRelationName() + "." + field_name, f2.integer);
+                            } else {
+                                tuple.setField(r2.getRelationName() + "." + field_name, f2.str);
+                            }
+                        }
+                    }
+
+                    if (storeOutputToDisk) {
+                        GeneralUtils.appendTupleToRelation(two_pass_temp_relation, mem, mem.getMemorySize() - 1, tuple);
+                    } else {
+                        System.out.println(tuple);
+                    }
+
+                }
+
+            }
+        }
+
     }
 
 }
