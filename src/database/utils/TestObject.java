@@ -17,12 +17,18 @@ public class TestObject {
 //                                                                 new ArrayList<>(Arrays.asList("homework1", "grade")));
 //            System.out.println(temp);
         
-        String s1 = "abc";
-        String s2 = "a" + "bc";
+//        String s1 = "abc";
+//        String s2 = "a" + "bc";
+//        
+//        if(s1 == s2)
+//            System.out.println("Hello");
+//        else
+//            System.out.println("Not Hello");
         
-        if(s1 == s2)
-            System.out.println("Hello");
-        else
-            System.out.println("Not Hello");
+        int i = -3;
+        int j = 3;
+        
+        System.out.println(i);
+        System.out.println(j);
     }
 }

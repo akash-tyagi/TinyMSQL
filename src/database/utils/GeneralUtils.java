@@ -214,7 +214,7 @@ public class GeneralUtils {
         // Copy first relations to memory block by block
         for (int i = 0; i < r1.getNumOfBlocks(); i++) {
             r1.getBlock(i, 0);
-        // join algorithm
+            // join algorithm
 
             for (int j = 0; j < r2.getNumOfBlocks(); j++) {
                 r2.getBlock(j, 1);
@@ -228,9 +228,25 @@ public class GeneralUtils {
     }
 
     public static void destroyTempRelations(DbManager dbManager) {
-        for(String old_temp_relation : dbManager.temporaryCreatedRelations){
+        for (String old_temp_relation : dbManager.temporaryCreatedRelations) {
             dbManager.schema_manager.deleteRelation(old_temp_relation);
         }
+    }
+
+    public static boolean projectedColumnsMatch(Tuple t, Tuple t1, ArrayList<String> projectionCols) {
+        if (projectionCols.isEmpty()) {  // THis is for mimicing that all the columns are projected columns
+            return t.toString().equals(t1.toString());
+        }
+
+        for (String projectionCol : projectionCols) {
+            String str1 = t.getField(projectionCol).toString();
+            String str2 = t1.getField(projectionCol).toString();
+            if (!str1.equals(str2)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
