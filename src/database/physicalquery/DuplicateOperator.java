@@ -37,6 +37,9 @@ public class DuplicateOperator extends OperatorBase
                     .getNumOfBlocks();
             if (blocks <= GlobalVariable.TOTAL_DATA_BLOCKS) {
                 System.out.println("CALLING ONE PASS DUPLICATE");
+                for (String select : selectList) {
+					System.out.println(select);
+				}
                 onePassDuplicate(printResult);
             } else {
                 System.out.println("TWO PASSSSSSS");

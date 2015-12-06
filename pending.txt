@@ -38,7 +38,7 @@ union operation is needed, so no selection optimization is performed
 5.(DONE)Right product operation table order for first operation to fit in memory
 6.Remove extra tables formed during project
 7.Avoid writing 
-8. HANDLE Case SELECT sid, course.grade FROM course
+8. (DONE) HANDLE Case SELECT sid, course.grade FROM course
 # check for the case of ordering of tables with projection, 
 # projection before duplicate removal
 # duplicate removal before projection
