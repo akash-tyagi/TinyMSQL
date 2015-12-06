@@ -1,0 +1,29 @@
+CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
+Execution time: = 0.0 ms
+Disk I/Os = 0
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 0, 100, 100, "E")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, grade, exam, project, homework) VALUES (3, "B", 100, 100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course
+Execution time: = 522.41 ms
+Disk I/Os = 7
+
+SELECT * FROM course
+1	99	100	100	"A"	
+2	0	100	100	"E"	
+3	100	100	100	"B"	
+3	100	100	100	"B"	
+3	100	100	100	"B"	
+Execution time: = 373.15 ms
+Disk I/Os = 5
+

@@ -45,14 +45,18 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 		}
 	}
 
-	private void tuplesToValueList() {
-		for (Tuple tuple : res_tuples) {
-			for (int i = 0; i < tuple.getNumOfFields(); i++) {
-				valueList.add(tuple.getField(i).toString());
-			}
-			execute();
-			valueList = new ArrayList<>();
-		}
+	private void insertTupleList() {
+		Relation relation_reference = dbManager.schema_manager
+				.getRelation(tableName);
+		GeneralUtils.appendTuplesToRelation(relation_reference, dbManager.mem,
+				0, res_tuples);
+//		for (Tuple tuple : res_tuples) {
+//			for (int i = 0; i < tuple.getNumOfFields(); i++) {
+//				valueList.add(tuple.getField(i).toString());
+//			}
+//			execute();
+//			valueList = new ArrayList<>();
+//		}
 	}
 
 	private void parseTuples(String tuples) {
@@ -115,7 +119,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 		if (res_tuples == null)
 			execute();
 		else
-			tuplesToValueList();
+			insertTupleList();
 	}
 
 	@Override
