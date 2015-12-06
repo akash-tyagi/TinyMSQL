@@ -227,4 +227,10 @@ public class GeneralUtils {
         return temp_relation;
     }
 
+    public static void destroyTempRelations(DbManager dbManager) {
+        for(String old_temp_relation : dbManager.temporaryCreatedRelations){
+            dbManager.schema_manager.deleteRelation(old_temp_relation);
+        }
+    }
+
 }
