@@ -52,15 +52,7 @@ public class ProjectionOperator extends OperatorBase
 	private void printMemBlock(Block block, boolean printResult) {
 		List<Tuple> tuples = block.getTuples();
 		for (Tuple tuple : tuples) {
-			if (printResult) {
-				for (String col : selectList) {
-					System.out.print(tuple.getField(col).toString() + "\t");
-					writer.print(tuple.getField(col).toString() + "\t");
-				}
-				System.out.println("");
-				writer.println();
-			}
-			res_tuples.add(tuple);
+			printTuple(tuple, printResult);
 		}
 	}
 

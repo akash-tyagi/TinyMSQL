@@ -286,6 +286,7 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
+		dbManager.temporaryCreatedRelations.add(join_relation_name);
 		List<Relation> relations = new ArrayList<Relation>();
 		relations.add(rel1);
 		relations.add(rel2);
