@@ -234,6 +234,7 @@ public class GeneralUtils {
     }
 
     public static boolean projectedColumnsMatch(Tuple t, Tuple t1, ArrayList<String> projectionCols) {
+        
         if (projectionCols.isEmpty()) {  // THis is for mimicing that all the columns are projected columns
             return t.toString().equals(t1.toString());
         }
@@ -245,8 +246,17 @@ public class GeneralUtils {
                 return false;
             }
         }
-
+        
         return true;
+    }
+
+    public static boolean projectedColumnsDataExists(Tuple t, ArrayList<Tuple> myMap, ArrayList<String> projectionCols) {
+        for(Tuple t1 : myMap){
+            if(projectedColumnsMatch(t, t1, projectionCols)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

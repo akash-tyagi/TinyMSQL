@@ -100,7 +100,7 @@ public class DuplicateOperator extends OperatorBase
             return;
         }
 
-        ArrayList<String> projectionCols = (ArrayList<String>) sortingCols.clone();
+        ArrayList<String> projectionCols = (ArrayList<String>) selectList;
 
 		// Add the remaining columns of relation to sortingCols.
         // If sortingCols == null, add all the columns of the relation to
@@ -148,10 +148,13 @@ public class DuplicateOperator extends OperatorBase
 
         Tuple t = tupleObjectArray.get(0).tuple;
         sendTupleToProjection(printResult, t);
+                ArrayList<Tuple> myMap = new ArrayList<>();
+        myMap.add(t);
         for (TupleObject tupleObject : tupleObjectArray) {
-            if (!GeneralUtils.projectedColumnsMatch(t, tupleObject.tuple, projectionCols)) {
+            if (!GeneralUtils.projectedColumnsDataExists(tupleObject.tuple, myMap, projectionCols)) {
                 //if (!t.toString().equals(tupleObject.tuple.toString())) {
                 t = tupleObject.tuple;
+                myMap.add(t);
                 sendTupleToProjection(printResult, t);
             }
         }
@@ -185,7 +188,7 @@ public class DuplicateOperator extends OperatorBase
             return;
         }
 
-        ArrayList<String> projectionCols = (ArrayList<String>) sortingCols.clone();
+        ArrayList<String> projectionCols = (ArrayList<String>) selectList;
 
 		// Add the remaining columns of relation to sortingCols.
         // If sortingCols == null, add all the columns of the relation to
@@ -209,16 +212,18 @@ public class DuplicateOperator extends OperatorBase
 
         Tuple t = dbManager.mem.getBlock(0).getTuple(0);
         sendTupleToProjection(printResult, t);
+        ArrayList<Tuple> myMap = new ArrayList<>();
+        myMap.add(t);
         for (int i = 0; i < relation.getNumOfBlocks(); i++) {
             Block mb = dbManager.mem.getBlock(i);
             ArrayList<Tuple> blockTuples = mb.getTuples();
 
             for (Tuple t1 : blockTuples) {
-                if (!GeneralUtils.projectedColumnsMatch(t, t1, projectionCols)) {
+                if (!GeneralUtils.projectedColumnsDataExists(t1, myMap, projectionCols)) {
                     //if (!t.toString().equals(t1.toString())) {
                     t = t1;
+                    myMap.add(t);
                     sendTupleToProjection(printResult, t);
-
                 }
             }
         }

@@ -6,6 +6,7 @@ INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 50, 90
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 99, 100, "E")
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (17, 100, 100, 100, "A")
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99, "B")
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99, "C")
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (4, 100, 100, 97, "D")
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (5, 100, 100, 66, "A")
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (6, 100, 100, 65, "B")
@@ -84,4 +85,6 @@ INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-SELECT * FROM course, course2 WHERE course.sid = course2.sid
+#SELECT * FROM course, course2 WHERE course.sid = course2.sid
+SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
+#SELECT DISTINCT grade FROM course
