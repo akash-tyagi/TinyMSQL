@@ -34,6 +34,7 @@ union operation is needed, so no selection optimization is performed
 	do bulk insert to improve I/O
 2.Product operation with results in main memory and do not write in disk
 3.Check for other places where we can perform the entire operation in table
-4.Write results in a file
+4.(DONE)Write results in a file
 5.Right product operation table order for first operation to fit in memory
 6.Remove extra tables formed during project
+7.Avoid writing 

@@ -2,9 +2,9 @@ package database.physicalquery;
 
 import java.io.PrintWriter;
 import java.util.List;
+
 import database.DbManager;
 import database.GlobalVariable;
-import jdk.nashorn.internal.objects.Global;
 import storageManager.Block;
 import storageManager.Relation;
 import storageManager.Tuple;
