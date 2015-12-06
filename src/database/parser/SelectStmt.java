@@ -50,7 +50,21 @@ public class SelectStmt extends StmtBase implements StmtInterface {
 			System.out.println("ERROR ::: SELECT statement: Invalid:" + query);
 			System.exit(1);
 		}
-		// execute();
+		simplifySelectList();
+	}
+
+	// remove table name from select list if only 1 table in query
+	private void simplifySelectList() {
+		if (tableList.size() == 1) {
+			List<String> selectList2 = new ArrayList<String>();
+			for (String select : selectList) {
+				if (select.contains("."))
+					selectList2.add(select.split("\\.")[1]);
+				else
+					selectList2.add(select);
+			}
+			selectList = selectList2;
+		}
 	}
 
 	private void parseFromClause(String rawFromClause) {

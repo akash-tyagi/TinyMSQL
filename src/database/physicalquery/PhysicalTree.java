@@ -2,6 +2,7 @@ package database.physicalquery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import database.DbManager;
@@ -66,23 +67,24 @@ public class PhysicalTree {
 		}
 	}
 
-	private OperatorInterface constructProductTree(List<String> tables) {
+	private OperatorInterface constructProductTree(List<String> join_tables) {
 		OperatorInterface head = null, currOperator = null, nextOperator = null;
 		List<Integer> tableSizes = new ArrayList<Integer>();
-		// for (String table : join_tables) {
-		// int blocks = dbManager.schema_manager.getRelation(table)
-		// .getNumOfBlocks();
-		// tableSizes.add(blocks);
-		// }
-		// int size = join_tables.size();
-		// List<String> tables = new ArrayList<String>();
-		// for (int i = 0; i < size; i++) {
-		// int min = Collections.min(tableSizes);
-		// int index = tableSizes.indexOf(min);
-		// tables.add(join_tables.remove(index));
-		// tableSizes.remove((Integer) min);
-		//
-		// }
+		for (String table : join_tables) {
+			int blocks = dbManager.schema_manager.getRelation(table)
+					.getNumOfTuples();
+			tableSizes.add(blocks);
+		}
+		int size = join_tables.size();
+		List<String> tables = new ArrayList<String>();
+		for (int i = 0; i < size; i++) {
+			int min = Collections.min(tableSizes);
+			System.out.println("min size:" + min);
+			int index = tableSizes.indexOf((Integer) min);
+			System.out.println("Index:" + index);
+			tables.add(join_tables.remove(index));
+			tableSizes.remove((Integer) min);
+		}
 
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);

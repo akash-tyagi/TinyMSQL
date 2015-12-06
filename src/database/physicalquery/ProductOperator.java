@@ -93,6 +93,8 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
+		dbManager.temporaryCreatedRelations.add(join_relation_name);
+
 		List<Relation> relations = new ArrayList<Relation>();
 		relations.add(rel1);
 		relations.add(rel2);
@@ -195,6 +197,7 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 
 		Relation join_relation = getJoinedRelSchema(join_relation_name,
 				relations);
+		dbManager.temporaryCreatedRelations.add(join_relation_name);
 		int total_tuples = 0;
 		int lastWriteBlock = 0;
 		Tuple join_tuple = null;
@@ -286,6 +289,7 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
+		dbManager.temporaryCreatedRelations.add(join_relation_name);
 		List<Relation> relations = new ArrayList<Relation>();
 		relations.add(rel1);
 		relations.add(rel2);

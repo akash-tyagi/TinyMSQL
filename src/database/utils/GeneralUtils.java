@@ -231,6 +231,7 @@ public class GeneralUtils {
         for (String old_temp_relation : dbManager.temporaryCreatedRelations) {
             dbManager.schema_manager.deleteRelation(old_temp_relation);
         }
+        dbManager.temporaryCreatedRelations.clear();
     }
 
     public static boolean projectedColumnsMatch(Tuple t, Tuple t1, ArrayList<String> projectionCols) {

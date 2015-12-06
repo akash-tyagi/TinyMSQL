@@ -35,6 +35,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		// code for storing all the results in main memory and pass on
 		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
 			int endBlock = readIntoMemBlocks(rel, printResult);
+			System.out.println("Selection done");
 			if (next_operator != null)
 				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
 		}
@@ -77,7 +78,8 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				}
 				// STORE IN MEMORY FOR NEXT OPERATOR
-				while (!write_block_ref.appendTuple(tuple)) {
+				while (write_block_ref.isFull() == true
+						|| write_block_ref.appendTuple(tuple) == false) {
 					lastWriteBlock++;
 					write_block_ref = dbManager.mem.getBlock(lastWriteBlock);
 					write_block_ref.clear();
@@ -90,6 +92,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 	private String selectBlockByBlock(Relation rel, boolean printResult) {
 		// CREATING TEMP TABLE FOR SELECTION RESULT
 		String new_relation_name = "select_" + relation_name;
+		dbManager.temporaryCreatedRelations.add(new_relation_name);
 		Relation new_relation = dbManager.schema_manager.createRelation(
 				new_relation_name,
 				dbManager.schema_manager.getSchema(relation_name));
@@ -118,7 +121,8 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 							printResult);
 				} else {
 					// STORE IN TEMP TABLE FOR NEXT OPERATOR
-					while (!write_block_ref.appendTuple(tuple)) {
+					while (write_block_ref.isFull() == true
+							|| write_block_ref.appendTuple(tuple) == false) {
 						new_relation.setBlock(new_relation.getNumOfBlocks(),
 								BLOCK_FOR_WRITING);
 						write_block_ref.clear();
