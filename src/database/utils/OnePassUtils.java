@@ -153,7 +153,7 @@ public class OnePassUtils {
     // Note : r1 and r2 are not directly related to r1_block and r2_block
     // r1 and r2 are used just to define the order in column names
     // r1_block and r2_block are related to firstRel and secondRel
-    private static void joinBlocksData(MainMemory mem,
+    public static void joinBlocksData(MainMemory mem,
             Relation r1,
             Relation r2,
             Block r1_block,
