@@ -18,6 +18,7 @@ public class Parser {
 
 	public StmtInterface parse(String query) {
 		GeneralUtils.cleanMainMemory(dbManager.mem);
+                GeneralUtils.destroyTempRelations(dbManager);
 		Pattern pattern = Pattern.compile("(DROP|CREATE|DELETE|INSERT|SELECT)");
 		Matcher matcher = pattern.matcher(query);
 		if (!matcher.find())
