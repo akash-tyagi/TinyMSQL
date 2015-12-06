@@ -2,10 +2,7 @@ package database.physicalquery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import javax.swing.plaf.synth.SynthScrollBarUI;
 
 import database.DbManager;
 import database.logicaloptimization.LogicalQuery;
@@ -44,8 +41,12 @@ public class PhysicalTree {
 		}
 
 		if (selectStmt.isDistinct) {
+			List<String> select_list = new ArrayList<String>();
+			if (!selectStmt.selectList.get(0).equals("*"))
+				select_list = selectStmt.selectList;
+
 			nextOperator = new DuplicateOperator(dbManager, writer,
-					selectStmt.orderBy);
+					selectStmt.orderBy, select_list);
 			currOperator.setNextOperator(nextOperator);
 			currOperator = nextOperator;
 		} else if (selectStmt.orderBy != null) {
@@ -82,7 +83,7 @@ public class PhysicalTree {
 		// tableSizes.remove((Integer) min);
 		//
 		// }
-		
+
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);

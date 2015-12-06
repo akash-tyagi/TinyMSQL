@@ -16,12 +16,14 @@ import storageManager.Tuple;
 
 public class DuplicateOperator extends OperatorBase
 		implements OperatorInterface {
-	String column_name;
+	String sorting_column_name;
+	public List<String> selectList;
 
 	public DuplicateOperator(DbManager dbManager, PrintWriter writer,
-			String column_name) {
+			String column_name, List<String> selectList) {
 		super(dbManager, writer);
-		this.column_name = column_name;
+		this.sorting_column_name = column_name;
+		this.selectList = selectList;
 	}
 
 	@Override
@@ -45,8 +47,8 @@ public class DuplicateOperator extends OperatorBase
 
 	private void duplicateRemovalInMemory(boolean printResult) {
 		ArrayList<String> sortingCols = new ArrayList<>();
-		if (column_name != null)
-			sortingCols.add(column_name);
+		if (sorting_column_name != null)
+			sortingCols.add(sorting_column_name);
 
 		for (String field_name : dbManager.mem.getBlock(start_block).getTuple(0)
 				.getSchema().getFieldNames()) {
@@ -80,8 +82,8 @@ public class DuplicateOperator extends OperatorBase
 
 	private void duplicateRemovalDisk(boolean printResult) {
 		ArrayList<String> columns = new ArrayList<>();
-		if (column_name != null)
-			columns.add(column_name);
+		if (sorting_column_name != null)
+			columns.add(sorting_column_name);
 		twoPassRemoveDuplicate(dbManager, columns, printResult);
 	}
 
@@ -145,20 +147,18 @@ public class DuplicateOperator extends OperatorBase
 
 	private void sendTupleToProjection(boolean printResult, Tuple t) {
 		if (next_operator != null) {
-			((ProjectionOperator) next_operator).printTuple(t,
-					printResult);
+			((ProjectionOperator) next_operator).printTuple(t, printResult);
 		} else if (printResult) {
 			System.out.println(t);
 			writer.println(t);
 		}
 		res_tuples.add(t);
 	}
-	
 
 	private void onePassDuplicate(boolean printResult) {
 		ArrayList<String> columns = new ArrayList<String>();
-		if (column_name != null)
-			columns.add(column_name);
+		if (sorting_column_name != null)
+			columns.add(sorting_column_name);
 		onePassRemoveDuplicate(dbManager, columns, printResult);
 	}
 
