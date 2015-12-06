@@ -35,13 +35,11 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 		Relation rel1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation rel2 = dbManager.schema_manager.getRelation(relation_name2);
 		if (isReadFromMem) {
-			System.out.println("22222222222222");
 			String rel = productOperation2(rel1, rel2, printResult);
 			if (next_operator != null)
 				next_operator.setRelationName(rel);
 		} else {
 			if (isProductMemStorable(rel1, rel2)) {
-				System.out.println("11111111111111111");
 				int endBlock = inMemProductOperation(rel1, rel2, printResult);
 				if (next_operator != null)
 					next_operator.setBlocksNumbers(block_for_writing, endBlock);

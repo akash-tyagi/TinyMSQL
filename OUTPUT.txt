@@ -34,11 +34,15 @@ INSERT INTO t (a, c) VALUES (102, 102)
 Execution time: = 149.26 ms
 Disk I/Os = 2
 
-SELECT * FROM r, s, t WHERE r.a = 0
+SELECT * FROM r, s, t
 0	0	101	101	102	102	
 0	0	101	101	102	102	
 0	0	101	101	102	102	
 0	0	101	101	102	102	
-Execution time: = 298.52 ms
-Disk I/Os = 4
+1	1	101	101	102	102	
+1	1	101	101	102	102	
+1	1	101	101	102	102	
+1	1	101	101	102	102	
+Execution time: = 522.41 ms
+Disk I/Os = 7
 

@@ -1,6 +1,8 @@
 package database.physicalquery;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import database.DbManager;
 import database.logicaloptimization.LogicalQuery;
@@ -58,8 +60,23 @@ public class PhysicalTree {
 		}
 	}
 
-	private OperatorInterface constructProductTree(List<String> tables) {
+	private OperatorInterface constructProductTree(List<String> join_tables) {
 		OperatorInterface head = null, currOperator = null, nextOperator = null;
+		List<Integer> tableSizes = new ArrayList<Integer>();
+		for (String table : join_tables) {
+			int blocks = dbManager.schema_manager.getRelation(table)
+					.getNumOfBlocks();
+			tableSizes.add(blocks);
+		}
+		int size = join_tables.size();
+		List<String> tables = new ArrayList<String>();
+
+		for (int i = 0; i < size; i++) {
+			int min = Collections.min(tableSizes);
+			int index = tableSizes.indexOf(min);
+			tables.add(join_tables.remove(index));
+		}
+
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
