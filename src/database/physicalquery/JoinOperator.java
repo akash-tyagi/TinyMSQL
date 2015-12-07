@@ -275,6 +275,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 			if (surplusBlocksReqRel1
 					+ surplusBlocksReqRel2 > surplusBlockCount) {
+                            dbManager.schema_manager.deleteRelation(two_pass_temp_relation.getRelationName());
+                            dbManager.temporaryCreatedRelations.remove(two_pass_temp_relation.getRelationName());
 				return null;
 			}
 

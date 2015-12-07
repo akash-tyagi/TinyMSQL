@@ -1,0 +1,152 @@
+CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
+Execution time: = 0.0 ms
+Disk I/Os = 0
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (3, 100, 100, 98, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (3, 100, 69, 64, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 50, 90, "E")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 99, 100, "E")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (17, 100, 100, 100, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99, "B")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+CREATE TABLE course2 (sid INT, exam INT, grade STR20)
+Execution time: = 0.0 ms
+Disk I/Os = 0
+
+INSERT INTO course2 (sid, exam, grade) VALUES (2, 99, "B")
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO course2 (sid, exam, grade) VALUES (3, 98, "C")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (4, 97, "D")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (6, 65, "B")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO course2 (sid, exam, grade) VALUES (8, 0, "A")
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+SELECT * FROM course, course2 WHERE course.sid = course2.sid
+Execution time: = 17443.479999999934 ms
+Disk I/Os = 240
+
