@@ -147,6 +147,6 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid
-Execution time: = 17443.479999999934 ms
-Disk I/Os = 240
+Execution time: = 12313.949999999966 ms
+Disk I/Os = 165
 
