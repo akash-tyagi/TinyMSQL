@@ -132,36 +132,32 @@ public class GeneralUtils {
 
 	public static void appendTuplesToRelation(Relation relation_reference,
 			MainMemory mem, int memory_block_index, List<Tuple> tuples) {
-		Block block_reference = mem.getBlock(memory_block_index);
-		block_reference.clear();
+		Block block_reference = null;
 		int i = 0, size = tuples.size();
 		Tuple tuple = null;
-
 		if (relation_reference.getNumOfBlocks() != 0) {
-			System.out.println("INSIDE");
 			relation_reference.getBlock(relation_reference.getNumOfBlocks() - 1,
 					memory_block_index);
+			block_reference = mem.getBlock(memory_block_index);
 			while (block_reference.isFull() == false && i < size) {
 				tuple = tuples.get(i++);
-				System.out.println("FULL" + tuple);
 				block_reference.appendTuple(tuple);
 			}
-			relation_reference.setBlock(relation_reference.getNumOfBlocks() - 1,
-					memory_block_index);
+			if (i > 0)
+				relation_reference.setBlock(
+						relation_reference.getNumOfBlocks() - 1,
+						memory_block_index);
 			block_reference.clear();
 		}
-		System.out.println(relation_reference.getNumOfBlocks());
 		while (i < size) {
+			block_reference = mem.getBlock(memory_block_index);
+			block_reference.clear();
 			while (block_reference.isFull() == false && i < size) {
 				tuple = tuples.get(i++);
-				System.out.println("Appending:" + tuple);
 				block_reference.appendTuple(tuple);
 			}
-			System.out.println(relation_reference.getNumOfBlocks());
-			;
 			relation_reference.setBlock(relation_reference.getNumOfBlocks(),
 					memory_block_index);
-			block_reference.clear();
 		}
 	}
 
@@ -294,22 +290,22 @@ public class GeneralUtils {
 
 		return true;
 	}
-	
+
 	public static int tupleBiggerThan(Tuple t, Tuple t1,
 			ArrayList<String> projectionCols) {
 
-//		if (projectionCols.isEmpty()) { 
-//			return t.toString().equals(t1.toString());
-//		}
+		// if (projectionCols.isEmpty()) {
+		// return t.toString().equals(t1.toString());
+		// }
 
 		for (String projectionCol : projectionCols) {
-			Field f =  t.getField(projectionCol);
-			Field f1 =  t1.getField(projectionCol);
-			if(f.type == FieldType.INT){
-				if(f.integer != f1.integer){
+			Field f = t.getField(projectionCol);
+			Field f1 = t1.getField(projectionCol);
+			if (f.type == FieldType.INT) {
+				if (f.integer != f1.integer) {
 					return f.integer - f1.integer;
 				}
-			}else{
+			} else {
 				if (!f.str.equals(f1.str)) {
 					return f.str.compareTo(f1.str);
 				}
@@ -317,7 +313,7 @@ public class GeneralUtils {
 		}
 
 		return 0;
-	}	
+	}
 
 	public static boolean projectedColumnsDataExists(Tuple t,
 			ArrayList<Tuple> myMap, ArrayList<String> projectionCols) {

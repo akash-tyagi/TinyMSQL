@@ -39,7 +39,7 @@ union operation is needed, so no selection optimization is performed
 7.Avoid writing 
 8. (DONE) HANDLE Case SELECT sid, course.grade FROM course
 # (DONE)check for the case of ordering of tables with projection, 
-# projection before duplicate removal
+# (DONE) projection before duplicate removal
 # (DONE)duplicate removal before projection
 # check for other condition when to avoid join 
 # Distinct move ahead of join (optional)

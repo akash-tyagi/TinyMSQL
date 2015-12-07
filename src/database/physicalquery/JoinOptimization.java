@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.GlobalVariable;
@@ -156,31 +158,30 @@ public class JoinOptimization {
 		}
 	}
 
-	public void generateJoinColumns(String query, List<String> tables) {
+	public boolean generateJoinColumns(String query, List<String> tables) {
 		join_columns_map = new HashMap<>();
 		if (query == null)
-			return;
-
+			return false;
 		for (int i = 0; i < tables.size() - 1; i++) {
 			for (int j = i + 1; j < tables.size(); j++) {
 				String table1 = tables.get(i);
 				String table2 = tables.get(j);
+				Pattern pattern1;
+				Pattern pattern2;
+				if (!isJoinable(query, table1, table2))
+					return false;
 				List<String> field_names1 = dbManager.schema_manager
 						.getRelation(table1).getSchema().getFieldNames();
 				field_names1.retainAll(dbManager.schema_manager
 						.getRelation(table2).getSchema().getFieldNames());
 				List<String> join_columns = new ArrayList<>();
 				for (String field_name : field_names1) {
-					String pat1 = table1 + "." + field_name + " = " + table2
-							+ "." + field_name;
-					String pat2 = table2 + "." + field_name + " = " + table1
-							+ "." + field_name;
-					String pat3 = table1 + "." + field_name + "=" + table2 + "."
-							+ field_name;
-					String pat4 = table2 + "." + field_name + "=" + table1 + "."
-							+ field_name;
-					if (query.contains(pat1) || query.contains(pat2)
-							|| query.contains(pat3) || query.contains(pat4)) {
+					pattern1 = Pattern.compile(table1 + "\\." + field_name
+							+ "\\s*=\\s*" + table2 + "\\." + field_name);
+					pattern2 = Pattern.compile(table2 + "\\." + field_name
+							+ "\\s*=\\s*" + table1 + "\\." + field_name);
+					if (pattern1.matcher(query).find()
+							|| pattern2.matcher(query).find()) {
 						join_columns.add(field_name);
 					}
 				}
@@ -195,6 +196,27 @@ public class JoinOptimization {
 				}
 			}
 		}
+		return true;
+	}
+
+	private boolean isJoinable(String query, String table1, String table2) {
+		Pattern pattern1, pattern2;
+		pattern1 = Pattern.compile(table1 + "\\.[a-z][a-z0-9]*" + "\\s*>\\s*"
+				+ table2 + "\\.[a-z][a-z0-9]*");
+		pattern2 = Pattern.compile(table2 + "\\.[a-z][a-z0-9]*" + "\\s*>\\s*"
+				+ table1 + "\\.[a-z][a-z0-9]*");
+		if (pattern1.matcher(query).find() || pattern2.matcher(query).find()) {
+			return false;
+		}
+
+		pattern1 = Pattern.compile(table1 + "\\.[a-z][a-z0-9]*" + "\\s*<\\s*"
+				+ table2 + "\\.[a-z][a-z0-9]*");
+		pattern2 = Pattern.compile(table2 + "\\.[a-z][a-z0-9]*" + "\\s*<\\s*"
+				+ table1 + "\\.[a-z][a-z0-9]*");
+		if (pattern1.matcher(query).find() || pattern2.matcher(query).find()) {
+			return false;
+		}
+		return true;
 	}
 
 	public List<String> getJoinColumns(String table1, String table2) {
@@ -223,4 +245,5 @@ public class JoinOptimization {
 			}
 		}
 	}
+
 }
