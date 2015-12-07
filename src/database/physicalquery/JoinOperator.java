@@ -40,14 +40,18 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		System.out.println(dbManager.schema_manager.getSchema(relation_name2));
 
 		System.out.println("Trying one pass");
-		Relation rel = onePassJoin(false);
+		Relation rel = onePassJoin(true);
 		if (rel == null) {
 			System.out.println("Two pass join");
-			rel = twoPassJoin(false);
+			rel = twoPassJoin(true);
 		}
 		if (rel == null) {
 			System.err.println("Simple Join");
-			rel = simpleJoin(false);
+			rel = simpleJoin(true);
+		}
+		if (next_operator != null) {
+			next_operator.setRelationName(rel.getRelationName());
+			next_operator.execute(printResult);
 		}
 		return res_tuples;
 	}
@@ -502,7 +506,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					}
 
 				}
-
 			}
 		}
 	}
