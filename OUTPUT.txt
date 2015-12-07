@@ -502,7 +502,7 @@ INSERT INTO t (a, c) VALUES (102, 102)
 Execution time: = 149.26 ms
 Disk I/Os = 2
 
-SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
-Execution time: = 22146.050000000017 ms
-Disk I/Os = 307
+SELECT * FROM r, t WHERE r.a=t.a 
+Execution time: = 7154.950000000006 ms
+Disk I/Os = 101
 

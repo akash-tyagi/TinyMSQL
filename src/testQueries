@@ -124,4 +124,4 @@ INSERT INTO t (a, c) VALUES (102, 102)
 INSERT INTO t (a, c) VALUES (102, 102)
 INSERT INTO t (a, c) VALUES (102, 102)
 INSERT INTO t (a, c) VALUES (102, 102)
-SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
+SELECT * FROM r, t WHERE r.a=t.a 

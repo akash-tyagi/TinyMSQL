@@ -276,7 +276,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					joinColumns);
 			currRelationIdx++;
 		}
-		System.out.println(tupleObjectArray1.size());
+		System.out.println("qqq" + tupleObjectArray1.size());
 
 		// Sort the array
 		Collections.sort(tupleObjectArray1);
@@ -294,7 +294,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					joinColumns);
 			currRelationIdx++;
 		}
-		System.out.println(tupleObjectArray2.size());
+		System.out.println("qqq" + tupleObjectArray2.size());
 
 		// Sort the array
 		Collections.sort(tupleObjectArray2);
@@ -359,10 +359,12 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						.remove(two_pass_temp_relation.getRelationName());
 				return null;
 			}
-
+                        
+                        System.out.println("MY START");
 			TwoPassUtils.joinTOAData(dbManager.mem, r1, r2, tempTOA1, tempTOA2,
 					two_pass_temp_relation, storeOutputToDisk, joinColumns);
-
+                        System.out.println("MY END");
+                        
 			if (idx1 < tupleObjectArray1.size()
 					&& idx2 < tupleObjectArray2.size()) {
 				if (GeneralUtils.tupleBiggerThan(
