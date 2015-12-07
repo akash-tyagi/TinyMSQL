@@ -9,6 +9,7 @@ import database.DbManager;
 import database.GlobalVariable;
 import jdk.nashorn.internal.ir.BlockStatement;
 import storageManager.Block;
+import storageManager.Field;
 import storageManager.FieldType;
 import storageManager.MainMemory;
 import storageManager.Relation;
@@ -293,6 +294,30 @@ public class GeneralUtils {
 
 		return true;
 	}
+	
+	public static int tupleBiggerThan(Tuple t, Tuple t1,
+			ArrayList<String> projectionCols) {
+
+//		if (projectionCols.isEmpty()) { 
+//			return t.toString().equals(t1.toString());
+//		}
+
+		for (String projectionCol : projectionCols) {
+			Field f =  t.getField(projectionCol);
+			Field f1 =  t1.getField(projectionCol);
+			if(f.type == FieldType.INT){
+				if(f.integer != f1.integer){
+					return f.integer - f1.integer;
+				}
+			}else{
+				if (!f.str.equals(f1.str)) {
+					return f.str.compareTo(f1.str);
+				}
+			}
+		}
+
+		return 0;
+	}	
 
 	public static boolean projectedColumnsDataExists(Tuple t,
 			ArrayList<Tuple> myMap, ArrayList<String> projectionCols) {

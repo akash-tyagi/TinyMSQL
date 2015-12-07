@@ -505,7 +505,7 @@ public class TwoPassUtils {
         return true;
     }
 
-    private static void joinTOAData(MainMemory mem, Relation r1, Relation r2,
+    public static void joinTOAData(MainMemory mem, Relation r1, Relation r2,
             ArrayList<TupleObject> tempTOA1, ArrayList<TupleObject> tempTOA2,
             Relation two_pass_temp_relation, boolean storeOutputToDisk,
             ArrayList<String> commonCols) {

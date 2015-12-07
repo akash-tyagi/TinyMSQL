@@ -2,6 +2,7 @@ package database.physicalquery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,11 +21,9 @@ public class PhysicalTree {
 			PrintWriter writer) {
 		this.dbManager = dbManager;
 		this.writer = writer;
-		JoinOptimization jOptimization = new JoinOptimization(dbManager);
-
 		if (stmt instanceof SelectStmt) {
 			logicalQuery = new LogicalQuery((SelectStmt) stmt);
-//			 logicalQuery.printSelectionOptimizations();
+			// logicalQuery.printSelectionOptimizations();
 			constructSelectTree(stmt);
 		}
 	}
@@ -38,15 +37,8 @@ public class PhysicalTree {
 					selectStmt.tableList.get(0), selectStmt.cond, writer);
 		} // PRODUCT/THETA OPEARATION ONLY FOR NOW
 		else {
-//			ArrayList<String> joinColumns = new ArrayList<String>();
-//			joinColumns.add("sid");
-//			System.out.println("ASDASDASDASDASDS");
-//			currOperator = new JoinOperator(selectStmt.tableList.get(0),
-//					selectStmt.tableList.get(1), dbManager, writer,
-//					joinColumns);
-//			currOperator.execute(true);
-//			
-			 currOperator = constructProductTree(selectStmt.tableList);
+			currOperator = constructJoinTree(selectStmt.tableList);
+			// currOperator = constructProductTree(selectStmt.tableList);
 		}
 
 		if (selectStmt.isDistinct) {
@@ -100,6 +92,38 @@ public class PhysicalTree {
 			System.out.println("Combining tables:" + rel1 + ":" + rel2);
 			nextOperator = new ProductOperator(dbManager, logicalQuery, rel1,
 					rel2, writer);
+			String newRel = rel1 + "_" + rel2;
+			tables.remove(0);
+			tables.remove(0);
+			tables.add(0, newRel);
+			if (head == null)
+				currOperator = operator = head = nextOperator;
+			else {
+				currOperator.setNextOperator(nextOperator);
+				currOperator = nextOperator;
+			}
+		}
+		System.out.println("Final Table:" + tables.get(0));
+		return nextOperator;
+	}
+
+	private OperatorInterface constructJoinTree(List<String> tables) {
+		OperatorInterface head = null, currOperator = null, nextOperator = null;
+		JoinOptimization jOptimization = new JoinOptimization(dbManager);
+		String[] join_order = jOptimization
+				.getLeftJoinOptimizedSequence(tables);
+		tables = new ArrayList<>();
+		for (String string : join_order) {
+			tables.add(string);
+		}
+		ArrayList<String> joinColumns = new ArrayList<String>();
+		joinColumns.add("sid");
+		while (tables.size() > 1) {
+			String rel1 = tables.get(0);
+			String rel2 = tables.get(1);
+			System.out.println("Join tables:" + rel1 + ":" + rel2);
+			nextOperator = new JoinOperator(rel1, rel2, dbManager, writer,
+					joinColumns);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);
