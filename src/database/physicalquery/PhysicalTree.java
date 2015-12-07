@@ -2,7 +2,6 @@ package database.physicalquery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -149,7 +148,7 @@ public class PhysicalTree {
 	}
 
 	public void execute() {
-		// if (operator != null)
-		// System.out.println("Total Tuples:" + operator.execute(true).size());
+		if (operator != null)
+			System.out.println("Total Tuples:" + operator.execute(true).size());
 	}
 }

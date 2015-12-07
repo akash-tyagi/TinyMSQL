@@ -3,6 +3,7 @@ package database.physicalquery;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import database.DbManager;
@@ -10,8 +11,6 @@ import database.utils.GeneralUtils;
 import database.utils.OnePassUtils;
 import database.utils.TupleObject;
 import database.utils.TwoPassUtils;
-import java.util.HashMap;
-import java.util.HashSet;
 import storageManager.Block;
 import storageManager.Field;
 import storageManager.FieldType;
@@ -35,15 +34,25 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 	@Override
 	public List<Tuple> execute(boolean printResult) {
+		System.out.println("JOIN:" + relation_name + " " + relation_name2 + " "
+				+ joinColumns);
+		System.out.println(dbManager.schema_manager.getSchema(relation_name));
+		System.out.println(dbManager.schema_manager.getSchema(relation_name2));
+
 		System.out.println("Trying one pass");
-		Relation rel = onePassJoin(false);
+
+		Relation rel = onePassJoin(true);
 		if (rel == null) {
 			System.out.println("Two pass join");
-			rel = twoPassJoin(false);
+			rel = twoPassJoin(true);
 		}
 		if (rel == null) {
 			System.err.println("Simple Join");
-			rel = simpleJoin(false);
+			rel = simpleJoin(true);
+		}
+		if (next_operator != null) {
+			next_operator.setRelationName(rel.getRelationName());
+			next_operator.execute(printResult);
 		}
 		return res_tuples;
 	}
@@ -107,7 +116,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			secondRel.getBlock(i, memIndex);
 
 			for (int j = 0; j < memIndex; j++) {
-				OnePassUtils.joinBlocksData(dbManager.mem, firstRel, secondRel,
+				joinBlocksData(dbManager.mem, firstRel, secondRel,
 						dbManager.mem.getBlock(j),
 						dbManager.mem.getBlock(memIndex),
 						one_pass_temp_relation, storeOutputToDisk, joinColumns,
@@ -172,59 +181,66 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		if (minMemoryNeeded > dbManager.mem.getMemorySize()) {
 			return null; // memory not enough for two pass algos
 		}
-                
-                int surplusBlockCount = dbManager.mem.getMemorySize() - minMemoryNeeded;
-                
-                
-                if(joinColumns.size() == 1 && dbManager.vTable.containsKey(relation_name) && dbManager.vTable.containsKey(relation_name2)){    
-                    String joinColumn = joinColumns.get(0);
-                    
-                    //HashSet<String> hs1 = new HashSet<>();
-                    //HashSet<String> hs2 = new HashSet<>();
-                    
-                    HashSet<String> hs = new HashSet<>(dbManager.vTable.get(relation_name).get(joinColumn).keySet());
-                    HashSet<String> hs2 = new HashSet<>(dbManager.vTable.get(relation_name2).get(joinColumn).keySet());
-                    
-                    HashSet<String> commonVals = new HashSet<>();
-                    
-                    for(String val : hs){
-                        if(hs2.contains(val)){
-                            commonVals.add(val);
-                        }
-                    }
-                    
-                    for(String val : commonVals){
-                        Integer count = dbManager.vTable.get(relation_name).get(joinColumn).get(val);
-                        Integer count2 = dbManager.vTable.get(relation_name2).get(joinColumn).get(val);
-                        
-			int surplusBlocksReqRel1;
-			int tuplesPerBlockForRel1 = 8 / dbManager.schema_manager.getRelation(relation_name).getSchema().getNumOfFields();
-					/// tupleObjectArray1.get(0).tuple.getNumOfFields();
-			if (count % tuplesPerBlockForRel1 == 0) {
-				surplusBlocksReqRel1 = count / tuplesPerBlockForRel1;
-			} else {
-				surplusBlocksReqRel1 = (count / tuplesPerBlockForRel1)
-						+ 1;
+
+		int surplusBlockCount = dbManager.mem.getMemorySize() - minMemoryNeeded;
+
+		if (joinColumns.size() == 1
+				&& dbManager.vTable.containsKey(relation_name)
+				&& dbManager.vTable.containsKey(relation_name2)) {
+			String joinColumn = joinColumns.get(0);
+
+			// HashSet<String> hs1 = new HashSet<>();
+			// HashSet<String> hs2 = new HashSet<>();
+
+			HashSet<String> hs = new HashSet<>(dbManager.vTable
+					.get(relation_name).get(joinColumn).keySet());
+			HashSet<String> hs2 = new HashSet<>(dbManager.vTable
+					.get(relation_name2).get(joinColumn).keySet());
+
+			HashSet<String> commonVals = new HashSet<>();
+
+			for (String val : hs) {
+				if (hs2.contains(val)) {
+					commonVals.add(val);
+				}
 			}
 
-			int surplusBlocksReqRel2;
-			int tuplesPerBlockForRel2 = 8 / dbManager.schema_manager.getRelation(relation_name2).getSchema().getNumOfFields();
-					/// tupleObjectArray2.get(0).tuple.getNumOfFields();
-			if (count2 % tuplesPerBlockForRel2 == 0) {
-				surplusBlocksReqRel2 = count2 / tuplesPerBlockForRel2;
-			} else {
-				surplusBlocksReqRel2 = (count2 / tuplesPerBlockForRel2)
-						+ 1;
+			for (String val : commonVals) {
+				Integer count = dbManager.vTable.get(relation_name)
+						.get(joinColumn).get(val);
+				Integer count2 = dbManager.vTable.get(relation_name2)
+						.get(joinColumn).get(val);
+
+				int surplusBlocksReqRel1;
+				int tuplesPerBlockForRel1 = 8
+						/ dbManager.schema_manager.getRelation(relation_name)
+								.getSchema().getNumOfFields();
+				/// tupleObjectArray1.get(0).tuple.getNumOfFields();
+				if (count % tuplesPerBlockForRel1 == 0) {
+					surplusBlocksReqRel1 = count / tuplesPerBlockForRel1;
+				} else {
+					surplusBlocksReqRel1 = (count / tuplesPerBlockForRel1) + 1;
+				}
+
+				int surplusBlocksReqRel2;
+				int tuplesPerBlockForRel2 = 8
+						/ dbManager.schema_manager.getRelation(relation_name2)
+								.getSchema().getNumOfFields();
+				/// tupleObjectArray2.get(0).tuple.getNumOfFields();
+				if (count2 % tuplesPerBlockForRel2 == 0) {
+					surplusBlocksReqRel2 = count2 / tuplesPerBlockForRel2;
+				} else {
+					surplusBlocksReqRel2 = (count2 / tuplesPerBlockForRel2) + 1;
+				}
+
+				if (surplusBlocksReqRel1
+						+ surplusBlocksReqRel2 > surplusBlockCount) {
+					return null;
+				}
 			}
 
-			if (surplusBlocksReqRel1
-					+ surplusBlocksReqRel2 > surplusBlockCount) {
-				return null;
-			}                        
-                    }
-                    
-                }
-                
+		}
+
 		// Temp relation for two-pass join
 		Schema schema = new Schema(temp_field_names, temp_field_types);
 		Relation two_pass_temp_relation = dbManager.schema_manager
@@ -420,7 +436,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 							}
 						}
 					}
-
+					res_tuples.add(tuple);
 					if (storeOutputToDisk) {
 						GeneralUtils.appendTupleToRelation(
 								two_pass_temp_relation, mem,
@@ -479,7 +495,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		return temp_relation;
 	}
 
-	public static void joinBlocksData(MainMemory mem, Relation r1, Relation r2,
+	private void joinBlocksData(MainMemory mem, Relation r1, Relation r2,
 			Block r1_block, Block r2_block, Relation one_pass_temp_relation,
 			boolean storeOutputToDisk, ArrayList<String> commonCols,
 			int usedMemIndex) {
@@ -539,13 +555,16 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 							}
 						}
 					}
-
+					res_tuples.add(tuple);
 					if (storeOutputToDisk) {
 						GeneralUtils.appendTupleToRelation(
 								one_pass_temp_relation, mem, usedMemIndex + 1,
 								tuple);
 					} else {
-						System.out.println(tuple);
+						if (next_operator == null) {
+							System.out.println(tuple);
+							writer.println(tuple);
+						}
 					}
 
 				}
