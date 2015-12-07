@@ -224,37 +224,34 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 		// Sort the array
 		Collections.sort(tupleObjectArray2);
+                
 
 		int idx1 = 0;
 		int idx2 = 0;
 
 		while (idx1 < tupleObjectArray1.size()
 				&& idx2 < tupleObjectArray2.size()) {
+                    
 			ArrayList<TupleObject> tempTOA1 = new ArrayList<>();
 			ArrayList<TupleObject> tempTOA2 = new ArrayList<>();
 
-			while ((idx1 < tupleObjectArray1.size()
-					&& idx2 < tupleObjectArray2.size())
-					&& GeneralUtils.projectedColumnsMatch(
+					if(GeneralUtils.projectedColumnsMatch(
 							tupleObjectArray1.get(idx1).tuple,
-							tupleObjectArray2.get(idx2).tuple, joinColumns)) {
+							tupleObjectArray2.get(idx2).tuple, joinColumns)) {                        
 				Tuple tMatched = tupleObjectArray1.get(idx1).tuple;
-				tempTOA1.add(tupleObjectArray1.get(idx1));
-				tempTOA2.add(tupleObjectArray2.get(idx2));
-				idx1++;
-				idx2++;
 				
 				while (idx1 < tupleObjectArray1.size() && GeneralUtils.projectedColumnsMatch(tMatched, tupleObjectArray1.get(idx1).tuple, joinColumns)){
+
 					tempTOA1.add(tupleObjectArray1.get(idx1));
 					idx1++;
 				}
 				while (idx2 < tupleObjectArray2.size() && GeneralUtils.projectedColumnsMatch(tMatched, tupleObjectArray2.get(idx2).tuple, joinColumns)){
 					tempTOA2.add(tupleObjectArray2.get(idx2));
 					idx2++;
-				}				
-			}
-			System.out.println(tempTOA1.size());
-			System.out.println(tempTOA2.size());
+				}
+                                
+                                        }
+
 			// doJoin
 			int surplusBlocksReqRel1;
 			int tuplesPerBlockForRel1 = 8
@@ -288,11 +285,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					&& idx2 < tupleObjectArray2.size()) {
 				if (GeneralUtils.tupleBiggerThan(tupleObjectArray1.get(idx1).tuple,
 						tupleObjectArray2.get(idx2).tuple, joinColumns) > 0) {
-					System.out.println("NIk1");
 					idx2++;
 				} else if (GeneralUtils.tupleBiggerThan(tupleObjectArray1.get(idx1).tuple,
 						tupleObjectArray2.get(idx2).tuple, joinColumns) < 0) {
-					System.out.println("NIk2");
 					idx1++;
 				}
 			}

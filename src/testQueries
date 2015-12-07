@@ -30,4 +30,5 @@ INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
+INSERT INTO course2 (sid, exam, grade) VALUES (8, 0, "A")
 SELECT * FROM course, course2 WHERE course.sid = course2.sid
