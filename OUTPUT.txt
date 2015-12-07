@@ -1,8 +1,8 @@
-CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
+CREATE TABLE r (a INT, b INT)
 Execution time: = 0.0 ms
 Disk I/Os = 0
 
-CREATE TABLE course2 (sid INT, exam INT, grade STR20)
+CREATE TABLE s (b INT, c INT)
 Execution time: = 0.0 ms
 Disk I/Os = 0
 
@@ -10,7 +10,499 @@ CREATE TABLE t (a INT, c INT)
 Execution time: = 0.0 ms
 Disk I/Os = 0
 
-SELECT * FROM course, course2 WHERE course.sid = course2.sid ORDER BY course.exam
+INSERT INTO r (a, b) VALUES (0, 0)
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO r (a, b) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (0, 0)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO r (a, b) VALUES (100, 100)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (0, 0)
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO s (b, c) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (0, 0)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (0, 0)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO s (b, c) VALUES (101, 101)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (0, 0)
+Execution time: = 74.63 ms
+Disk I/Os = 1
+
+INSERT INTO t (a, c) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (0, 0)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (1, 1)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (2, 2)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (3, 3)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+INSERT INTO t (a, c) VALUES (102, 102)
+Execution time: = 149.26 ms
+Disk I/Os = 2
+
+SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
 Execution time: = 0.0 ms
 Disk I/Os = 0
 

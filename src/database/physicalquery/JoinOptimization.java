@@ -8,19 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.GlobalVariable;
-import storageManager.Relation;
 import storageManager.Schema;
 
 public class JoinOptimization {
 	DbManager dbManager;
 	// List elements: 1. Size 2.Cost of permutation
 	Map<String, List<Double>> permutations;
-	Map<List<String>, List<String>> join_columns_map;
+	public Map<List<String>, List<String>> join_columns_map;
 
 	public JoinOptimization(DbManager dbManager) {
 		this.dbManager = dbManager;
@@ -192,18 +189,29 @@ public class JoinOptimization {
 					key.add(table1);
 					key.add(table2);
 					join_columns_map.put(key, join_columns);
+					key = new ArrayList<>();
+					key.add(table2);
+					key.add(table1);
 				}
 			}
 		}
 	}
 
 	public List<String> getJoinColumns(String table1, String table2) {
-
-		return null;
+		String[] tables = table1.split("\\_");
+		List<String> columns = new ArrayList<>();
+		for (String table : tables) {
+			List<String> relations = new ArrayList<>();
+			relations.add(table);
+			relations.add(table2);
+			if (join_columns_map.get(relations) != null)
+				columns.addAll(join_columns_map.get(relations));
+		}
+		return (columns.size() > 0) ? columns : null;
 	}
 
 	public void printJoinColumns() {
-		System.out.println("Joinable Columns");
+		System.out.println("\nJoinable Columns");
 		for (Map.Entry<List<String>, List<String>> entry : join_columns_map
 				.entrySet()) {
 			for (String table : entry.getKey()) {

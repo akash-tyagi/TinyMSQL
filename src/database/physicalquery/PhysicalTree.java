@@ -17,20 +17,19 @@ public class PhysicalTree {
 	LogicalQuery logicalQuery;
 	PrintWriter writer;
 	String query;
+	JoinOptimization joinOptimization;
 
 	public PhysicalTree(String query, DbManager dbManager, StmtInterface stmt,
 			PrintWriter writer) {
 		this.dbManager = dbManager;
 		this.writer = writer;
 		this.query = query;
+		joinOptimization = new JoinOptimization(dbManager);
 		if (stmt instanceof SelectStmt) {
-			// logicalQuery = new LogicalQuery((SelectStmt) stmt);
+			logicalQuery = new LogicalQuery((SelectStmt) stmt);
 			// logicalQuery.printSelectionOptimizations();
-			// constructSelectTree(stmt);
-			SelectStmt selectStmt = (SelectStmt) stmt;
-			JoinOptimization joinOptimization = new JoinOptimization(dbManager);
-			joinOptimization.generateJoinColumns(query, selectStmt.tableList);
-			joinOptimization.printJoinColumns();
+			constructSelectTree(stmt);
+
 		}
 	}
 
@@ -43,8 +42,11 @@ public class PhysicalTree {
 					selectStmt.tableList.get(0), selectStmt.cond, writer);
 		} // PRODUCT/THETA OPEARATION ONLY FOR NOW
 		else {
-			currOperator = constructJoinTree(selectStmt.tableList);
-			// currOperator = constructProductTree(selectStmt.tableList);
+			joinOptimization.generateJoinColumns(query, selectStmt.tableList);
+			if (joinOptimization.join_columns_map.size() > 0) {
+				currOperator = constructJoinTree(selectStmt.tableList);
+			} else
+				currOperator = constructProductTree(selectStmt.tableList);
 		}
 
 		if (selectStmt.isDistinct) {
@@ -115,21 +117,22 @@ public class PhysicalTree {
 
 	private OperatorInterface constructJoinTree(List<String> tables) {
 		OperatorInterface head = null, currOperator = null, nextOperator = null;
-		JoinOptimization jOptimization = new JoinOptimization(dbManager);
-		String[] join_order = jOptimization
+		String[] join_order = joinOptimization
 				.getLeftJoinOptimizedSequence(tables);
 		tables = new ArrayList<>();
 		for (String string : join_order) {
 			tables.add(string);
 		}
-		ArrayList<String> joinColumns = new ArrayList<String>();
-		joinColumns.add("b");
+		List<String> joinColumns = null;
+
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
-			System.out.println("Join tables:" + rel1 + ":" + rel2);
+			joinColumns = joinOptimization.getJoinColumns(rel1, rel2);
+			System.out.println("Join tables:" + rel1 + ":" + rel2 + " JoinCols:"
+					+ joinColumns.toString());
 			nextOperator = new JoinOperator(rel1, rel2, dbManager, writer,
-					joinColumns);
+					(ArrayList<String>) joinColumns);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);
@@ -146,7 +149,7 @@ public class PhysicalTree {
 	}
 
 	public void execute() {
-		if (operator != null)
-			System.out.println("Total Tuples:" + operator.execute(true).size());
+		// if (operator != null)
+		// System.out.println("Total Tuples:" + operator.execute(true).size());
 	}
 }

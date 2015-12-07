@@ -41,3 +41,5 @@ union operation is needed, so no selection optimization is performed
 # (DONE)check for the case of ordering of tables with projection, 
 # projection before duplicate removal
 # (DONE)duplicate removal before projection
+# check for other condition when to avoid join 
+# Distinct move ahead of join (optional)

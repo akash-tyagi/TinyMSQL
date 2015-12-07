@@ -10,6 +10,8 @@ import database.utils.GeneralUtils;
 import database.utils.OnePassUtils;
 import database.utils.TupleObject;
 import database.utils.TwoPassUtils;
+import java.util.HashMap;
+import java.util.HashSet;
 import storageManager.Block;
 import storageManager.Field;
 import storageManager.FieldType;
@@ -170,6 +172,59 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		if (minMemoryNeeded > dbManager.mem.getMemorySize()) {
 			return null; // memory not enough for two pass algos
 		}
+                
+                int surplusBlockCount = dbManager.mem.getMemorySize() - minMemoryNeeded;
+                
+                
+                if(joinColumns.size() == 1 && dbManager.vTable.containsKey(relation_name) && dbManager.vTable.containsKey(relation_name2)){    
+                    String joinColumn = joinColumns.get(0);
+                    
+                    //HashSet<String> hs1 = new HashSet<>();
+                    //HashSet<String> hs2 = new HashSet<>();
+                    
+                    HashSet<String> hs = new HashSet<>(dbManager.vTable.get(relation_name).get(joinColumn).keySet());
+                    HashSet<String> hs2 = new HashSet<>(dbManager.vTable.get(relation_name2).get(joinColumn).keySet());
+                    
+                    HashSet<String> commonVals = new HashSet<>();
+                    
+                    for(String val : hs){
+                        if(hs2.contains(val)){
+                            commonVals.add(val);
+                        }
+                    }
+                    
+                    for(String val : commonVals){
+                        Integer count = dbManager.vTable.get(relation_name).get(joinColumn).get(val);
+                        Integer count2 = dbManager.vTable.get(relation_name2).get(joinColumn).get(val);
+                        
+			int surplusBlocksReqRel1;
+			int tuplesPerBlockForRel1 = 8 / dbManager.schema_manager.getRelation(relation_name).getSchema().getNumOfFields();
+					/// tupleObjectArray1.get(0).tuple.getNumOfFields();
+			if (count % tuplesPerBlockForRel1 == 0) {
+				surplusBlocksReqRel1 = count / tuplesPerBlockForRel1;
+			} else {
+				surplusBlocksReqRel1 = (count / tuplesPerBlockForRel1)
+						+ 1;
+			}
+
+			int surplusBlocksReqRel2;
+			int tuplesPerBlockForRel2 = 8 / dbManager.schema_manager.getRelation(relation_name2).getSchema().getNumOfFields();
+					/// tupleObjectArray2.get(0).tuple.getNumOfFields();
+			if (count2 % tuplesPerBlockForRel2 == 0) {
+				surplusBlocksReqRel2 = count2 / tuplesPerBlockForRel2;
+			} else {
+				surplusBlocksReqRel2 = (count2 / tuplesPerBlockForRel2)
+						+ 1;
+			}
+
+			if (surplusBlocksReqRel1
+					+ surplusBlocksReqRel2 > surplusBlockCount) {
+				return null;
+			}                        
+                    }
+                    
+                }
+                
 		// Temp relation for two-pass join
 		Schema schema = new Schema(temp_field_names, temp_field_types);
 		Relation two_pass_temp_relation = dbManager.schema_manager
@@ -186,7 +241,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		// Check number of blocks left (total - (firstRelBlockReq +
 		// secondRelBlockReq + 1))
 		// Check if extras can be adjusted in them
-		int surplusBlockCount = dbManager.mem.getMemorySize() - minMemoryNeeded;
 
 		// Read tuples to temp array for relation r1
 		ArrayList<TupleObject> tupleObjectArray1 = new ArrayList<>();
