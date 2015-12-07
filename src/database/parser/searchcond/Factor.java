@@ -1,6 +1,5 @@
 package database.parser.searchcond;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +47,7 @@ public class Factor {
 		if (colName != null) {
 			// find the right field name
 			for (String field_name : tuple.getSchema().getFieldNames()) {
-				// System.out.println("\n...###" + field_name + ":" + colName);
+//				System.out.println("\n...###" + field_name + ":" + colName);
 				// Check this but: tuple need to contain the col we are checking
 				// for
 				String act_field_name = field_name;
@@ -64,8 +63,8 @@ public class Factor {
 					if (colName.contains("."))
 						col_name = colName.split("\\.")[1];
 				}
-				// System.out
-				// .println("Checking:" + act_field_name + ":" + col_name);
+//				System.out
+//						.println("Checking:" + act_field_name + ":" + col_name);
 				if (col_name.equals(act_field_name)) {
 					if (GlobalVariable.isTestExecution)
 						System.out.println("FACTOR found colName" + colName

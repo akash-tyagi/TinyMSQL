@@ -24,7 +24,7 @@ public class PhysicalTree {
 
 		if (stmt instanceof SelectStmt) {
 			logicalQuery = new LogicalQuery((SelectStmt) stmt);
-			// logicalQuery.printSelectionOptimizations();
+//			 logicalQuery.printSelectionOptimizations();
 			constructSelectTree(stmt);
 		}
 	}
@@ -38,7 +38,15 @@ public class PhysicalTree {
 					selectStmt.tableList.get(0), selectStmt.cond, writer);
 		} // PRODUCT/THETA OPEARATION ONLY FOR NOW
 		else {
-			currOperator = constructProductTree(selectStmt.tableList);
+//			ArrayList<String> joinColumns = new ArrayList<String>();
+//			joinColumns.add("sid");
+//			System.out.println("ASDASDASDASDASDS");
+//			currOperator = new JoinOperator(selectStmt.tableList.get(0),
+//					selectStmt.tableList.get(1), dbManager, writer,
+//					joinColumns);
+//			currOperator.execute(true);
+//			
+			 currOperator = constructProductTree(selectStmt.tableList);
 		}
 
 		if (selectStmt.isDistinct) {

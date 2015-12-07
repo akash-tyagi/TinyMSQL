@@ -21,6 +21,11 @@ public class SearchCond {
 		cond = null;
 	}
 
+	public SearchCond(BoolTerm boolterm, SearchCond cond) {
+		this.boolTerm = boolterm;
+		this.cond = cond;
+	}
+
 	public void create(String query) {
 		if (GlobalVariable.isTestParsing)
 			System.out.println("\n\n SEARCH CONDITION ----------------");
@@ -69,8 +74,12 @@ public class SearchCond {
 	public SearchCond getSelectionCond(List<Relation> relations) {
 		// If OR cond on search then entire condition needs to be satisfied, not
 		// optimizing for OR as union will be needed
-		if (cond != null)
-			return null;
+		if (cond != null) {
+			BoolTerm bTerm = boolTerm.getSelectionCond(relations);
+			SearchCond searchCond = cond.getSelectionCond(relations);
+			if (bTerm != null && searchCond != null)
+				return new SearchCond(bTerm, searchCond);
+		}
 		BoolTerm bTerm = boolTerm.getSelectionCond(relations);
 		if (bTerm != null)
 			return new SearchCond(boolTerm.getSelectionCond(relations));
