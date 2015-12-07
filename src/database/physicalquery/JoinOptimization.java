@@ -193,6 +193,7 @@ public class JoinOptimization {
 					key = new ArrayList<>();
 					key.add(table2);
 					key.add(table1);
+					join_columns_map.put(key, join_columns);
 				}
 			}
 		}
@@ -220,6 +221,7 @@ public class JoinOptimization {
 	}
 
 	public List<String> getJoinColumns(String table1, String table2) {
+		System.out.println(table1+" "+table2);
 		String[] tables = table1.split("\\_");
 		List<String> columns = new ArrayList<>();
 		for (String table : tables) {

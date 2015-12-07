@@ -45,6 +45,7 @@ public class PhysicalTree {
 					selectStmt.tableList)
 					&& joinOptimization.join_columns_map.size() > 0) {
 				System.out.println("Join Tree");
+//				joinOptimization.printJoinColumns();
 				currOperator = constructJoinTree(selectStmt.tableList);
 			} else
 				currOperator = constructProductTree(selectStmt.tableList);

@@ -123,7 +123,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						memIndex);
 			}
 		}
-		System.out.println("TESTING");
+		System.out.println("DONE");
 		return one_pass_temp_relation;
 	}
 
