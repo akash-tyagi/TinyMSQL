@@ -570,7 +570,7 @@ public class TwoPassUtils {
                                 two_pass_temp_relation, mem,
                                 mem.getMemorySize() - 1, tuple);
                     } else {
-                        System.out.println(tuple);
+                        System.out.println("TEST"+tuple);
                     }
 
                 }

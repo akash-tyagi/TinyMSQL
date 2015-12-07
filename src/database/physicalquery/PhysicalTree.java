@@ -16,15 +16,21 @@ public class PhysicalTree {
 	DbManager dbManager;
 	LogicalQuery logicalQuery;
 	PrintWriter writer;
+	String query;
 
-	public PhysicalTree(DbManager dbManager, StmtInterface stmt,
+	public PhysicalTree(String query, DbManager dbManager, StmtInterface stmt,
 			PrintWriter writer) {
 		this.dbManager = dbManager;
 		this.writer = writer;
+		this.query = query;
 		if (stmt instanceof SelectStmt) {
-			logicalQuery = new LogicalQuery((SelectStmt) stmt);
+			// logicalQuery = new LogicalQuery((SelectStmt) stmt);
 			// logicalQuery.printSelectionOptimizations();
-			constructSelectTree(stmt);
+			// constructSelectTree(stmt);
+			SelectStmt selectStmt = (SelectStmt) stmt;
+			JoinOptimization joinOptimization = new JoinOptimization(dbManager);
+			joinOptimization.generateJoinColumns(query, selectStmt.tableList);
+			joinOptimization.printJoinColumns();
 		}
 	}
 
@@ -117,7 +123,7 @@ public class PhysicalTree {
 			tables.add(string);
 		}
 		ArrayList<String> joinColumns = new ArrayList<String>();
-		joinColumns.add("sid");
+		joinColumns.add("b");
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);

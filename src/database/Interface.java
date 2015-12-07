@@ -56,7 +56,8 @@ public class Interface {
 			GeneralUtils.restartTimer(dbManager);
 
 			StmtInterface stmt = parser.parse(query);
-			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt,writer);
+			PhysicalTree physicalTree = new PhysicalTree(query, dbManager, stmt,
+					writer);
 			physicalTree.execute();
 
 			GeneralUtils.printExecutionStats(dbManager, writer);

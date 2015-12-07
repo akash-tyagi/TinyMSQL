@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import database.DbManager;
 import database.GlobalVariable;
+import storageManager.Relation;
 import storageManager.Schema;
 
 public class JoinOptimization {
 	DbManager dbManager;
 	// List elements: 1. Size 2.Cost of permutation
 	Map<String, List<Double>> permutations;
+	Map<List<String>, List<String>> join_columns_map;
 
 	public JoinOptimization(DbManager dbManager) {
 		this.dbManager = dbManager;
@@ -152,6 +156,63 @@ public class JoinOptimization {
 			Collections.swap(str, i, id);
 			getJoinPermutations(str, id + 1);
 			Collections.swap(str, i, id);
+		}
+	}
+
+	public void generateJoinColumns(String query, List<String> tables) {
+		join_columns_map = new HashMap<>();
+		if (query == null)
+			return;
+
+		for (int i = 0; i < tables.size() - 1; i++) {
+			for (int j = i + 1; j < tables.size(); j++) {
+				String table1 = tables.get(i);
+				String table2 = tables.get(j);
+				List<String> field_names1 = dbManager.schema_manager
+						.getRelation(table1).getSchema().getFieldNames();
+				field_names1.retainAll(dbManager.schema_manager
+						.getRelation(table2).getSchema().getFieldNames());
+				List<String> join_columns = new ArrayList<>();
+				for (String field_name : field_names1) {
+					String pat1 = table1 + "." + field_name + " = " + table2
+							+ "." + field_name;
+					String pat2 = table2 + "." + field_name + " = " + table1
+							+ "." + field_name;
+					String pat3 = table1 + "." + field_name + "=" + table2 + "."
+							+ field_name;
+					String pat4 = table2 + "." + field_name + "=" + table1 + "."
+							+ field_name;
+					if (query.contains(pat1) || query.contains(pat2)
+							|| query.contains(pat3) || query.contains(pat4)) {
+						join_columns.add(field_name);
+					}
+				}
+				if (join_columns.size() > 0) {
+					List<String> key = new ArrayList<>();
+					key.add(table1);
+					key.add(table2);
+					join_columns_map.put(key, join_columns);
+				}
+			}
+		}
+	}
+
+	public List<String> getJoinColumns(String table1, String table2) {
+
+		return null;
+	}
+
+	public void printJoinColumns() {
+		System.out.println("Joinable Columns");
+		for (Map.Entry<List<String>, List<String>> entry : join_columns_map
+				.entrySet()) {
+			for (String table : entry.getKey()) {
+				System.out.print(table + ",");
+			}
+			System.out.print(":");
+			for (String column : entry.getValue()) {
+				System.out.println(column + ",");
+			}
 		}
 	}
 }

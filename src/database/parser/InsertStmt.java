@@ -46,10 +46,11 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 	}
 
 	private void insertTupleList() {
-//		Relation relation_reference = dbManager.schema_manager
-//				.getRelation(tableName);
-//		GeneralUtils.appendTuplesToRelation(relation_reference, dbManager.mem,
-//				0, res_tuples);
+		// Relation relation_reference = dbManager.schema_manager
+		// .getRelation(tableName);
+		// GeneralUtils.appendTuplesToRelation(relation_reference,
+		// dbManager.mem,
+		// 0, res_tuples);
 		for (Tuple tuple : res_tuples) {
 			for (int i = 0; i < tuple.getNumOfFields(); i++) {
 				valueList.add(tuple.getField(i).toString());
@@ -64,7 +65,8 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 			System.out.println(tuples);
 			Parser parser = new Parser(dbManager);
 			StmtInterface stmt = parser.parse(tuples);
-			PhysicalTree physicalTree = new PhysicalTree(dbManager, stmt, null);
+			PhysicalTree physicalTree = new PhysicalTree(null, dbManager, stmt,
+					null);
 			SelectOperator selectOperator = (SelectOperator) physicalTree.operator;
 			res_tuples = selectOperator.execute(false);
 			return;
