@@ -72,7 +72,7 @@ public class Interface {
 		if (GlobalVariable.isReadFromConsole)
 			iface.readText();
 		else
-			iface.readFile("src/testQueries");
+			iface.readFile("src/INPUT.txt");
 		iface.executeQueries();
 		// DO NOT DELETE
 		// TESTING CODE FOR JOIN OPTMIZATION

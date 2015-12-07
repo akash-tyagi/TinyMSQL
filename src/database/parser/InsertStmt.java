@@ -46,16 +46,15 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 	}
 
 	private void insertTupleList() {
-		// Relation relation_reference = dbManager.schema_manager
-		// .getRelation(tableName);
-		// GeneralUtils.appendTuplesToRelation(relation_reference,
-		// dbManager.mem,
-		// 0, res_tuples);
+		Relation relation_reference = dbManager.schema_manager
+				.getRelation(tableName);
+		GeneralUtils.appendTuplesToRelation(relation_reference, dbManager.mem,
+				0, res_tuples);
 		for (Tuple tuple : res_tuples) {
 			for (int i = 0; i < tuple.getNumOfFields(); i++) {
 				valueList.add(tuple.getField(i).toString());
 			}
-			execute();
+			getAndUpdateVtableEntries(relation_reference);
 			valueList = new ArrayList<>();
 		}
 	}
@@ -129,6 +128,16 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 		// NOTE : TYPE CHECKING IS REQUIRED
 		Relation relation_reference = dbManager.schema_manager
 				.getRelation(tableName);
+		Tuple tuple = getAndUpdateVtableEntries(relation_reference);
+		GeneralUtils.appendTupleToRelation(relation_reference, dbManager.mem, 0,
+				tuple);
+		// Block block_reference = dbManager.mem.getBlock(0);
+		// block_reference.appendTuple(tuple);
+		// // NOTE : BELOW STEP IS NECESSARY. SEE POINT 1 ABOVE
+		// relation_reference.setBlock(relation_reference.getNumOfBlocks(), 0);
+	}
+
+	private Tuple getAndUpdateVtableEntries(Relation relation_reference) {
 		Schema schema = relation_reference.getSchema();
 		ArrayList<FieldType> field_types = schema.getFieldTypes();
 		ArrayList<String> field_names = schema.getFieldNames();
@@ -177,12 +186,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 				updateVTable(i);
 			}
 		}
-		GeneralUtils.appendTupleToRelation(relation_reference, dbManager.mem, 0,
-				tuple);
-		// Block block_reference = dbManager.mem.getBlock(0);
-		// block_reference.appendTuple(tuple);
-		// // NOTE : BELOW STEP IS NECESSARY. SEE POINT 1 ABOVE
-		// relation_reference.setBlock(relation_reference.getNumOfBlocks(), 0);
+		return tuple;
 	}
 
 	// updateVTable keeps NULL values as "NULL" String

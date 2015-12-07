@@ -286,9 +286,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 				.getSelectOptCondSingleTable(rel2.getRelationName());
 		List<SearchCond> conds = logicalQuery.getSelectOptConds(
 				rel1.getRelationName(), rel2.getRelationName());
-//		for (SearchCond searchCond : conds) {
-//			searchCond.print();
-//		}
 		
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();

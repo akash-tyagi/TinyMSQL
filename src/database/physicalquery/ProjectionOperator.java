@@ -28,8 +28,10 @@ public class ProjectionOperator extends OperatorBase
 			System.out.println("");
 		}
 		if (isReadFromMem) {
+			System.out.println("PROJECT FROM MEM");
 			readFromMemory(printResult);
 		} else {
+			System.out.println("FROM DISK");
 			readFromDisk(printResult);
 		}
 		return res_tuples;
