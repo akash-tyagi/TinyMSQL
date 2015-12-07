@@ -41,10 +41,11 @@ public class PhysicalTree {
 					selectStmt.tableList.get(0), selectStmt.cond, writer);
 		} // PRODUCT/THETA OPEARATION ONLY FOR NOW
 		else {
-			joinOptimization.generateJoinColumns(query, selectStmt.tableList);
-			if (joinOptimization.join_columns_map.size() > 0) {
-				currOperator = constructJoinTree(selectStmt.tableList);
-			} else
+			// joinOptimization.generateJoinColumns(query,
+			// selectStmt.tableList);
+			// if (joinOptimization.join_columns_map.size() > 0) {
+			// currOperator = constructJoinTree(selectStmt.tableList);
+			// } else
 				currOperator = constructProductTree(selectStmt.tableList);
 		}
 

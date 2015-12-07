@@ -346,154 +346,6 @@ INSERT INTO t (a, c) VALUES (1, 1)
 Execution time: = 149.26 ms
 Disk I/Os = 2
 
-INSERT INTO t (a, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (0, 0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
-INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
-
 INSERT INTO t (a, c) VALUES (102, 102)
 Execution time: = 149.26 ms
 Disk I/Os = 2
@@ -503,6 +355,18 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
-Execution time: = 22146.050000000017 ms
-Disk I/Os = 307
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+Execution time: = 2164.2700000000013 ms
+Disk I/Os = 29
 
