@@ -140,6 +140,8 @@ public class PhysicalTree {
 
 	public void execute() {
 		if (operator != null)
-			System.out.println("Total Tuples:" + operator.execute(true).size());
+			// System.out.println("Total Tuples:" +
+			// operator.execute(true).size());
+			operator.execute(true);
 	}
 }
