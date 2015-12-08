@@ -42,8 +42,6 @@ public class SortingOperator extends OperatorBase implements OperatorInterface {
 
 			} else {
 				sortDisk(printResult);
-				// if (next_operator != null)
-				// next_operator.setRelationName(sorted_relation);
 			}
 		}
 		if (next_operator != null)
@@ -58,7 +56,6 @@ public class SortingOperator extends OperatorBase implements OperatorInterface {
 			rel.getBlock(disk_index, i);
 			disk_index++;
 		}
-		System.out.println("Start:" + start_block + " end:" + end_block);
 		sortInMemory(printResult);
 	}
 

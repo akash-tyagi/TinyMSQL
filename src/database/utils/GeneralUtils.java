@@ -7,6 +7,8 @@ import java.util.List;
 
 import database.DbManager;
 import database.GlobalVariable;
+import database.physicalquery.OperatorInterface;
+import database.physicalquery.ProjectionOperator;
 import storageManager.Block;
 import storageManager.Field;
 import storageManager.FieldType;
@@ -357,4 +359,17 @@ public class GeneralUtils {
 		return false;
 	}
 
+	public static boolean sendTupleToProjection(boolean printResult, Tuple t,
+			OperatorInterface next_operator, PrintWriter writer) {
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator) {
+			((ProjectionOperator) next_operator).printTuple(t, printResult);
+			return true;
+		} else if (next_operator == null && printResult) {
+			System.out.println(t);
+			writer.println(t);
+			return true;
+		}
+		return false;
+	}
 }

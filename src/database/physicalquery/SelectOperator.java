@@ -7,6 +7,7 @@ import java.util.List;
 import database.DbManager;
 import database.GlobalVariable;
 import database.parser.searchcond.SearchCond;
+import database.utils.GeneralUtils;
 import storageManager.Block;
 import storageManager.Relation;
 import storageManager.Tuple;
@@ -34,14 +35,11 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		Relation rel = dbManager.schema_manager.getRelation(relation_name);
 		// code for storing all the results in main memory and pass on
 		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
-			int endBlock = readIntoMemBlocks(rel, printResult);
-			System.out.println("Selection done");
+			System.out.println("Selection with write in mem");
+			int endBlock = writeIntoMemBlocks(rel, printResult);
 			if (next_operator != null)
 				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
-		}
-		// code to create new temp table and pass the table name to next
-		// operator
-		else {
+		} else {
 			String new_relation_name = selectBlockByBlock(rel, printResult);
 			if (next_operator != null)
 				next_operator.setRelationName(new_relation_name);
@@ -52,7 +50,7 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 	}
 
 	// returns the last memory block address in memory, starting is 0
-	private int readIntoMemBlocks(Relation rel, boolean printResult) {
+	private int writeIntoMemBlocks(Relation rel, boolean printResult) {
 		Block write_block_ref = dbManager.mem.getBlock(BLOCK_FOR_WRITING);
 		write_block_ref.clear();
 		int lastWriteBlock = 0;
@@ -70,22 +68,21 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				res_tuples.add(tuple);
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
-				if (next_operator == null) {
-					if (printResult) {
-						System.out.print(tuple.toString() + "\n");
-						writer.println(tuple);
+				if (!GeneralUtils.sendTupleToProjection(printResult, tuple,
+						next_operator, writer)) {
+					while (write_block_ref.isFull() == true
+							|| write_block_ref.appendTuple(tuple) == false) {
+						lastWriteBlock++;
+						write_block_ref = dbManager.mem
+								.getBlock(lastWriteBlock);
+						write_block_ref.clear();
 					}
-					continue;
-				}
-				// STORE IN MEMORY FOR NEXT OPERATOR
-				while (write_block_ref.isFull() == true
-						|| write_block_ref.appendTuple(tuple) == false) {
-					lastWriteBlock++;
-					write_block_ref = dbManager.mem.getBlock(lastWriteBlock);
-					write_block_ref.clear();
 				}
 			}
 		}
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
 		return lastWriteBlock;
 	}
 
@@ -110,16 +107,8 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 					continue;
 				res_tuples.add(tuple);
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
-				if (next_operator == null) {
-					if (printResult) {
-						System.out.print(tuple.toString() + "\n");
-						writer.println(tuple);
-					}
-					continue;
-				} else if (next_operator instanceof ProjectionOperator) {
-					((ProjectionOperator) next_operator).printTuple(tuple,
-							printResult);
-				} else {
+				if (!GeneralUtils.sendTupleToProjection(printResult, tuple,
+						next_operator, writer)) {
 					// STORE IN TEMP TABLE FOR NEXT OPERATOR
 					while (write_block_ref.isFull() == true
 							|| write_block_ref.appendTuple(tuple) == false) {
@@ -144,12 +133,8 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 
 	private boolean callWhereCondition(Tuple tuple) {
 		if (cond == null || cond.execute(tuple)) {
-			// System.out.println(tuple.toString() + " SATISFIED");
 			return true;
-		} else {
-			// System.out.println(tuple.toString() + " NOT");
-			return false;
 		}
+		return false;
 	}
-
 }

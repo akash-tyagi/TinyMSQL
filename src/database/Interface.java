@@ -72,49 +72,7 @@ public class Interface {
 		if (GlobalVariable.isReadFromConsole)
 			iface.readText();
 		else
-			iface.readFile("src/INPUT.txt");
+			iface.readFile("INPUT.txt");
 		iface.executeQueries();
-		// DO NOT DELETE
-		// TESTING CODE FOR JOIN OPTMIZATION
-		// JoinOptimization jOptimization = new JoinOptimization(iface.manager);
-		// List<String> tables = new ArrayList<>();
-		// tables.add("e");
-		// tables.add("f");
-		// tables.add("g");
-		// tables.add("h");
-		// HashMap<String, HashMap<String, HashMap<String, Integer>>> vTable =
-		// iface.manager.vTable;
-		//
-		// for (int i = 0; i < 1000; i++) {
-		// vTable.get("e").get("a").put("" + i, i);
-		// if (i < 500) {
-		// vTable.get("g").get("d").put("" + i, i);
-		// }
-		// if (i < 400) {
-		// vTable.get("h").get("d").put("" + i, i);
-		// }
-		// if (i < 300) {
-		// vTable.get("g").get("c").put("" + i, i);
-		// }
-		// if (i < 200) {
-		// vTable.get("f").get("d").put("" + i, i);
-		// }
-		// if (i < 100) {
-		// vTable.get("f").get("b").put("" + i, i);
-		// vTable.get("h").get("c").put("" + i, i);
-		// }
-		// if (i < 50) {
-		// vTable.get("e").get("b").put("" + i, i);
-		// vTable.get("f").get("a").put("" + i, i);
-		// vTable.get("g").get("a").put("" + i, i);
-		// }
-		// if (i < 40) {
-		// vTable.get("h").get("b").put("" + i, i);
-		// }
-		// if (i < 20) {
-		// vTable.get("e").get("c").put("" + i, i);
-		// }
-		// }
-		// jOptimization.getLeftJoinOptimizedSequence(tables);
 	}
 }

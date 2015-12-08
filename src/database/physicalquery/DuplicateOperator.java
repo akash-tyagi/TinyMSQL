@@ -15,221 +15,221 @@ import storageManager.Relation;
 import storageManager.Tuple;
 
 public class DuplicateOperator extends OperatorBase
-        implements OperatorInterface {
+		implements OperatorInterface {
 
-    String sorting_column_name;
-    public List<String> selectList;
+	String sorting_column_name;
+	public List<String> selectList;
 
-    public DuplicateOperator(DbManager dbManager, PrintWriter writer,
-            String column_name, List<String> selectList) {
-        super(dbManager, writer);
-        this.sorting_column_name = column_name;
-        this.selectList = selectList;
-    }
+	public DuplicateOperator(DbManager dbManager, PrintWriter writer,
+			String column_name, List<String> selectList) {
+		super(dbManager, writer);
+		this.sorting_column_name = column_name;
+		this.selectList = selectList;
+	}
 
-    @Override
-    public List<Tuple> execute(boolean printResult) {
-        if (isReadFromMem) {
-            System.out.println("IN MEM DUPLICATE");
-            duplicateRemovalInMemory(printResult);
-        } else {
-            int blocks = dbManager.schema_manager.getRelation(relation_name)
-                    .getNumOfBlocks();
-            if (blocks <= GlobalVariable.TOTAL_DATA_BLOCKS) {
-                System.out.println("CALLING ONE PASS DUPLICATE");
-                for (String select : selectList) {
-					System.out.println(select);
-				}
-                onePassDuplicate(printResult);
-            } else {
-                System.out.println("TWO PASSSSSSS");
-                duplicateRemovalDisk(printResult);
-            }
-        }
-        return res_tuples;
-    }
+	@Override
+	public List<Tuple> execute(boolean printResult) {
+		if (isReadFromMem) {
+			System.out.println("In mem duplicate");
+			duplicateRemovalInMemory(printResult);
+		} else {
+			int blocks = dbManager.schema_manager.getRelation(relation_name)
+					.getNumOfBlocks();
+			if (blocks <= GlobalVariable.TOTAL_DATA_BLOCKS) {
+				System.out.println("One Pass Duplicate");
+				onePassDuplicate(printResult);
+			} else {
+				System.out.println("Two Pass Duplicate Removal");
+				duplicateRemovalDisk(printResult);
+			}
+		}
+		return res_tuples;
+	}
 
-    private void duplicateRemovalInMemory(boolean printResult) {
-        ArrayList<String> sortingCols = new ArrayList<>();
-        if (sorting_column_name != null) {
-            sortingCols.add(sorting_column_name);
-        }
+	private void duplicateRemovalInMemory(boolean printResult) {
+		ArrayList<String> sortingCols = new ArrayList<>();
+		if (sorting_column_name != null) {
+			sortingCols.add(sorting_column_name);
+		}
 
-        for (String field_name : dbManager.mem.getBlock(start_block).getTuple(0)
-                .getSchema().getFieldNames()) {
-            if (!sortingCols.contains(field_name)) {
-                sortingCols.add(field_name);
-            }
-        }
-        ArrayList<TupleObject> tupleObjectArray = new ArrayList<>();
-        int currBlockIdx = start_block;
-        while (end_block >= currBlockIdx) {
-            Block mb = dbManager.mem.getBlock(currBlockIdx);
-            ArrayList<Tuple> blockTuples = mb.getTuples();
-            GeneralUtils.addTuplesToArray(tupleObjectArray, blockTuples,
-                    sortingCols);
-            currBlockIdx++;
-        }
+		for (String field_name : dbManager.mem.getBlock(start_block).getTuple(0)
+				.getSchema().getFieldNames()) {
+			if (!sortingCols.contains(field_name)) {
+				sortingCols.add(field_name);
+			}
+		}
+		ArrayList<TupleObject> tupleObjectArray = new ArrayList<>();
+		int currBlockIdx = start_block;
+		while (end_block >= currBlockIdx) {
+			Block mb = dbManager.mem.getBlock(currBlockIdx);
+			ArrayList<Tuple> blockTuples = mb.getTuples();
+			GeneralUtils.addTuplesToArray(tupleObjectArray, blockTuples,
+					sortingCols);
+			currBlockIdx++;
+		}
 
-        // Sort the array
-        Collections.sort(tupleObjectArray);
+		// Sort the array
+		Collections.sort(tupleObjectArray);
 
-        Tuple t = tupleObjectArray.get(0).tuple;
-        sendTupleToProjection(printResult, t);
-        for (TupleObject tupleObject : tupleObjectArray) {
-            if (!t.toString().equals(tupleObject.tuple.toString())) {
-                t = tupleObject.tuple;
-                sendTupleToProjection(printResult, t);
-            }
-        }
+		Tuple t = tupleObjectArray.get(0).tuple;
+		sendTupleToProjection(printResult, t);
+		for (TupleObject tupleObject : tupleObjectArray) {
+			if (!t.toString().equals(tupleObject.tuple.toString())) {
+				t = tupleObject.tuple;
+				sendTupleToProjection(printResult, t);
+			}
+		}
 
-    }
+	}
 
-    private void duplicateRemovalDisk(boolean printResult) {
-        ArrayList<String> columns = new ArrayList<>();
-        if (sorting_column_name != null) {
-            columns.add(sorting_column_name);
-        }
-        twoPassRemoveDuplicate(dbManager, columns, printResult);
-    }
+	private void duplicateRemovalDisk(boolean printResult) {
+		ArrayList<String> columns = new ArrayList<>();
+		if (sorting_column_name != null) {
+			columns.add(sorting_column_name);
+		}
+		twoPassRemoveDuplicate(dbManager, columns, printResult);
+	}
 
-    private void twoPassRemoveDuplicate(DbManager dbManager,
-            ArrayList<String> sortingCols, boolean printResult) {
-        if (dbManager.schema_manager.getRelation(relation_name)
-                .getNumOfBlocks() > dbManager.mem.getMemorySize()
-                * dbManager.mem.getMemorySize()) {
-            System.out.println(
-                    "ERROR: DUPLICATE REMOVAL NOT POSSIBLE, RELATION TOO BIG");
-            return;
-        }
+	private void twoPassRemoveDuplicate(DbManager dbManager,
+			ArrayList<String> sortingCols, boolean printResult) {
+		if (dbManager.schema_manager.getRelation(relation_name)
+				.getNumOfBlocks() > dbManager.mem.getMemorySize()
+						* dbManager.mem.getMemorySize()) {
+			System.out.println(
+					"ERROR: DUPLICATE REMOVAL NOT POSSIBLE, RELATION TOO BIG");
+			return;
+		}
 
-        ArrayList<String> projectionCols = (ArrayList<String>) selectList;
+		ArrayList<String> projectionCols = (ArrayList<String>) selectList;
 
 		// Add the remaining columns of relation to sortingCols.
-        // If sortingCols == null, add all the columns of the relation to
-        // sortingCols
-        for (String field_name : dbManager.schema_manager
-                .getRelation(relation_name).getSchema().getFieldNames()) {
-            if (!sortingCols.contains(field_name)) {
-                sortingCols.add(field_name);
-            }
-        }
+		// If sortingCols == null, add all the columns of the relation to
+		// sortingCols
+		for (String field_name : dbManager.schema_manager
+				.getRelation(relation_name).getSchema().getFieldNames()) {
+			if (!sortingCols.contains(field_name)) {
+				sortingCols.add(field_name);
+			}
+		}
 
-        Relation relation = dbManager.schema_manager.createRelation(
-                "sorted_unique_temp_" + relation_name,
-                dbManager.schema_manager.getSchema(relation_name));
+		Relation relation = dbManager.schema_manager.createRelation(
+				"sorted_unique_temp_" + relation_name,
+				dbManager.schema_manager.getSchema(relation_name));
 		// Relation relation =
-        // dbManager.schema_manager.getRelation(relation_name);
-        dbManager.temporaryCreatedRelations
-                .add("sorted_unique_temp_" + relation_name);
+		// dbManager.schema_manager.getRelation(relation_name);
+		dbManager.temporaryCreatedRelations
+				.add("sorted_unique_temp_" + relation_name);
 
-// NIKHIL HACK                
-//		TwoPassUtils.sortAndRemoveDuplicateForPhase1(dbManager, relation_name,
-//				sortingCols, relation);
-        TwoPassUtils.sortAndRemoveDuplicateForPhase1(dbManager, relation_name,
-                projectionCols, relation);
+		// NIKHIL HACK
+		// TwoPassUtils.sortAndRemoveDuplicateForPhase1(dbManager,
+		// relation_name,
+		// sortingCols, relation);
+		TwoPassUtils.sortAndRemoveDuplicateForPhase1(dbManager, relation_name,
+				projectionCols, relation);
 
 		// TwoPassUtils.sortRelationForPhase1(dbManager, relation_name,
-        // sortingCols);
-        // Read tuples to temp array
-        ArrayList<TupleObject> tupleObjectArray = new ArrayList<>();
+		// sortingCols);
+		// Read tuples to temp array
+		ArrayList<TupleObject> tupleObjectArray = new ArrayList<>();
 
-        int relationTempSize = relation.getNumOfBlocks();
-        int currRelationIdx = 0;
+		int relationTempSize = relation.getNumOfBlocks();
+		int currRelationIdx = 0;
 
-        while (relationTempSize > currRelationIdx) {
-            relation.getBlock(currRelationIdx, 0);
-            Block mb = dbManager.mem.getBlock(0);
-            ArrayList<Tuple> blockTuples = mb.getTuples();
-            GeneralUtils.addTuplesToArray(tupleObjectArray, blockTuples,
-                    sortingCols);
-            currRelationIdx++;
-        }
+		while (relationTempSize > currRelationIdx) {
+			relation.getBlock(currRelationIdx, 0);
+			Block mb = dbManager.mem.getBlock(0);
+			ArrayList<Tuple> blockTuples = mb.getTuples();
+			GeneralUtils.addTuplesToArray(tupleObjectArray, blockTuples,
+					sortingCols);
+			currRelationIdx++;
+		}
 
-        // Sort the array
-        Collections.sort(tupleObjectArray);
+		// Sort the array
+		Collections.sort(tupleObjectArray);
 
-        Tuple t = tupleObjectArray.get(0).tuple;
-        sendTupleToProjection(printResult, t);
-                ArrayList<Tuple> myMap = new ArrayList<>();
-        myMap.add(t);
-        for (TupleObject tupleObject : tupleObjectArray) {
-            if (!GeneralUtils.projectedColumnsDataExists(tupleObject.tuple, myMap, projectionCols)) {
-                //if (!t.toString().equals(tupleObject.tuple.toString())) {
-                t = tupleObject.tuple;
-                myMap.add(t);
-                sendTupleToProjection(printResult, t);
-            }
-        }
-    }
+		Tuple t = tupleObjectArray.get(0).tuple;
+		sendTupleToProjection(printResult, t);
+		ArrayList<Tuple> myMap = new ArrayList<>();
+		myMap.add(t);
+		for (TupleObject tupleObject : tupleObjectArray) {
+			if (!GeneralUtils.projectedColumnsDataExists(tupleObject.tuple,
+					myMap, projectionCols)) {
+				// if (!t.toString().equals(tupleObject.tuple.toString())) {
+				t = tupleObject.tuple;
+				myMap.add(t);
+				sendTupleToProjection(printResult, t);
+			}
+		}
+	}
 
-    private void sendTupleToProjection(boolean printResult, Tuple t) {
-        if (next_operator != null) {
-            ((ProjectionOperator) next_operator).printTuple(t, printResult);
-        } else if (printResult) {
-            System.out.println(t);
-            writer.println(t);
-        }
-        res_tuples.add(t);
-    }
+	private void sendTupleToProjection(boolean printResult, Tuple t) {
+		if (next_operator != null) {
+			((ProjectionOperator) next_operator).printTuple(t, printResult);
+		} else if (printResult) {
+			System.out.println(t);
+			writer.println(t);
+		}
+		res_tuples.add(t);
+	}
 
-    private void onePassDuplicate(boolean printResult) {
-        ArrayList<String> columns = new ArrayList<String>();
-        if (sorting_column_name != null) {
-            columns.add(sorting_column_name);
-        }
-        onePassRemoveDuplicate(dbManager, columns, printResult);
-    }
+	private void onePassDuplicate(boolean printResult) {
+		ArrayList<String> columns = new ArrayList<String>();
+		if (sorting_column_name != null) {
+			columns.add(sorting_column_name);
+		}
+		onePassRemoveDuplicate(dbManager, columns, printResult);
+	}
 
-    private void onePassRemoveDuplicate(DbManager dbManager,
-            ArrayList<String> sortingCols, boolean printResult) {
+	private void onePassRemoveDuplicate(DbManager dbManager,
+			ArrayList<String> sortingCols, boolean printResult) {
 
-        if (dbManager.schema_manager.getRelation(relation_name)
-                .getNumOfBlocks() > dbManager.mem.getMemorySize()) {
-            System.out.println(
-                    "ERROR: DUPLICATE REMOVAL NOT POSSIBLE, RELATION TOO BIG");
-            return;
-        }
+		if (dbManager.schema_manager.getRelation(relation_name)
+				.getNumOfBlocks() > dbManager.mem.getMemorySize()) {
+			System.out.println(
+					"ERROR: DUPLICATE REMOVAL NOT POSSIBLE, RELATION TOO BIG");
+			return;
+		}
 
-        ArrayList<String> projectionCols = (ArrayList<String>) selectList;
+		ArrayList<String> projectionCols = (ArrayList<String>) selectList;
 
 		// Add the remaining columns of relation to sortingCols.
-        // If sortingCols == null, add all the columns of the relation to
-        // sortingCols
-        for (String field_name : dbManager.schema_manager
-                .getRelation(relation_name).getSchema().getFieldNames()) {
-            if (!sortingCols.contains(field_name)) {
-                sortingCols.add(field_name);
-            }
-        }
+		// If sortingCols == null, add all the columns of the relation to
+		// sortingCols
+		for (String field_name : dbManager.schema_manager
+				.getRelation(relation_name).getSchema().getFieldNames()) {
+			if (!sortingCols.contains(field_name)) {
+				sortingCols.add(field_name);
+			}
+		}
 
-        Relation relation = dbManager.schema_manager.getRelation(relation_name);
-        // Copy relation to memory
-        int memIndex = 0;
-        for (int i = 0; i < relation.getNumOfBlocks(); i++) {
-            relation.getBlock(i, memIndex++);
-        }
+		Relation relation = dbManager.schema_manager.getRelation(relation_name);
+		// Copy relation to memory
+		int memIndex = 0;
+		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+			relation.getBlock(i, memIndex++);
+		}
 
-        GeneralUtils.sortMainMemory(dbManager, sortingCols,
-                relation.getNumOfBlocks());
+		GeneralUtils.sortMainMemory(dbManager, sortingCols,
+				relation.getNumOfBlocks());
 
-        Tuple t = dbManager.mem.getBlock(0).getTuple(0);
-        sendTupleToProjection(printResult, t);
-        ArrayList<Tuple> myMap = new ArrayList<>();
-        myMap.add(t);
-        for (int i = 0; i < relation.getNumOfBlocks(); i++) {
-            Block mb = dbManager.mem.getBlock(i);
-            ArrayList<Tuple> blockTuples = mb.getTuples();
+		Tuple t = dbManager.mem.getBlock(0).getTuple(0);
+		sendTupleToProjection(printResult, t);
+		ArrayList<Tuple> myMap = new ArrayList<>();
+		myMap.add(t);
+		for (int i = 0; i < relation.getNumOfBlocks(); i++) {
+			Block mb = dbManager.mem.getBlock(i);
+			ArrayList<Tuple> blockTuples = mb.getTuples();
 
-            for (Tuple t1 : blockTuples) {
-                if (!GeneralUtils.projectedColumnsDataExists(t1, myMap, projectionCols)) {
-                    //if (!t.toString().equals(t1.toString())) {
-                    t = t1;
-                    myMap.add(t);
-                    sendTupleToProjection(printResult, t);
-                }
-            }
-        }
-    }
+			for (Tuple t1 : blockTuples) {
+				if (!GeneralUtils.projectedColumnsDataExists(t1, myMap,
+						projectionCols)) {
+					// if (!t.toString().equals(t1.toString())) {
+					t = t1;
+					myMap.add(t);
+					sendTupleToProjection(printResult, t);
+				}
+			}
+		}
+	}
 
 }

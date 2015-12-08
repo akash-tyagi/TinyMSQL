@@ -8,6 +8,7 @@ import database.DbManager;
 import database.GlobalVariable;
 import database.logicaloptimization.LogicalQuery;
 import database.parser.searchcond.SearchCond;
+import database.utils.GeneralUtils;
 import storageManager.Block;
 import storageManager.FieldType;
 import storageManager.Relation;
@@ -19,7 +20,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 	LogicalQuery logicalQuery;
 	int block_for_reading_1 = 9;
 	int block_for_reading_2 = 8;
-
 	int block_for_writing = 0;
 
 	public ProductOperator(DbManager manager, LogicalQuery logicalQuery,
@@ -41,7 +41,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 			if (next_operator != null)
 				next_operator.setRelationName(rel);
 		} else {
-			// CAN PRODUCT RESULT BE STORED IN MEMORY
 			if (isProductMemStorable(rel1, rel2)) {
 				System.out.println("MEMORY STORABLE PRODUCT");
 				int endBlock = memStorableProductOperation(rel1, rel2,
@@ -71,7 +70,7 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 				if (next_operator != null)
 					next_operator.setRelationName(rel);
 			} else {
-				System.out.println("ACTUAL PRODUCT");
+				System.out.println("CROSS PRODUCT");
 				String rel = productOperation(rel1, rel2, printResult);
 				if (next_operator != null)
 					next_operator.setRelationName(rel);
@@ -129,29 +128,29 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 								join_tuple) == false)
 							continue;
 						total_tuples++;
-						if (next_operator == null) {
-							if (printResult) {
-								System.out.println(join_tuple.toString());
-								writer.println(join_tuple.toString());
+						res_tuples.add(join_tuple);
+						if (!GeneralUtils.sendTupleToProjection(printResult,
+								join_tuple, next_operator, writer)) {
+							while (write_block_ref.isFull() == true
+									|| write_block_ref
+											.appendTuple(join_tuple) == false) {
+								join_relation.setBlock(
+										join_relation.getNumOfBlocks(),
+										block_for_writing);
+								write_block_ref.clear();
 							}
-							res_tuples.add(join_tuple);
-							continue;
-						}
-						while (write_block_ref.isFull() == true
-								|| write_block_ref
-										.appendTuple(join_tuple) == false) {
-							join_relation.setBlock(
-									join_relation.getNumOfBlocks(),
-									block_for_writing);
-							write_block_ref.clear();
 						}
 					}
 				}
 			}
 			rel2_block.clear();
 		}
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
+
 		// WRITE LAST BLOCK PENDING IN MEMORY If NOT EMPTY
-		if (next_operator != null && !write_block_ref.isEmpty()) {
+		else if (next_operator != null && !write_block_ref.isEmpty()) {
 			join_relation.setBlock(join_relation.getNumOfBlocks(),
 					block_for_writing);
 			write_block_ref.clear();
@@ -230,15 +229,8 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 							continue;
 						total_tuples++;
 						res_tuples.add(join_tuple);
-						if (next_operator == null) {
-							if (printResult) {
-								System.out.println(join_tuple.toString());
-								writer.println(join_tuple.toString());
-							}
-						} else if (next_operator instanceof ProjectionOperator) {
-							((ProjectionOperator) next_operator)
-									.printTuple(join_tuple, printResult);
-						} else {
+						if (!GeneralUtils.sendTupleToProjection(printResult,
+								join_tuple, next_operator, writer)) {
 							// STORE IN MEMORY FOR NEXT OPERATOR
 							while (write_block_ref.isFull() == true
 									|| write_block_ref
@@ -253,9 +245,13 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 				}
 			}
 		}
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
 		System.out.println("PRODUCT:" + relation_name + " and " + relation_name2
 				+ " tuples generated:" + total_tuples);
 		return lastWriteBlock;
+
 	}
 
 	private boolean isProductMemStorable(Relation rel1, Relation rel2) {
@@ -286,7 +282,7 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 				.getSelectOptCondSingleTable(rel2.getRelationName());
 		List<SearchCond> conds = logicalQuery.getSelectOptConds(
 				rel1.getRelationName(), rel2.getRelationName());
-		
+
 		String join_relation_name = rel1.getRelationName() + "_"
 				+ rel2.getRelationName();
 		dbManager.temporaryCreatedRelations.add(join_relation_name);
@@ -324,16 +320,8 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 							continue;
 						total_tuples++;
 						res_tuples.add(join_tuple);
-						if (next_operator == null) {
-							if (printResult) {
-								System.out.println(join_tuple.toString());
-								writer.println(join_tuple.toString());
-							}
-							continue;
-						} else if (next_operator instanceof ProjectionOperator) {
-							((ProjectionOperator) next_operator)
-									.printTuple(join_tuple, printResult);
-						} else {
+						if (!GeneralUtils.sendTupleToProjection(printResult,
+								join_tuple, next_operator, writer)) {
 							while (write_block_ref.isFull() == true
 									|| write_block_ref
 											.appendTuple(join_tuple) == false) {
