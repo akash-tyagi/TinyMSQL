@@ -34,14 +34,18 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		 */
 		Relation rel = dbManager.schema_manager.getRelation(relation_name);
 		// code for storing all the results in main memory and pass on
-		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
-			int endBlock = writeIntoMemBlocks(rel, printResult);
-			if (next_operator != null)
-				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
+		if (cond != null) {
+			if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
+				int endBlock = writeIntoMemBlocks(rel, printResult);
+				if (next_operator != null)
+					next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
+			} else {
+				String new_relation_name = selectBlockByBlock(rel, printResult);
+				if (next_operator != null)
+					next_operator.setRelationName(new_relation_name);
+			}
 		} else {
-			String new_relation_name = selectBlockByBlock(rel, printResult);
-			if (next_operator != null)
-				next_operator.setRelationName(new_relation_name);
+			next_operator.setRelationName(relation_name);
 		}
 		if (next_operator != null)
 			return next_operator.execute(printResult);
