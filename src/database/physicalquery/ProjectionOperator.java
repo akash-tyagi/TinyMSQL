@@ -34,10 +34,8 @@ public class ProjectionOperator extends OperatorBase
 			System.out.println("");
 		}
 		if (isReadFromMem) {
-			System.out.println("PROJECT FROM MEM");
 			readFromMemory(printResult);
 		} else {
-			System.out.println("FROM DISK");
 			readFromDisk(printResult);
 		}
 		return res_tuples;
@@ -115,8 +113,18 @@ public class ProjectionOperator extends OperatorBase
 
 	private void printColName(String col) {
 		String[] list = col.split("\\.");
-		System.out.print(list[list.length - 1] + "\t");
-		writer.print(list[list.length - 1] + "\t");
+		col = list[list.length - 1];
+		System.out.print(col + "\t");
+		writer.print(col + "\t");
+		if (isJoin) {
+			for (String joinCol : joinColumns) {
+				if (col.equals(joinCol)) {
+					System.out.print(col + "\t");
+					writer.print(col + "\t");
+					break;
+				}
+			}
+		}
 	}
 
 	private String getFieldName(Tuple t, String col) {
