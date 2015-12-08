@@ -5,7 +5,6 @@ import java.util.List;
 
 import database.DbManager;
 import database.GlobalVariable;
-import database.utils.GeneralUtils;
 import storageManager.Block;
 import storageManager.Relation;
 import storageManager.Tuple;
@@ -14,11 +13,17 @@ public class ProjectionOperator extends OperatorBase
 		implements OperatorInterface {
 	public List<String> selectList;
 	final int BLOCK_FOR_READING = 9;
+	boolean isJoin;
+	boolean printHeader;
+	List<String> joinColumns;
 
 	public ProjectionOperator(DbManager manager, List<String> selectList,
-			PrintWriter writer) {
+			PrintWriter writer, boolean isJoin, List<String> list) {
 		super(manager, writer);
 		this.selectList = selectList;
+		this.isJoin = isJoin;
+		this.joinColumns = list;
+		printHeader = true;
 	}
 
 	@Override
@@ -61,15 +66,57 @@ public class ProjectionOperator extends OperatorBase
 
 	public void printTuple(Tuple tuple, boolean printResult) {
 		if (printResult) {
-			for (String col : selectList) {
-				col = getFieldName(tuple, col);
-				System.out.print(tuple.getField(col).toString() + "\t");
-				writer.print(tuple.getField(col).toString() + "\t");
+			if (printHeader) {
+				printHeader(tuple, printResult);
+				printHeader = false;
+			}
+			if (selectList != null)
+				for (String col : selectList) {
+					col = getFieldName(tuple, col);
+					System.out.print(tuple.getField(col).toString() + "\t");
+					writer.print(tuple.getField(col).toString() + "\t");
+				}
+			else {
+				for (String field_name : tuple.getSchema().getFieldNames()) {
+					System.out.print(
+							tuple.getField(field_name).toString() + "\t");
+					writer.print(tuple.getField(field_name).toString() + "\t");
+					if (isJoin) {
+						for (String joinCol : joinColumns) {
+							if (field_name.endsWith("." + joinCol)) {
+								System.out.print(
+										tuple.getField(field_name).toString()
+												+ "\t");
+								writer.print(
+										tuple.getField(field_name).toString()
+												+ "\t");
+								break;
+							}
+						}
+					}
+				}
 			}
 			System.out.println("");
 			writer.println();
 		}
 		res_tuples.add(tuple);
+	}
+
+	private void printHeader(Tuple tuple, boolean printResult) {
+		if (selectList != null)
+			for (String col : selectList)
+				printColName(col);
+		else
+			for (String field_name : tuple.getSchema().getFieldNames())
+				printColName(field_name);
+		System.out.println("");
+		writer.println();
+	}
+
+	private void printColName(String col) {
+		String[] list = col.split("\\.");
+		System.out.print(list[list.length - 1] + "\t");
+		writer.print(list[list.length - 1] + "\t");
 	}
 
 	private String getFieldName(Tuple t, String col) {

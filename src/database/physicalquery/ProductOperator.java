@@ -36,13 +36,11 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 		Relation rel2 = dbManager.schema_manager.getRelation(relation_name2);
 		// Table already present in memory
 		if (isReadFromMem) {
-			System.out.println("READ FROM MEM PRODUCT");
 			String rel = readFromMemProductOperation(rel1, rel2, printResult);
 			if (next_operator != null)
 				next_operator.setRelationName(rel);
 		} else {
 			if (isProductMemStorable(rel1, rel2)) {
-				System.out.println("MEMORY STORABLE PRODUCT");
 				int endBlock = memStorableProductOperation(rel1, rel2,
 						printResult);
 				if (next_operator != null)
@@ -50,7 +48,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 			} // CAN ONE PASS JOIN BE DONE
 			else if (rel1.getNumOfBlocks() <= GlobalVariable.USABLE_JOIN_BLOCKS
 					|| rel2.getNumOfBlocks() <= GlobalVariable.USABLE_JOIN_BLOCKS) {
-				System.out.println("ONE PASS PRODUCT");
 				String rel = null;
 				start_block = 0;
 				if (rel1.getNumOfBlocks() <= GlobalVariable.USABLE_JOIN_BLOCKS) {
@@ -70,7 +67,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 				if (next_operator != null)
 					next_operator.setRelationName(rel);
 			} else {
-				System.out.println("CROSS PRODUCT");
 				String rel = productOperation(rel1, rel2, printResult);
 				if (next_operator != null)
 					next_operator.setRelationName(rel);
@@ -155,8 +151,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 					block_for_writing);
 			write_block_ref.clear();
 		}
-		System.out.println("PRODUCT:" + relation_name + " and " + relation_name2
-				+ " tuples generated:" + total_tuples);
 		return join_relation_name;
 	}
 
@@ -248,8 +242,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 		if (next_operator != null
 				&& next_operator instanceof ProjectionOperator)
 			next_operator = null;
-		System.out.println("PRODUCT:" + relation_name + " and " + relation_name2
-				+ " tuples generated:" + total_tuples);
 		return lastWriteBlock;
 
 	}
@@ -268,7 +260,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 			}
 			blocks_needed = total_tuples / i;
 		}
-		System.out.println("Total Blocks needed:" + blocks_needed);
 		if (blocks_needed <= GlobalVariable.USABLE_JOIN_BLOCKS)
 			return true;
 		return false;
@@ -345,8 +336,6 @@ public class ProductOperator extends OperatorBase implements OperatorInterface {
 		} else {
 			next_operator = null;
 		}
-		System.out.println("PRODUCT:" + relation_name + " and " + relation_name2
-				+ " tuples generated:" + total_tuples);
 		return join_relation_name;
 	}
 

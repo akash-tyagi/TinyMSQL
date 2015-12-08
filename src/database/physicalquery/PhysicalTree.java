@@ -26,13 +26,12 @@ public class PhysicalTree {
 		joinOptimization = new JoinOptimization(dbManager);
 		if (stmt instanceof SelectStmt) {
 			logicalQuery = new LogicalQuery((SelectStmt) stmt);
-			// logicalQuery.printSelectionOptimizations();
 			constructSelectTree(stmt);
-
 		}
 	}
 
 	private void constructSelectTree(StmtInterface stmt) {
+		boolean isJoin = false;
 		SelectStmt selectStmt = (SelectStmt) stmt;
 		OperatorInterface nextOperator, currOperator;
 		// SINGLE TABLE SELECT OPERATOR
@@ -44,9 +43,8 @@ public class PhysicalTree {
 			if (joinOptimization.generateJoinColumns(query,
 					selectStmt.tableList)
 					&& joinOptimization.join_columns_map.size() > 0) {
-				System.out.println("Join Tree");
-//				joinOptimization.printJoinColumns();
 				currOperator = constructJoinTree(selectStmt.tableList);
+				isJoin = true;
 			} else
 				currOperator = constructProductTree(selectStmt.tableList);
 		}
@@ -66,15 +64,12 @@ public class PhysicalTree {
 			currOperator.setNextOperator(nextOperator);
 			currOperator = nextOperator;
 		}
-		if (selectStmt.selectList != null
-				&& !selectStmt.selectList.get(0).equals("*")) {
-			System.out.println(selectStmt.selectList);
-			System.out.println("ADDING PROJECTION");
-			nextOperator = new ProjectionOperator(dbManager,
-					selectStmt.selectList, writer);
-			currOperator.setNextOperator(nextOperator);
-			currOperator = nextOperator;
-		}
+		if (selectStmt.selectList.get(0).equals("*"))
+			selectStmt.selectList = null;
+		nextOperator = new ProjectionOperator(dbManager, selectStmt.selectList,
+				writer, isJoin, joinOptimization.getJoinColumns());
+		currOperator.setNextOperator(nextOperator);
+		currOperator = nextOperator;
 	}
 
 	private OperatorInterface constructProductTree(List<String> join_tables) {
@@ -89,9 +84,7 @@ public class PhysicalTree {
 		List<String> tables = new ArrayList<String>();
 		for (int i = 0; i < size; i++) {
 			int min = Collections.min(tableSizes);
-			System.out.println("min size:" + min);
 			int index = tableSizes.indexOf((Integer) min);
-			System.out.println("Index:" + index);
 			tables.add(join_tables.remove(index));
 			tableSizes.remove((Integer) min);
 		}
@@ -99,7 +92,6 @@ public class PhysicalTree {
 		while (tables.size() > 1) {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
-			System.out.println("Combining tables:" + rel1 + ":" + rel2);
 			nextOperator = new ProductOperator(dbManager, logicalQuery, rel1,
 					rel2, writer);
 			String newRel = rel1 + "_" + rel2;
@@ -113,7 +105,6 @@ public class PhysicalTree {
 				currOperator = nextOperator;
 			}
 		}
-		System.out.println("Final Table:" + tables.get(0));
 		return nextOperator;
 	}
 
@@ -131,10 +122,8 @@ public class PhysicalTree {
 			String rel1 = tables.get(0);
 			String rel2 = tables.get(1);
 			joinColumns = joinOptimization.getJoinColumns(rel1, rel2);
-			System.out.println("Join tables:" + rel1 + ":" + rel2 + " JoinCols:"
-					+ joinColumns.toString());
 			nextOperator = new JoinOperator(rel1, rel2, dbManager, writer,
-					(ArrayList<String>) joinColumns,logicalQuery);
+					(ArrayList<String>) joinColumns, logicalQuery);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);
@@ -146,7 +135,6 @@ public class PhysicalTree {
 				currOperator = nextOperator;
 			}
 		}
-		System.out.println("Final Table:" + tables.get(0));
 		return nextOperator;
 	}
 

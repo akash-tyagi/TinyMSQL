@@ -39,17 +39,11 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 	@Override
 	public List<Tuple> execute(boolean printResult) {
-		System.out.println("JOIN:" + relation_name + " " + relation_name2 + " "
-				+ joinColumns);
-
-		System.out.println("Trying one pass");
 		Relation rel = onePassJoin(printResult);
 		if (rel == null) {
-			System.out.println("Two pass join");
 			rel = twoPassJoin(printResult);
 		}
 		if (rel == null) {
-			System.out.println("Simple Join");
 			rel = simpleJoin(true);
 		}
 		if (next_operator != null) {
@@ -85,7 +79,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			firstRel = r2;
 			secondRel = r1;
 		} else {
-			System.out.println("One pass fail");
 			return null;
 		}
 
@@ -124,6 +117,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						memIndex, printResult);
 			}
 		}
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
 		return one_pass_temp_relation;
 	}
 
@@ -386,7 +382,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 				}
 			}
 		}
-
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
 		return two_pass_temp_relation;
 	}
 
@@ -429,8 +427,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		for (int i = 0; i < r1.getNumOfBlocks(); i++) {
 			r1.getBlock(i, 0);
 			// join algorithm
-
-			int l = 0;
 			for (int j = 0; j < r2.getNumOfBlocks(); j++) {
 				r2.getBlock(j, 1);
 				joinBlocksData(dbManager.mem, r1, r2, dbManager.mem.getBlock(0),
@@ -439,7 +435,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						dbManager.mem.getMemorySize() - 2, printResult);
 			}
 		}
-
+		if (next_operator != null
+				&& next_operator instanceof ProjectionOperator)
+			next_operator = null;
 		return temp_relation;
 	}
 
@@ -469,7 +467,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					if (field_name.contains(".")) {
 						field_name = field_name.split("\\.")[1];
 					}
-
 					if (commonCols.contains(field_name)) {
 						Field f2;
 
@@ -512,7 +509,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 				}
 
 				if (toInclude) {
-					// System.out.println("ERE:"+t2.getSchema());
 					for (int i = 0; i < t2.getNumOfFields(); i++) {
 						Field f2 = t2.getField(i);
 						String field_name = t2.getSchema().getFieldName(i);
@@ -532,19 +528,13 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						}
 					}
 					res_tuples.add(tuple);
-					if (next_operator != null) {
+					if (!GeneralUtils.sendTupleToProjection(printResult, tuple,
+							next_operator, writer)) {
 						GeneralUtils.appendTupleToRelation(
 								one_pass_temp_relation, mem, usedMemIndex + 1,
 								tuple);
-					} else {
-						if (printResult) {
-							System.out.println(tuple.toString());
-							writer.println(tuple.toString());
-						}
 					}
-
 				}
-
 			}
 		}
 	}
@@ -629,19 +619,13 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						}
 					}
 					res_tuples.add(tuple);
-					if (next_operator != null) {
+					if (!GeneralUtils.sendTupleToProjection(printResult, tuple,
+							next_operator, writer)) {
 						GeneralUtils.appendTupleToRelation(
 								two_pass_temp_relation, mem,
 								mem.getMemorySize() - 1, tuple);
-					} else {
-						if (printResult) {
-							System.out.println(tuple.toString());
-							writer.println(tuple.toString());
-						}
 					}
-
 				}
-
 			}
 		}
 

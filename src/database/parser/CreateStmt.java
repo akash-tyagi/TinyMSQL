@@ -69,54 +69,6 @@ public class CreateStmt extends StmtBase implements StmtInterface {
 		execute();
 	}
 
-	public void execute1() {
-		// System.out
-		// .print("=======================Schema========================="
-		// + "\n");
-		// // Create a schema
-		// System.out.print("Creating a schema" + "\n");
-		// Schema schema = new Schema(field_names, field_types);
-		//
-		// // =========Relation & SchemaManager=========
-		// System.out.print("=========Relation & SchemaManager======" + "\n");
-		// System.out.print("Creating table " + relation_name + "\n");
-		// Relation relation_reference = manager.schema_manager.createRelation(
-		// relation_name, schema);
-		//
-		// // Print the information about the Relation
-		// System.out.print("The table has name "
-		// + relation_reference.getRelationName() + "\n");
-		// System.out.print("The table has schema:" + "\n");
-		// System.out.print(relation_reference.getSchema() + "\n");
-		// System.out.print("The table currently have "
-		// + relation_reference.getNumOfBlocks() + " blocks" + "\n");
-		// System.out
-		// .print("The table currently have "
-		// + relation_reference.getNumOfTuples() + " tuples"
-		// + "\n" + "\n");
-		//
-		// // Print the information provided by the schema manager
-		// System.out.print("Current schemas and relations: " + "\n");
-		// System.out.print(manager.schema_manager + "\n");
-		// System.out
-		// .print("From the schema manager, the table "
-		// + relation_name
-		// + " exists: "
-		// + (manager.schema_manager.relationExists(relation_name) ? "TRUE"
-		// : "FALSE") + "\n");
-		// System.out.print("From the schema manager, the table " +
-		// relation_name
-		// + " has schema:" + "\n");
-		// System.out
-		// .print(manager.schema_manager.getSchema(relation_name) + "\n");
-		// System.out.print("From the schema manager, the table " +
-		// relation_name
-		// + " has schema:" + "\n");
-		// System.out.print(manager.schema_manager.getRelation(relation_name)
-		// .getSchema() + "\n");
-
-	}
-
 	@Override
 	public void execute() {
 		Schema schema = new Schema(field_names, field_types);

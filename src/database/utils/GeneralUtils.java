@@ -160,7 +160,6 @@ public class GeneralUtils {
 			block_reference.clear();
 			while (block_reference.isFull() == false && i < size) {
 				tuple = tuples.get(i++);
-				System.out.println("Appending:" + tuple);
 				block_reference.appendTuple(tuple);
 			}
 			relation_reference.setBlock(relation_reference.getNumOfBlocks(),
@@ -222,9 +221,6 @@ public class GeneralUtils {
 
 	public static void printExecutionStats(DbManager dbManager,
 			PrintWriter writer) {
-		long elapsedTimeMillis = System.currentTimeMillis() - startTime;
-		System.out.print(
-				"Computer elapse time = " + elapsedTimeMillis + " ms" + "\n");
 		System.out.print("Execution time: = " + dbManager.disk.getDiskTimer()
 				+ " ms" + "\n");
 		writer.println(

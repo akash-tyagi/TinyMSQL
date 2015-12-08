@@ -33,7 +33,6 @@ public class SortingOperator extends OperatorBase implements OperatorInterface {
 			int blocks = dbManager.schema_manager.getRelation(relation_name)
 					.getNumOfBlocks();
 			if (blocks <= GlobalVariable.TOTAL_DATA_BLOCKS) {
-				System.out.println("CALLING ONE PASS SORTING");
 				start_block = 0;
 				end_block = blocks - 1;
 				onePassSorting(printResult);
@@ -42,6 +41,7 @@ public class SortingOperator extends OperatorBase implements OperatorInterface {
 
 			} else {
 				sortDisk(printResult);
+				next_operator = null;
 			}
 		}
 		if (next_operator != null)

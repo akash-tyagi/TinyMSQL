@@ -7,6 +7,7 @@ Execution time: = 74.63 ms
 Disk I/Os = 1
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 Execution time: = 74.63 ms
 Disk I/Os = 1
@@ -16,6 +17,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	0	100	100	"E"	
 Execution time: = 149.26 ms
@@ -26,6 +28,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	0	100	100	"E"	
 3	100	100	100	"E"	
@@ -37,6 +40,7 @@ Execution time: = 522.41 ms
 Disk I/Os = 7
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	0	100	100	"E"	
 3	100	100	100	"E"	
@@ -51,6 +55,7 @@ Execution time: = 597.04 ms
 Disk I/Os = 8
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 1	99	100	100	"A"	
 Execution time: = 149.26 ms
@@ -61,6 +66,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 1	99	100	100	"A"	
 4	99	100	100	"B"	
@@ -324,6 +330,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 3	100	100	98	"C"	
 3	100	69	64	"C"	
@@ -388,6 +395,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT sid, grade FROM course
+sid	grade	
 1	"A"	
 3	"C"	
 3	"C"	
@@ -452,6 +460,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT sid, course.grade FROM course
+sid	grade	
 1	"A"	
 3	"C"	
 3	"C"	
@@ -516,6 +525,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT DISTINCT grade FROM course
+grade	
 "A"	
 "B"	
 "C"	
@@ -525,6 +535,7 @@ Execution time: = 15929.839999999964 ms
 Disk I/Os = 221
 
 SELECT DISTINCT * FROM course
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	100	100	99	"B"	
 3	100	69	64	"C"	
@@ -548,6 +559,7 @@ Execution time: = 18168.739999999983 ms
 Disk I/Os = 251
 
 SELECT * FROM course ORDER BY exam
+sid	homework	project	exam	grade	
 16	0	0	0	"E"	
 16	0	0	0	"E"	
 16	0	0	0	"E"	
@@ -612,6 +624,7 @@ Execution time: = 21240.960000000054 ms
 Disk I/Os = 300
 
 SELECT * FROM course WHERE exam = 100
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 15	100	99	100	"E"	
 17	100	100	100	"A"	
@@ -620,6 +633,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE grade = "A"
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 17	100	100	100	"A"	
 5	100	100	66	"A"	
@@ -628,6 +642,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE exam = 100 AND project = 100
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
@@ -635,6 +650,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE exam = 100 OR exam = 99
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 15	100	99	100	"E"	
 17	100	100	100	"A"	
@@ -644,6 +660,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE NOT exam = 0
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 3	100	100	98	"C"	
 3	100	69	64	"C"	
@@ -667,6 +684,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE exam > 70
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 3	100	100	98	"C"	
 15	100	50	90	"E"	
@@ -681,6 +699,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE exam = 100 OR homework = 100 AND project = 100
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 3	100	100	98	"C"	
 15	100	99	100	"E"	
@@ -694,6 +713,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE [ exam = 100 OR homework = 100 ] AND project = 100
+sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 3	100	100	98	"C"	
 17	100	100	100	"A"	
@@ -706,6 +726,7 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE exam + homework = 200
+sid	homework	project	exam	grade	
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
@@ -713,12 +734,14 @@ Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE ( exam * 30 + homework * 20 + project * 50 ) / 100 = 100
+sid	homework	project	exam	grade	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
 Execution time: = 4477.800000000005 ms
 Disk I/Os = 60
 
 SELECT * FROM course WHERE grade = "C" AND [ exam > 70 OR project > 70 ] AND NOT ( exam * 30 + homework * 20 + project * 50 ) / 100 < 60
+sid	homework	project	exam	grade	
 3	100	100	98	"C"	
 7	100	50	73	"C"	
 Execution time: = 4477.800000000005 ms
@@ -741,6 +764,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM course, course2
+sid	exam	grade	sid	homework	project	exam	grade	
 1	100	"A"	1	99	100	100	"A"	
 16	25	"E"	1	99	100	100	"A"	
 17	0	"A"	1	99	100	100	"A"	
@@ -1009,6 +1033,7 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT course.sid, course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
+sid	grade	grade	
 1	"A"	"A"	
 16	"E"	"E"	
 16	"E"	"E"	
@@ -1059,10 +1084,11 @@ SELECT course.sid, course.grade, course2.grade FROM course, course2 WHERE course
 4	"D"	"D"	
 5	"A"	"A"	
 6	"B"	"B"	
-Execution time: = 65749.02999999901 ms
-Disk I/Os = 881
+Execution time: = 54629.15999999938 ms
+Disk I/Os = 732
 
 SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
+grade	grade	
 "A"	"A"	
 "E"	"E"	
 "B"	"B"	
@@ -1072,84 +1098,90 @@ Execution time: = 67893.35999999921 ms
 Disk I/Os = 916
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid ORDER BY course.exam
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-25	"E"	16	0	0	0	"E"	
-98	"C"	3	100	69	64	"C"	
-65	"B"	6	100	100	65	"B"	
-66	"A"	5	100	100	66	"A"	
-97	"D"	4	100	100	97	"D"	
-98	"C"	3	100	100	98	"C"	
-99	"B"	2	100	100	99	"B"	
-100	"A"	1	99	100	100	"A"	
-0	"A"	17	100	100	100	"A"	
-0	"A"	17	100	100	100	"A"	
+exam	grade	sid	homework	project	exam	grade	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+25	"E"	16	16	0	0	0	"E"	
+98	"C"	3	3	100	69	64	"C"	
+65	"B"	6	6	100	100	65	"B"	
+66	"A"	5	5	100	100	66	"A"	
+97	"D"	4	4	100	100	97	"D"	
+98	"C"	3	3	100	100	98	"C"	
+99	"B"	2	2	100	100	99	"B"	
+100	"A"	1	1	99	100	100	"A"	
+0	"A"	17	17	100	100	100	"A"	
+0	"A"	17	17	100	100	100	"A"	
 Execution time: = 72255.32999999936 ms
 Disk I/Os = 981
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam = 100 AND course2.exam = 100
-100	"A"	1	99	100	100	"A"	
+exam	grade	sid	homework	project	exam	grade	
+100	"A"	1	1	99	100	100	"A"	
 Execution time: = 54629.15999999938 ms
 Disk I/Os = 732
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam = 100 OR course2.exam = 100 ]
-100	"A"	1	99	100	100	"A"	
-0	"A"	17	100	100	100	"A"	
-0	"A"	17	100	100	100	"A"	
+exam	grade	sid	homework	project	exam	grade	
+100	"A"	1	1	99	100	100	"A"	
+0	"A"	17	17	100	100	100	"A"	
+0	"A"	17	17	100	100	100	"A"	
 Execution time: = 54629.15999999938 ms
 Disk I/Os = 732
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam > course2.exam
+sid	exam	grade	sid	homework	project	exam	grade	
 17	0	"A"	17	100	100	100	"A"	
 17	0	"A"	17	100	100	100	"A"	
 Execution time: = 54629.15999999938 ms
 Disk I/Os = 732
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam > course2.exam AND course.homework = 100
+sid	exam	grade	sid	homework	project	exam	grade	
 17	0	"A"	17	100	100	100	"A"	
 17	0	"A"	17	100	100	100	"A"	
 Execution time: = 54629.15999999938 ms
 Disk I/Os = 732
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.homework = 100 ]
+sid	exam	grade	sid	homework	project	exam	grade	
 17	0	"A"	17	100	100	100	"A"	
 2	99	"B"	2	100	100	99	"B"	
 17	0	"A"	17	100	100	100	"A"	
@@ -1162,6 +1194,7 @@ Execution time: = 54629.15999999938 ms
 Disk I/Os = 732
 
 SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.grade = "A" AND course2.grade = "A" ] ORDER BY course.exam
+grade	grade	
 "A"	"A"	
 Execution time: = 55226.19999999936 ms
 Disk I/Os = 740
@@ -1679,52 +1712,53 @@ Execution time: = 149.26 ms
 Disk I/Os = 2
 
 SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-0	0	0	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-1	1	1	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-2	2	2	
-3	3	3	
-3	3	3	
-3	3	3	
-3	3	3	
+b	a	c	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+0	0	0	0	0	0	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+1	1	1	1	1	1	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+2	2	2	2	2	2	
+3	3	3	3	3	3	
+3	3	3	3	3	3	
+3	3	3	3	3	3	
+3	3	3	3	3	3	
 Execution time: = 12294.889999999983 ms
 Disk I/Os = 175
 
@@ -1837,6 +1871,7 @@ Execution time: = 74.63 ms
 Disk I/Os = 1
 
 SELECT * FROM t1, t2, t3, t4, t5, t6
+c	c	c	c	c	c	
 0	0	0	0	0	0	
 1	0	0	0	0	0	
 2	0	0	0	0	0	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +42,6 @@ public class JoinOptimization {
 				minKey = key;
 			}
 		}
-		System.out.println("Join Optimization Best Order:" + minKey);
 		return minKey.split(",");
 	}
 
@@ -77,18 +77,6 @@ public class JoinOptimization {
 		return cost;
 	}
 
-	// private int testCodeforOptimization(String table) {
-	// if (table.equals("e"))
-	// return 1000;
-	// if (table.equals("f"))
-	// return 2000;
-	// if (table.equals("g"))
-	// return 3000;
-	// if (table.equals("h"))
-	// return 4000;
-	// return 0;
-	// }
-
 	private Double getJoinSize(String key) {
 		String[] tables = key.split(",");
 		Map<String, List<Integer>> attributeValues = new HashMap<>();
@@ -97,15 +85,12 @@ public class JoinOptimization {
 			getAtrributeValues(table, attributeValues);
 			size *= dbManager.schema_manager.getRelation(table)
 					.getNumOfTuples();
-			// size *= testCodeforOptimization(table);
 		}
-		// System.out.println("size:" + size);
 		for (List<Integer> attrValues : attributeValues.values()) {
 			if (attrValues.size() <= 1)
 				continue;
 			int min = attrValues.get(0);
 			for (Integer value : attrValues) {
-				// System.out.println("divide:" + value);
 				size /= value;
 				if (value < min)
 					min = value;
@@ -217,11 +202,26 @@ public class JoinOptimization {
 		if (pattern1.matcher(query).find() || pattern2.matcher(query).find()) {
 			return false;
 		}
+		pattern1 = Pattern.compile(table1 + "\\.([a-z][a-z0-9]*)" + "\\s*=\\s*"
+				+ table2 + "\\.([a-z][a-z0-9]*)");
+		pattern2 = Pattern.compile(table2 + "\\.([a-z][a-z0-9]*)" + "\\s*=\\s*"
+				+ table1 + "\\.([a-z][a-z0-9]*)");
+		Matcher matcher = pattern1.matcher(query);
+		if (matcher.find() && !matcher.group(1).equals(matcher.group(2))) {
+			return false;
+		}
+		pattern1 = Pattern.compile(table2 + "\\.([a-z][a-z0-9]*)" + "\\s*=\\s*"
+				+ table1 + "\\.([a-z][a-z0-9]*)");
+		pattern2 = Pattern.compile(table1 + "\\.([a-z][a-z0-9]*)" + "\\s*=\\s*"
+				+ table2 + "\\.([a-z][a-z0-9]*)");
+		matcher = pattern2.matcher(query);
+		if (matcher.find() && !matcher.group(1).equals(matcher.group(2))) {
+			return false;
+		}
 		return true;
 	}
 
 	public List<String> getJoinColumns(String table1, String table2) {
-		System.out.println(table1+" "+table2);
 		String[] tables = table1.split("\\_");
 		List<String> columns = new ArrayList<>();
 		for (String table : tables) {
@@ -246,6 +246,20 @@ public class JoinOptimization {
 				System.out.println(column + ",");
 			}
 		}
+	}
+
+	public List<String> getJoinColumns() {
+		if (join_columns_map == null)
+			return null;
+		Set<String> columns = new HashSet<>();
+		for (List<String> valueList : join_columns_map.values()) {
+			for (String value : valueList) {
+				columns.add(value);
+			}
+		}
+		List<String> cols = new ArrayList<>();
+		cols.addAll(columns);
+		return cols;
 	}
 
 }

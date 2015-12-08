@@ -29,9 +29,6 @@ public class DbManager {
 	public DbManager() {
 		mem = new MainMemory();
 		disk = new Disk();
-		// System.out.print("The memory contains " + mem.getMemorySize()
-		// + " blocks" + "\n");
-		// System.out.print(mem + "\n" + "\n");
 		schema_manager = new SchemaManager(mem, disk);
 
 		disk.resetDiskIOs();

@@ -33,9 +33,6 @@ public class LogicalQuery {
 						dbManager.schema_manager.getRelation(tables.get(i)));
 				relations.add(
 						dbManager.schema_manager.getRelation(tables.get(j)));
-				System.out.println(
-						"\nADDING:" + tables.get(i) + ":" + tables.get(j));
-				cond.getSelectionCond(relations).print();
 				map.put(relations, cond.getSelectionCond(relations));
 			}
 		}
@@ -52,40 +49,6 @@ public class LogicalQuery {
 		}
 		return conds.size() > 0 ? conds : null;
 	}
-	// if (table1.contains("_"))
-	// return getOptimization(table1, table2);
-	// List<SearchCond> conds = new ArrayList<>();
-	// List<Relation> relations = new ArrayList<>();
-	//
-	// Relation rel1 = dbManager.schema_manager.getRelation(table1);
-	// Relation rel2 = dbManager.schema_manager.getRelation(table2);
-	// relations.add(rel1);
-	// relations.add(rel2);
-	// SearchCond temp = map.get(relations);
-	// if (temp != null) {
-	// conds.add(temp);
-	// return conds;
-	// }
-	//
-	// relations = new ArrayList<Relation>();
-	// relations.add(rel2);
-	// relations.add(rel1);
-	// temp = map.get(relations);
-	// if (temp != null) {
-	// conds.add(temp);
-	// return conds;
-	// }
-	// return null;
-	// }
-
-	// private List<SearchCond> getOptimization(String table1, String table2) {
-	// String[] tables = table1.split("\\_");
-	// List<SearchCond> conds = new ArrayList<>();
-	// for (String table : tables) {
-	// SearchCond temp = getSelectOptConds(table, table2);
-	// }
-	// return null;
-	// }
 
 	private SearchCond getSelectOptCondMulTable(String table1, String table2) {
 		List<Relation> relations = new ArrayList<>();
@@ -127,9 +90,5 @@ public class LogicalQuery {
 				System.out.println("NO Condition");
 		}
 		System.out.println("");
-	}
-
-	public void create(SelectStmt stmt) {
-		// projection.execute(stmt);
 	}
 }

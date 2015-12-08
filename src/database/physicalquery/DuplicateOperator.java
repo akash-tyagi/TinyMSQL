@@ -30,16 +30,13 @@ public class DuplicateOperator extends OperatorBase
 	@Override
 	public List<Tuple> execute(boolean printResult) {
 		if (isReadFromMem) {
-			System.out.println("In mem duplicate");
 			duplicateRemovalInMemory(printResult);
 		} else {
 			int blocks = dbManager.schema_manager.getRelation(relation_name)
 					.getNumOfBlocks();
 			if (blocks <= GlobalVariable.TOTAL_DATA_BLOCKS) {
-				System.out.println("One Pass Duplicate");
 				onePassDuplicate(printResult);
 			} else {
-				System.out.println("Two Pass Duplicate Removal");
 				duplicateRemovalDisk(printResult);
 			}
 		}

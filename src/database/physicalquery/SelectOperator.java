@@ -35,7 +35,6 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 		Relation rel = dbManager.schema_manager.getRelation(relation_name);
 		// code for storing all the results in main memory and pass on
 		if (rel.getNumOfBlocks() <= GlobalVariable.USABLE_DATA_BLOCKS) {
-			System.out.println("Selection with write in mem");
 			int endBlock = writeIntoMemBlocks(rel, printResult);
 			if (next_operator != null)
 				next_operator.setBlocksNumbers(BLOCK_FOR_WRITING, endBlock);
