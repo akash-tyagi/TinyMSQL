@@ -134,7 +134,7 @@ public class PhysicalTree {
 			System.out.println("Join tables:" + rel1 + ":" + rel2 + " JoinCols:"
 					+ joinColumns.toString());
 			nextOperator = new JoinOperator(rel1, rel2, dbManager, writer,
-					(ArrayList<String>) joinColumns);
+					(ArrayList<String>) joinColumns,logicalQuery);
 			String newRel = rel1 + "_" + rel2;
 			tables.remove(0);
 			tables.remove(0);

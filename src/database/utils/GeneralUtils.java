@@ -135,36 +135,34 @@ public class GeneralUtils {
 
 	public static void appendTuplesToRelation(Relation relation_reference,
 			MainMemory mem, int memory_block_index, List<Tuple> tuples) {
-		Block block_reference = mem.getBlock(memory_block_index);
-		block_reference.clear();
+		Block block_reference = null;
 		int i = 0, size = tuples.size();
 		Tuple tuple = null;
 
 		if (relation_reference.getNumOfBlocks() != 0) {
-			System.out.println("INSIDE");
 			relation_reference.getBlock(relation_reference.getNumOfBlocks() - 1,
 					memory_block_index);
+			block_reference = mem.getBlock(memory_block_index);
 			while (block_reference.isFull() == false && i < size) {
 				tuple = tuples.get(i++);
-				System.out.println("FULL" + tuple);
 				block_reference.appendTuple(tuple);
 			}
-			relation_reference.setBlock(relation_reference.getNumOfBlocks() - 1,
-					memory_block_index);
+			if (i > 0)
+				relation_reference.setBlock(
+						relation_reference.getNumOfBlocks() - 1,
+						memory_block_index);
 			block_reference.clear();
 		}
-		System.out.println(relation_reference.getNumOfBlocks());
+		block_reference = mem.getBlock(memory_block_index);
 		while (i < size) {
+			block_reference.clear();
 			while (block_reference.isFull() == false && i < size) {
 				tuple = tuples.get(i++);
 				System.out.println("Appending:" + tuple);
 				block_reference.appendTuple(tuple);
 			}
-			System.out.println(relation_reference.getNumOfBlocks());
-			;
 			relation_reference.setBlock(relation_reference.getNumOfBlocks(),
 					memory_block_index);
-			block_reference.clear();
 		}
 	}
 
@@ -312,14 +310,10 @@ public class GeneralUtils {
 		}
 
 		for (String projectionCol : projectionCols) {
-			// System.out.println("11111111");
 			String s1 = getSimpleCol(t1, projectionCol);
 			String str1 = t1.getField(s1).toString();
-			// System.out.println("4333"+ str1+" "+s1+"
-			// "+t1.getSchema().getFieldNames());
 			s1 = getSimpleCol(t, projectionCol);
 			String str2 = t.getField(s1).toString();
-			// System.out.println("22222");
 			if (!str1.equals(str2)) {
 				return false;
 			}

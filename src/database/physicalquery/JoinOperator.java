@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import database.DbManager;
+import database.logicaloptimization.LogicalQuery;
+import database.parser.searchcond.SearchCond;
 import database.utils.GeneralUtils;
 import database.utils.OnePassUtils;
 import database.utils.TupleObject;
@@ -22,22 +24,23 @@ import storageManager.Tuple;
 public class JoinOperator extends OperatorBase implements OperatorInterface {
 	String relation_name2;
 	ArrayList<String> joinColumns;
+	LogicalQuery logicalQuery;
 
 	public JoinOperator(String rel1, String rel2, DbManager manager,
-			PrintWriter writer, ArrayList<String> joinColumns) {
+			PrintWriter writer, ArrayList<String> joinColumns,
+			LogicalQuery logicalQuery) {
 		super(manager, writer);
 		relation_name = rel1;
 		relation_name2 = rel2;
 		this.joinColumns = joinColumns;
 		this.dbManager = manager;
+		this.logicalQuery = logicalQuery;
 	}
 
 	@Override
 	public List<Tuple> execute(boolean printResult) {
 		System.out.println("JOIN:" + relation_name + " " + relation_name2 + " "
 				+ joinColumns);
-		System.out.println(dbManager.schema_manager.getSchema(relation_name));
-		System.out.println(dbManager.schema_manager.getSchema(relation_name2));
 
 		System.out.println("Trying one pass");
 		Relation rel = onePassJoin(printResult);
@@ -46,7 +49,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			rel = twoPassJoin(printResult);
 		}
 		if (rel == null) {
-			System.err.println("Simple Join");
+			System.out.println("Simple Join");
 			rel = simpleJoin(true);
 		}
 		if (next_operator != null) {
@@ -58,7 +61,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 	private Relation onePassJoin(boolean printResult) {
 		boolean storeOutputToDisk = (next_operator == null) ? false : true;
-		System.out.println(relation_name + "," + relation_name2);
 		Relation r1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation r2 = dbManager.schema_manager.getRelation(relation_name2);
 
@@ -102,13 +104,11 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		GeneralUtils.sortMainMemory(dbManager, joinColumns,
 				firstRel.getNumOfBlocks());
 
-		System.out.println("%%%%%%%%" + temp_field_names);
 		// Temp relation for one-pass join
 		Schema schema = new Schema(temp_field_names, temp_field_types);
 		Relation one_pass_temp_relation = dbManager.schema_manager
 				.createRelation(firstRel.getRelationName() + "_"
 						+ secondRel.getRelationName(), schema);
-		System.out.println("!@#!@#!@#@!2");
 		dbManager.temporaryCreatedRelations.add(
 				firstRel.getRelationName() + "_" + secondRel.getRelationName());
 
@@ -124,7 +124,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						memIndex, printResult);
 			}
 		}
-		System.out.println("DONE");
 		return one_pass_temp_relation;
 	}
 
@@ -145,7 +144,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		GeneralUtils.updateInfoForTempSchema(r1, r2, joinColumns,
 				temp_field_names, temp_field_types);
 
-		System.out.println("!@#!@#!@#:" + temp_field_names);
 		// For 1 pass
 		int availableMemorySize;
 		availableMemorySize = storeOutputToDisk
@@ -178,9 +176,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		}
 
 		int minMemoryNeeded = firstRelBlockReq + secondRelBlockReq;
-		System.out.println(firstRelBlockReq + " " + secondRelBlockReq);
 		if (storeOutputToDisk) {
-			System.out.println("test");
 			minMemoryNeeded = minMemoryNeeded + 1;
 		}
 
@@ -240,10 +236,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 				if (surplusBlocksReqRel1
 						+ surplusBlocksReqRel2 > surplusBlockCount) {
-					System.out.println(surplusBlocksReqRel1 + " "
-							+ surplusBlocksReqRel2 + " " + surplusBlockCount);
-					System.out.println("NIKHIL TEST : val = " + val
-							+ " count = " + count + " count2 = " + count2);
 					return null;
 				}
 			}
@@ -266,6 +258,10 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		// secondRelBlockReq + 1))
 		// Check if extras can be adjusted in them
 		// Read tuples to temp array for relation r1
+		SearchCond cond1 = logicalQuery
+				.getSelectOptCondSingleTable(r1.getRelationName());
+		SearchCond cond2 = logicalQuery
+				.getSelectOptCondSingleTable(r2.getRelationName());
 		ArrayList<TupleObject> tupleObjectArray1 = new ArrayList<>();
 
 		int relationTempSize = r1.getNumOfBlocks();
@@ -275,6 +271,12 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			r1.getBlock(currRelationIdx, 0);
 			Block mb = dbManager.mem.getBlock(0);
 			ArrayList<Tuple> blockTuples = mb.getTuples();
+			ArrayList<Tuple> newBlockTuples = new ArrayList<>();
+			for (Tuple tuple : blockTuples) {
+				if (cond1 != null && cond1.execute(tuple) == false)
+					continue;
+				newBlockTuples.add(tuple);
+			}
 			GeneralUtils.addTuplesToArray(tupleObjectArray1, blockTuples,
 					joinColumns);
 			currRelationIdx++;
@@ -292,7 +294,13 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			r2.getBlock(currRelationIdx, 0);
 			Block mb = dbManager.mem.getBlock(0);
 			ArrayList<Tuple> blockTuples = mb.getTuples();
-			GeneralUtils.addTuplesToArray(tupleObjectArray2, blockTuples,
+			ArrayList<Tuple> newBlockTuples = new ArrayList<>();
+			for (Tuple tuple : blockTuples) {
+				if (cond2 != null && cond2.execute(tuple) == false)
+					continue;
+				newBlockTuples.add(tuple);
+			}
+			GeneralUtils.addTuplesToArray(tupleObjectArray2, newBlockTuples,
 					joinColumns);
 			currRelationIdx++;
 		}
@@ -439,11 +447,20 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			Block r1_block, Block r2_block, Relation one_pass_temp_relation,
 			boolean storeOutputToDisk, ArrayList<String> commonCols,
 			int usedMemIndex, boolean printResult) {
+		SearchCond cond1 = logicalQuery
+				.getSelectOptCondSingleTable(r1.getRelationName());
+		SearchCond cond2 = logicalQuery
+				.getSelectOptCondSingleTable(r2.getRelationName());
+
 		ArrayList<Tuple> r1_tuples = r1_block.getTuples();
 		ArrayList<Tuple> r2_tuples = r2_block.getTuples();
 
 		for (Tuple t1 : r1_tuples) {
+			if (cond1 != null && cond1.execute(t1) == false)
+				continue;
 			for (Tuple t2 : r2_tuples) {
+				if (cond2 != null && cond2.execute(t2) == false)
+					continue;
 				boolean toInclude = true;
 				Tuple tuple = one_pass_temp_relation.createTuple();
 				for (int i = 0; i < t1.getNumOfFields(); i++) {
@@ -516,7 +533,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					}
 					res_tuples.add(tuple);
 					if (next_operator != null) {
-						System.out.println(mem + " " + usedMemIndex);
 						GeneralUtils.appendTupleToRelation(
 								one_pass_temp_relation, mem, usedMemIndex + 1,
 								tuple);
@@ -537,11 +553,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			ArrayList<TupleObject> tempTOA1, ArrayList<TupleObject> tempTOA2,
 			Relation two_pass_temp_relation, boolean storeOutputToDisk,
 			ArrayList<String> commonCols, boolean printResult) {
-
-		// System.out.println("HiHihIH");
-		// System.out.println(tempTOA1.get(0).tuple.getSchema().getFieldNames());
-		// System.out.println(tempTOA2.get(0).tuple.getSchema().getFieldNames());
-		// System.out.println(commonCols);
 
 		for (TupleObject to1 : tempTOA1) {
 			for (TupleObject to2 : tempTOA2) {

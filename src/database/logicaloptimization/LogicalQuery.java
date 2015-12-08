@@ -20,11 +20,11 @@ public class LogicalQuery {
 		SearchCond cond = stmt.cond;
 		if (cond == null)
 			return;
-		// for (String table : tables) {
-		// List<Relation> relations = new ArrayList<Relation>();
-		// relations.add(dbManager.schema_manager.getRelation(table));
-		// map.put(relations, cond.getSelectionCond(relations));
-		// }
+		for (String table : tables) {
+			List<Relation> relations = new ArrayList<Relation>();
+			relations.add(dbManager.schema_manager.getRelation(table));
+			map.put(relations, cond.getSelectionCond(relations));
+		}
 
 		for (int i = 0; i < tables.size() - 1; i++) {
 			for (int j = i + 1; j < tables.size(); j++) {

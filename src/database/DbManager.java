@@ -21,9 +21,10 @@ public class DbManager {
 	 * count reaches 0 after repeated deletions.
 	 */
 	public HashMap<String, HashMap<String, HashMap<String, Integer>>> vTable;
-        
-        // Keep track for the temp relations so that they may be deleted after each query run
-        public LinkedList<String> temporaryCreatedRelations = new LinkedList<>();
+
+	// Keep track for the temp relations so that they may be deleted after each
+	// query run
+	public LinkedList<String> temporaryCreatedRelations = new LinkedList<>();
 
 	public DbManager() {
 		mem = new MainMemory();
@@ -38,4 +39,5 @@ public class DbManager {
 
 		vTable = new HashMap<>();
 	}
+
 }

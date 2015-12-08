@@ -68,13 +68,13 @@ public class SelectOperator extends OperatorBase implements OperatorInterface {
 			for (Tuple tuple : tuples) {
 				if (callWhereCondition(tuple) == false)
 					continue;
+				res_tuples.add(tuple);
 				// IF ONLY NEED TO PRINT TUPLE, NO NEXT OPERATOR
 				if (next_operator == null) {
 					if (printResult) {
 						System.out.print(tuple.toString() + "\n");
 						writer.println(tuple);
 					}
-					res_tuples.add(tuple);
 					continue;
 				}
 				// STORE IN MEMORY FOR NEXT OPERATOR

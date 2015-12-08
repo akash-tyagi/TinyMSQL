@@ -5,6 +5,7 @@ import java.util.List;
 
 import database.DbManager;
 import database.GlobalVariable;
+import database.utils.GeneralUtils;
 import storageManager.Block;
 import storageManager.Relation;
 import storageManager.Tuple;
@@ -61,6 +62,7 @@ public class ProjectionOperator extends OperatorBase
 	public void printTuple(Tuple tuple, boolean printResult) {
 		if (printResult) {
 			for (String col : selectList) {
+				col = getFieldName(tuple, col);
 				System.out.print(tuple.getField(col).toString() + "\t");
 				writer.print(tuple.getField(col).toString() + "\t");
 			}
@@ -68,5 +70,22 @@ public class ProjectionOperator extends OperatorBase
 			writer.println();
 		}
 		res_tuples.add(tuple);
+	}
+
+	private String getFieldName(Tuple t, String col) {
+		List<String> field_names = t.getSchema().getFieldNames();
+		if (field_names.contains(col)) {
+			return col;
+		} else {
+			String[] strs = col.split("\\.");
+			for (String field : field_names) {
+				if (field.endsWith("." + strs[1])
+						&& (field.contains(strs[0] + ".")
+								|| field.contains(strs[0] + "_"))) {
+					return field;
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -55,14 +55,12 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 				valueList.add(tuple.getField(i).toString());
 			}
 			getAndUpdateVtableEntries(relation_reference);
-//			execute();
 			valueList = new ArrayList<>();
 		}
 	}
 
 	private void parseTuples(String tuples) {
 		if (tuples.contains("SELECT")) {
-			System.out.println(tuples);
 			Parser parser = new Parser(dbManager);
 			StmtInterface stmt = parser.parse(tuples);
 			PhysicalTree physicalTree = new PhysicalTree(null, dbManager, stmt,
@@ -81,6 +79,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 			if (GlobalVariable.isTestParsing)
 				System.out.println("INSERT Statement: value:" + value);
 		}
+
 	}
 
 	@Override
@@ -157,13 +156,11 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 					updateVTable(i, field_names);
 					continue;
 				}
-
 				if (field_types.get(i) == FieldType.STR20) {
 					tuple.setField(i, valueList.get(i));
 				} else {
 					tuple.setField(i, Integer.parseInt(valueList.get(i)));
 				}
-
 				// Update vTable
 				updateVTable(i, field_names);
 			}
