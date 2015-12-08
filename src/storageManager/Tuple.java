@@ -161,7 +161,7 @@ public class Tuple implements Serializable {
 	  }
 	
 	// returns default field if out of bound
-	  public Field getField(String field_name) {
+	public Field getField(String field_name) {
 	    Schema schema=schema_manager.schemas[schema_index];
 	    int offset=schema.getFieldOffset(field_name);
 	    if(offset<fields.size() && offset>=0){

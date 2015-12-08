@@ -40,10 +40,10 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		System.out.println(dbManager.schema_manager.getSchema(relation_name2));
 
 		System.out.println("Trying one pass");
-		Relation rel = onePassJoin(true);
+		Relation rel = onePassJoin(printResult);
 		if (rel == null) {
 			System.out.println("Two pass join");
-			rel = twoPassJoin(true);
+			rel = twoPassJoin(printResult);
 		}
 		if (rel == null) {
 			System.err.println("Simple Join");
@@ -56,7 +56,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		return res_tuples;
 	}
 
-	private Relation onePassJoin(boolean storeOutputToDisk) {
+	private Relation onePassJoin(boolean printResult) {
+		boolean storeOutputToDisk = (next_operator == null) ? false : true;
 		System.out.println(relation_name + "," + relation_name2);
 		Relation r1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation r2 = dbManager.schema_manager.getRelation(relation_name2);
@@ -91,7 +92,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		GeneralUtils.updateInfoForTempSchema(firstRel, secondRel, joinColumns,
 				temp_field_names, temp_field_types);
 
-		System.out.println("!@#!@#!@#@!");
 		// Copy first relation to memory
 		int memIndex = 0;
 		for (int i = 0; i < firstRel.getNumOfBlocks(); i++) {
@@ -102,12 +102,13 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		GeneralUtils.sortMainMemory(dbManager, joinColumns,
 				firstRel.getNumOfBlocks());
 
+		System.out.println("%%%%%%%%" + temp_field_names);
 		// Temp relation for one-pass join
 		Schema schema = new Schema(temp_field_names, temp_field_types);
 		Relation one_pass_temp_relation = dbManager.schema_manager
 				.createRelation(firstRel.getRelationName() + "_"
 						+ secondRel.getRelationName(), schema);
-
+		System.out.println("!@#!@#!@#@!2");
 		dbManager.temporaryCreatedRelations.add(
 				firstRel.getRelationName() + "_" + secondRel.getRelationName());
 
@@ -116,22 +117,21 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			secondRel.getBlock(i, memIndex);
 
 			for (int j = 0; j < memIndex; j++) {
-				OnePassUtils.joinBlocksData(dbManager.mem, firstRel, secondRel,
+				joinBlocksData(dbManager.mem, firstRel, secondRel,
 						dbManager.mem.getBlock(j),
 						dbManager.mem.getBlock(memIndex),
 						one_pass_temp_relation, storeOutputToDisk, joinColumns,
-						memIndex);
+						memIndex, printResult);
 			}
 		}
 		System.out.println("DONE");
 		return one_pass_temp_relation;
 	}
 
-	private Relation twoPassJoin(boolean storeOutputToDisk) {
+	private Relation twoPassJoin(boolean printResult) {
+		boolean storeOutputToDisk = (next_operator == null) ? false : true;
 		Relation r1 = dbManager.schema_manager.getRelation(relation_name);
 		Relation r2 = dbManager.schema_manager.getRelation(relation_name2);
-
-		System.out.println("NIKHILLLLLLLLLLLLLLLLL");
 
 		ArrayList<String> r1_fields = r1.getSchema().getFieldNames();
 		ArrayList<String> r2_fields = r2.getSchema().getFieldNames();
@@ -145,6 +145,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		GeneralUtils.updateInfoForTempSchema(r1, r2, joinColumns,
 				temp_field_names, temp_field_types);
 
+		System.out.println("!@#!@#!@#:" + temp_field_names);
 		// For 1 pass
 		int availableMemorySize;
 		availableMemorySize = storeOutputToDisk
@@ -177,8 +178,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		}
 
 		int minMemoryNeeded = firstRelBlockReq + secondRelBlockReq;
-
+		System.out.println(firstRelBlockReq + " " + secondRelBlockReq);
 		if (storeOutputToDisk) {
+			System.out.println("test");
 			minMemoryNeeded = minMemoryNeeded + 1;
 		}
 
@@ -238,6 +240,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 
 				if (surplusBlocksReqRel1
 						+ surplusBlocksReqRel2 > surplusBlockCount) {
+					System.out.println(surplusBlocksReqRel1 + " "
+							+ surplusBlocksReqRel2 + " " + surplusBlockCount);
 					System.out.println("NIKHIL TEST : val = " + val
 							+ " count = " + count + " count2 = " + count2);
 					return null;
@@ -245,7 +249,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 			}
 
 		}
-
 		// Temp relation for two-pass join
 		Schema schema = new Schema(temp_field_names, temp_field_types);
 		Relation two_pass_temp_relation = dbManager.schema_manager
@@ -276,7 +279,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					joinColumns);
 			currRelationIdx++;
 		}
-		System.out.println("qqq" + tupleObjectArray1.size());
 
 		// Sort the array
 		Collections.sort(tupleObjectArray1);
@@ -294,7 +296,6 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					joinColumns);
 			currRelationIdx++;
 		}
-		System.out.println("qqq" + tupleObjectArray2.size());
 
 		// Sort the array
 		Collections.sort(tupleObjectArray2);
@@ -359,12 +360,11 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						.remove(two_pass_temp_relation.getRelationName());
 				return null;
 			}
-                        
-                        System.out.println("MY START");
-			TwoPassUtils.joinTOAData(dbManager.mem, r1, r2, tempTOA1, tempTOA2,
-					two_pass_temp_relation, storeOutputToDisk, joinColumns);
-                        System.out.println("MY END");
-                        
+
+			joinTOAData(dbManager.mem, r1, r2, tempTOA1, tempTOA2,
+					two_pass_temp_relation, storeOutputToDisk, joinColumns,
+					printResult);
+
 			if (idx1 < tupleObjectArray1.size()
 					&& idx2 < tupleObjectArray2.size()) {
 				if (GeneralUtils.tupleBiggerThan(
@@ -382,8 +382,8 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 		return two_pass_temp_relation;
 	}
 
-	private Relation simpleJoin(boolean storeOutputToDisk) {
-
+	private Relation simpleJoin(boolean printResult) {
+		boolean storeOutputToDisk = (next_operator == null) ? false : true;
 		int size1 = dbManager.schema_manager.getRelation(relation_name)
 				.getNumOfBlocks();
 		int size2 = dbManager.schema_manager.getRelation(relation_name2)
@@ -428,7 +428,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 				joinBlocksData(dbManager.mem, r1, r2, dbManager.mem.getBlock(0),
 						dbManager.mem.getBlock(1), temp_relation,
 						storeOutputToDisk, joinColumns,
-						dbManager.mem.getMemorySize() - 1);
+						dbManager.mem.getMemorySize() - 2, printResult);
 			}
 		}
 
@@ -438,7 +438,7 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 	private void joinBlocksData(MainMemory mem, Relation r1, Relation r2,
 			Block r1_block, Block r2_block, Relation one_pass_temp_relation,
 			boolean storeOutputToDisk, ArrayList<String> commonCols,
-			int usedMemIndex) {
+			int usedMemIndex, boolean printResult) {
 		ArrayList<Tuple> r1_tuples = r1_block.getTuples();
 		ArrayList<Tuple> r2_tuples = r2_block.getTuples();
 
@@ -449,8 +449,24 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 				for (int i = 0; i < t1.getNumOfFields(); i++) {
 					Field f1 = t1.getField(i);
 					String field_name = t1.getSchema().getFieldName(i);
+					if (field_name.contains(".")) {
+						field_name = field_name.split("\\.")[1];
+					}
+
 					if (commonCols.contains(field_name)) {
-						Field f2 = t2.getField(field_name);
+						Field f2;
+
+						if (t2.getSchema().fieldNameExists(field_name)) {
+							f2 = t2.getField(field_name);
+						} else {
+							String s = "";
+							for (String fn : t2.getSchema().getFieldNames()) {
+								if (fn.endsWith("." + field_name)) {
+									s = fn;
+								}
+							}
+							f2 = t2.getField(s);
+						}
 						if (f1.toString().equals(f2.toString())) {
 							if (f1.type == FieldType.INT) {
 								tuple.setField(r1.getRelationName() + "_"
@@ -483,6 +499,9 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 					for (int i = 0; i < t2.getNumOfFields(); i++) {
 						Field f2 = t2.getField(i);
 						String field_name = t2.getSchema().getFieldName(i);
+						if (field_name.contains(".")) {
+							field_name = field_name.split("\\.")[1];
+						}
 						if (!commonCols.contains(field_name)) {
 							if (f2.type == FieldType.INT) {
 								tuple.setField(
@@ -496,20 +515,125 @@ public class JoinOperator extends OperatorBase implements OperatorInterface {
 						}
 					}
 					res_tuples.add(tuple);
-					if (storeOutputToDisk) {
+					if (next_operator != null) {
+						System.out.println(mem + " " + usedMemIndex);
 						GeneralUtils.appendTupleToRelation(
 								one_pass_temp_relation, mem, usedMemIndex + 1,
 								tuple);
 					} else {
-						if (next_operator == null) {
-							System.out.println(tuple);
-							writer.println(tuple);
+						if (printResult) {
+							System.out.println(tuple.toString());
+							writer.println(tuple.toString());
 						}
 					}
 
 				}
+
 			}
 		}
+	}
+
+	private void joinTOAData(MainMemory mem, Relation r1, Relation r2,
+			ArrayList<TupleObject> tempTOA1, ArrayList<TupleObject> tempTOA2,
+			Relation two_pass_temp_relation, boolean storeOutputToDisk,
+			ArrayList<String> commonCols, boolean printResult) {
+
+		// System.out.println("HiHihIH");
+		// System.out.println(tempTOA1.get(0).tuple.getSchema().getFieldNames());
+		// System.out.println(tempTOA2.get(0).tuple.getSchema().getFieldNames());
+		// System.out.println(commonCols);
+
+		for (TupleObject to1 : tempTOA1) {
+			for (TupleObject to2 : tempTOA2) {
+				Tuple t1 = to1.tuple;
+				Tuple t2 = to2.tuple;
+				boolean toInclude = true;
+				Tuple tuple = two_pass_temp_relation.createTuple();
+				for (int i = 0; i < t1.getNumOfFields(); i++) {
+					Field f1 = t1.getField(i);
+					String field_name = t1.getSchema().getFieldName(i);
+					if (field_name.contains(".")) {
+						field_name = field_name.split("\\.")[1];
+					}
+
+					if (commonCols.contains(field_name)) {
+						Field f2;
+
+						if (t2.getSchema().fieldNameExists(field_name)) {
+							f2 = t2.getField(field_name);
+						} else {
+							String s = "";
+							for (String fn : t2.getSchema().getFieldNames()) {
+								if (fn.endsWith("." + field_name)) {
+									s = fn;
+								}
+							}
+							f2 = t2.getField(s);
+						}
+
+						if (f1.toString().equals(f2.toString())) {
+							if (f1.type == FieldType.INT) {
+								tuple.setField(r1.getRelationName() + "_"
+										+ r2.getRelationName() + "."
+										+ field_name, f1.integer);
+							} else {
+								tuple.setField(r1.getRelationName() + "_"
+										+ r2.getRelationName() + "."
+										+ field_name, f1.str);
+							}
+						} else {
+							toInclude = false;
+							break;
+						}
+					} else {
+						if (f1.type == FieldType.INT) {
+							tuple.setField(
+									r1.getRelationName() + "." + field_name,
+									f1.integer);
+						} else {
+							tuple.setField(
+									r1.getRelationName() + "." + field_name,
+									f1.str);
+						}
+					}
+				}
+
+				if (toInclude) {
+					for (int i = 0; i < t2.getNumOfFields(); i++) {
+						Field f2 = t2.getField(i);
+						String field_name = t2.getSchema().getFieldName(i);
+						if (field_name.contains(".")) {
+							field_name = field_name.split("\\.")[1];
+						}
+						if (!commonCols.contains(field_name)) {
+							if (f2.type == FieldType.INT) {
+								tuple.setField(
+										r2.getRelationName() + "." + field_name,
+										f2.integer);
+							} else {
+								tuple.setField(
+										r2.getRelationName() + "." + field_name,
+										f2.str);
+							}
+						}
+					}
+					res_tuples.add(tuple);
+					if (next_operator != null) {
+						GeneralUtils.appendTupleToRelation(
+								two_pass_temp_relation, mem,
+								mem.getMemorySize() - 1, tuple);
+					} else {
+						if (printResult) {
+							System.out.println(tuple.toString());
+							writer.println(tuple.toString());
+						}
+					}
+
+				}
+
+			}
+		}
+
 	}
 
 	@Override

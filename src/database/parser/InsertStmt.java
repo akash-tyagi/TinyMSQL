@@ -55,6 +55,7 @@ public class InsertStmt extends StmtBase implements StmtInterface {
 				valueList.add(tuple.getField(i).toString());
 			}
 			getAndUpdateVtableEntries(relation_reference);
+//			execute();
 			valueList = new ArrayList<>();
 		}
 	}

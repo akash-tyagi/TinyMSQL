@@ -184,8 +184,24 @@ public class OnePassUtils {
 				for (int i = 0; i < t1.getNumOfFields(); i++) {
 					Field f1 = t1.getField(i);
 					String field_name = t1.getSchema().getFieldName(i);
+					if (field_name.contains(".")) {
+						field_name = field_name.split("\\.")[1];
+					}
+
 					if (commonCols.contains(field_name)) {
-						Field f2 = t2.getField(field_name);
+						Field f2;
+
+						if (t2.getSchema().fieldNameExists(field_name)) {
+							f2 = t2.getField(field_name);
+						} else {
+							String s = "";
+							for (String fn : t2.getSchema().getFieldNames()) {
+								if (fn.endsWith("." + field_name)) {
+									s = fn;
+								}
+							}
+							f2 = t2.getField(s);
+						}
 						if (f1.toString().equals(f2.toString())) {
 							if (f1.type == FieldType.INT) {
 								tuple.setField(r1.getRelationName() + "_"
@@ -214,10 +230,13 @@ public class OnePassUtils {
 				}
 
 				if (toInclude) {
-//					System.out.println("ERE:"+t2.getSchema());
+					// System.out.println("ERE:"+t2.getSchema());
 					for (int i = 0; i < t2.getNumOfFields(); i++) {
 						Field f2 = t2.getField(i);
 						String field_name = t2.getSchema().getFieldName(i);
+						if (field_name.contains(".")) {
+							field_name = field_name.split("\\.")[1];
+						}
 						if (!commonCols.contains(field_name)) {
 							if (f2.type == FieldType.INT) {
 								tuple.setField(
