@@ -1,43 +1,43 @@
 CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 0, 100, 100, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	0	100	100	"E"	
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, grade, exam, project, homework) VALUES (3, "E", 100, 100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 2	0	100	100	"E"	
 3	100	100	100	"E"	
-Execution time: = 223.89 ms
-Disk I/Os = 3
+Disk I/O: 3
+Execution time: 223.89 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) SELECT * FROM course
-Execution time: = 522.41 ms
-Disk I/Os = 7
+Disk I/O: 7
+Execution time: 522.41 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
@@ -47,287 +47,287 @@ sid	homework	project	exam	grade
 1	99	100	100	"A"	
 2	0	100	100	"E"	
 3	100	100	100	"E"	
-Execution time: = 447.78 ms
-Disk I/Os = 6
+Disk I/O: 6
+Execution time: 447.78 ms
 
 DELETE FROM course WHERE grade = "E"
-Execution time: = 597.04 ms
-Disk I/Os = 8
+Disk I/O: 8
+Execution time: 597.04 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 1	99	100	100	"A"	
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (4, 99, 100, 100, "B")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 1	99	100	100	"A"	
 4	99	100	100	"B"	
-Execution time: = 223.89 ms
-Disk I/Os = 3
+Disk I/O: 3
+Execution time: 223.89 ms
 
 DELETE FROM course
-Execution time: = 223.89 ms
-Disk I/Os = 3
+Disk I/O: 3
+Execution time: 223.89 ms
 
 SELECT * FROM course
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE course
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE course (sid INT, homework INT, project INT, exam INT, grade STR20)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (1, 99, 100, 100, "A")
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (3, 100, 100, 98, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (3, 100, 69, 64, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 50, 90, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (15, 100, 99, 100, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (17, 100, 100, 100, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (2, 100, 100, 99, "B")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (4, 100, 100, 97, "D")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (5, 100, 100, 66, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (6, 100, 100, 65, "B")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (7, 100, 50, 73, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (8, 50, 50, 62, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (9, 50, 50, 61, "D")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (10, 50, 70, 70, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (11, 50, 50, 59, "D")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (12, 0, 70, 58, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (13, 0, 50, 77, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (14, 50, 50, 56, "D")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (16, 0, 0, 0, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course (sid, homework, project, exam, grade) VALUES (17, 100, 100, 100, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM course
 sid	homework	project	exam	grade	
@@ -391,8 +391,8 @@ sid	homework	project	exam	grade
 16	0	0	0	"E"	
 16	0	0	0	"E"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT sid, grade FROM course
 sid	grade	
@@ -456,8 +456,8 @@ sid	grade
 16	"E"	
 16	"E"	
 17	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT sid, course.grade FROM course
 sid	grade	
@@ -521,8 +521,8 @@ sid	grade
 16	"E"	
 16	"E"	
 17	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT DISTINCT grade FROM course
 grade	
@@ -531,8 +531,8 @@ grade
 "C"	
 "D"	
 "E"	
-Execution time: = 6974.240000000004 ms
-Disk I/Os = 101
+Disk I/O: 101
+Execution time: 6974.240000000004 ms
 
 SELECT DISTINCT * FROM course
 sid	homework	project	exam	grade	
@@ -555,8 +555,8 @@ sid	homework	project	exam	grade
 15	100	99	100	"E"	
 16	0	0	0	"E"	
 17	100	100	100	"A"	
-Execution time: = 9213.139999999996 ms
-Disk I/Os = 131
+Disk I/O: 131
+Execution time: 9213.139999999996 ms
 
 SELECT * FROM course ORDER BY exam
 sid	homework	project	exam	grade	
@@ -620,8 +620,8 @@ sid	homework	project	exam	grade
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 12285.359999999957 ms
-Disk I/Os = 180
+Disk I/O: 180
+Execution time: 12285.359999999957 ms
 
 SELECT * FROM course WHERE exam = 100
 sid	homework	project	exam	grade	
@@ -629,8 +629,8 @@ sid	homework	project	exam	grade
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE grade = "A"
 sid	homework	project	exam	grade	
@@ -638,16 +638,16 @@ sid	homework	project	exam	grade
 1	99	100	100	"A"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE exam = 100 AND project = 100
 sid	homework	project	exam	grade	
 1	99	100	100	"A"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE exam = 100 OR exam = 99
 sid	homework	project	exam	grade	
@@ -656,8 +656,8 @@ sid	homework	project	exam	grade
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE NOT exam = 0
 sid	homework	project	exam	grade	
@@ -680,8 +680,8 @@ sid	homework	project	exam	grade
 7	100	50	73	"C"	
 13	0	50	77	"C"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE exam > 70
 sid	homework	project	exam	grade	
@@ -695,8 +695,8 @@ sid	homework	project	exam	grade
 7	100	50	73	"C"	
 13	0	50	77	"C"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE exam = 100 OR homework = 100 AND project = 100
 sid	homework	project	exam	grade	
@@ -709,8 +709,8 @@ sid	homework	project	exam	grade
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE [ exam = 100 OR homework = 100 ] AND project = 100
 sid	homework	project	exam	grade	
@@ -722,46 +722,46 @@ sid	homework	project	exam	grade
 1	99	100	100	"A"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE exam + homework = 200
 sid	homework	project	exam	grade	
 15	100	99	100	"E"	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE ( exam * 30 + homework * 20 + project * 50 ) / 100 = 100
 sid	homework	project	exam	grade	
 17	100	100	100	"A"	
 17	100	100	100	"A"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 SELECT * FROM course WHERE grade = "C" AND [ exam > 70 OR project > 70 ] AND NOT ( exam * 30 + homework * 20 + project * 50 ) / 100 < 60
 sid	homework	project	exam	grade	
 3	100	100	98	"C"	
 7	100	50	73	"C"	
-Execution time: = 4477.800000000005 ms
-Disk I/Os = 60
+Disk I/O: 60
+Execution time: 4477.800000000005 ms
 
 CREATE TABLE course2 (sid INT, exam INT, grade STR20)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (1, 100, "A")
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (16, 25, "E")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (17, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM course, course2
 sid	exam	grade	sid	homework	project	exam	grade	
@@ -945,92 +945,92 @@ sid	exam	grade	sid	homework	project	exam	grade
 1	100	"A"	17	100	100	100	"A"	
 16	25	"E"	17	100	100	100	"A"	
 17	0	"A"	17	100	100	100	"A"	
-Execution time: = 4627.060000000005 ms
-Disk I/Os = 62
+Disk I/O: 62
+Execution time: 4627.060000000005 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (2, 99, "B")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (3, 98, "C")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (4, 97, "D")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (5, 66, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (6, 65, "B")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO course2 (sid, exam, grade) VALUES (18, 0, "A")
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT course.sid, course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
 sid	sid	grade	grade	
@@ -1084,8 +1084,8 @@ sid	sid	grade	grade
 3	"C"	"C"	
 6	"B"	"B"	
 5	"A"	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid
 grade	grade	
@@ -1094,8 +1094,8 @@ grade	grade
 "B"	"B"	
 "D"	"D"	
 "C"	"C"	
-Execution time: = 67893.35999999921 ms
-Disk I/Os = 916
+Disk I/O: 916
+Execution time: 67893.35999999921 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid ORDER BY course.exam
 exam	grade	sid	sid	homework	project	exam	grade	
@@ -1149,36 +1149,36 @@ exam	grade	sid	sid	homework	project	exam	grade
 100	"A"	1	1	99	100	100	"A"	
 0	"A"	17	17	100	100	100	"A"	
 0	"A"	17	17	100	100	100	"A"	
-Execution time: = 72255.32999999936 ms
-Disk I/Os = 981
+Disk I/O: 981
+Execution time: 72255.32999999936 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam = 100 AND course2.exam = 100
 exam	grade	sid	sid	homework	project	exam	grade	
 100	"A"	1	1	99	100	100	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam = 100 OR course2.exam = 100 ]
 exam	grade	sid	sid	homework	project	exam	grade	
 100	"A"	1	1	99	100	100	"A"	
 0	"A"	17	17	100	100	100	"A"	
 0	"A"	17	17	100	100	100	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam > course2.exam
 sid	exam	grade	sid	homework	project	exam	grade	
 17	0	"A"	17	100	100	100	"A"	
 17	0	"A"	17	100	100	100	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND course.exam > course2.exam AND course.homework = 100
 sid	exam	grade	sid	homework	project	exam	grade	
 17	0	"A"	17	100	100	100	"A"	
 17	0	"A"	17	100	100	100	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT * FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.homework = 100 ]
 sid	exam	grade	sid	homework	project	exam	grade	
@@ -1190,526 +1190,526 @@ sid	exam	grade	sid	homework	project	exam	grade
 3	98	"C"	3	100	100	98	"C"	
 6	65	"B"	6	100	100	65	"B"	
 5	66	"A"	5	100	100	66	"A"	
-Execution time: = 54629.15999999938 ms
-Disk I/Os = 732
+Disk I/O: 732
+Execution time: 54629.15999999938 ms
 
 SELECT DISTINCT course.grade, course2.grade FROM course, course2 WHERE course.sid = course2.sid AND [ course.exam > course2.exam OR course.grade = "A" AND course2.grade = "A" ] ORDER BY course.exam
 grade	grade	
 "A"	"A"	
-Execution time: = 55226.19999999936 ms
-Disk I/Os = 740
+Disk I/O: 740
+Execution time: 55226.19999999936 ms
 
 DROP TABLE course
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE course2
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE r (a INT, b INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE s (b INT, c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t (a INT, c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 INSERT INTO r (a, b) VALUES (0, 0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO r (a, b) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (0, 0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO r (a, b) VALUES (100, 100)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (0, 0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO s (b, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (0, 0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (0, 0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO s (b, c) VALUES (101, 101)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (0, 0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t (a, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (0, 0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (1, 1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (2, 2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (3, 3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t (a, c) VALUES (102, 102)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 SELECT * FROM r, s, t WHERE r.a=t.a AND r.b=s.b AND s.c=t.c
 b	b	a	a	c	c	
@@ -1759,116 +1759,116 @@ b	b	a	a	c	c
 3	3	3	3	3	3	
 3	3	3	3	3	3	
 3	3	3	3	3	3	
-Execution time: = 12294.889999999983 ms
-Disk I/Os = 175
+Disk I/O: 175
+Execution time: 12294.889999999983 ms
 
 DROP TABLE r
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE s
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t1 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t2 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t3 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t4 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t5 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 CREATE TABLE t6 (c INT)
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 INSERT INTO t1 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t1 (c) VALUES (1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t1 (c) VALUES (2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t1 (c) VALUES (3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t1 (c) VALUES (4)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t2 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t2 (c) VALUES (1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t2 (c) VALUES (2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t2 (c) VALUES (3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t3 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t3 (c) VALUES (1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t3 (c) VALUES (2)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t3 (c) VALUES (3)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t4 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t4 (c) VALUES (1)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t5 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 INSERT INTO t5 (c) VALUES (0)
-Execution time: = 149.26 ms
-Disk I/Os = 2
+Disk I/O: 2
+Execution time: 149.26 ms
 
 INSERT INTO t6 (c) VALUES (0)
-Execution time: = 74.63 ms
-Disk I/Os = 1
+Disk I/O: 1
+Execution time: 74.63 ms
 
 SELECT * FROM t1, t2, t3, t4, t5, t6
 c	c	c	c	c	c	
@@ -2192,30 +2192,30 @@ c	c	c	c	c	c
 2	0	1	0	3	3	
 3	0	1	0	3	3	
 4	0	1	0	3	3	
-Execution time: = 10373.569999999987 ms
-Disk I/Os = 139
+Disk I/O: 139
+Execution time: 10373.569999999987 ms
 
 DROP TABLE t1
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t2
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t3
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t4
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t5
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 
 DROP TABLE t6
-Execution time: = 0.0 ms
-Disk I/Os = 0
+Disk I/O: 0
+Execution time: 0.0 ms
 

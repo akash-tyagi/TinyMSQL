@@ -221,12 +221,12 @@ public class GeneralUtils {
 
 	public static void printExecutionStats(DbManager dbManager,
 			PrintWriter writer) {
-		System.out.print("Execution time: = " + dbManager.disk.getDiskTimer()
+		System.out.print("Disk I/O: " + dbManager.disk.getDiskIOs() + "\n");
+		writer.println("Disk I/O: " + dbManager.disk.getDiskIOs());            
+		System.out.print("Execution time: " + dbManager.disk.getDiskTimer()
 				+ " ms" + "\n");
 		writer.println(
-				"Execution time: = " + dbManager.disk.getDiskTimer() + " ms");
-		System.out.print("Disk I/Os = " + dbManager.disk.getDiskIOs() + "\n");
-		writer.println("Disk I/Os = " + dbManager.disk.getDiskIOs());
+				"Execution time: " + dbManager.disk.getDiskTimer() + " ms");
 		dbManager.disk.resetDiskIOs();
 		dbManager.disk.resetDiskTimer();
 		restartTimer(dbManager);
