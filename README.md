@@ -1,5 +1,5 @@
 # TinyMSQL
-Interpreter accepts SQL queries that are valid in terms of the grammar of Tiny-SQL (see TinySQL_Grammer.pdf), execute the queries, and output the results of the execution. Interpreter includes the following components:
+Interpreter accepts SQL queries that are valid in terms of the grammar of Tiny-SQL (see TinySQL_Grammar.pdf), execute the queries, and output the results of the execution. Interpreter includes the following components:
 ##A parser: 
 The parser accepts the input Tiny-SQL query and converts it into a parse tree. 
 ##A logical Optimizer:
